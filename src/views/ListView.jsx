@@ -27,20 +27,22 @@ function ServerItem({ server, activeServerId, onToggle, onEdit, getServerDisplay
 export function ListView({ t, view, servers, activeServerId, onToggle, onEdit, getServerDisplayName }) {
   return (
     <section className={`view-panel${view === "list" ? "" : " hidden"}`}>
-      <ul className="server-list">
-        {servers.map((server) => (
-          <ServerItem
-            key={server.id}
-            server={server}
-            activeServerId={activeServerId}
-            onToggle={onToggle}
-            onEdit={onEdit}
-            getServerDisplayName={getServerDisplayName}
-            t={t}
-          />
-        ))}
-      </ul>
-      <div className={`empty-state-card${servers.length ? " hidden" : ""}`}>{t("messages.noServers")}</div>
+      <div className="list-container">
+        <ul className="server-list">
+            {servers.map((server) => (
+            <ServerItem
+                key={server.id}
+                server={server}
+                activeServerId={activeServerId}
+                onToggle={onToggle}
+                onEdit={onEdit}
+                getServerDisplayName={getServerDisplayName}
+                t={t}
+            />
+            ))}
+        </ul>
+        <div className={`empty-state-card${servers.length ? " hidden" : ""}`}>{t("messages.noServers")}</div>
+      </div>
     </section>
   );
 }

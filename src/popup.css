@@ -20,11 +20,10 @@ body {
   margin: 0;
   width: 360px;
   color: var(--text-main);
-  background: #f1f5fb;
+  background: #e3ecf8;
 }
 
 .app {
-  padding: 16px;
   position: relative;
   animation: app-reveal 260ms ease-out;
 }
@@ -75,7 +74,7 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
-  padding: 0 0 8px;
+  padding: 12px;
 }
 
 .app-header h1 {
@@ -87,8 +86,8 @@ body {
 
 .app-header p {
   margin: 4px 0 0;
-  color: var(--text-muted);
-  font-size: 0.85rem;
+  color: #3d5163;
+  font-size: 0.75rem;
 }
 
 .header-actions {
@@ -133,12 +132,15 @@ body {
 
 .view-panel {
   min-height: 192px;
-  padding: 16px 0;
 }
 
 h2 {
   margin: 16px 0 8px;
   font-size: 1rem;
+}
+
+.list-container {
+  padding: 16px;
 }
 
 .server-list {
@@ -173,7 +175,7 @@ h2 {
   border: none;
   background: var(--surface);
   color: inherit;
-  padding: 8px;
+  padding: 8px 16px;
   border-radius: 11px 0 0 11px;
   display: flex;
   flex-direction: column;
@@ -187,13 +189,17 @@ h2 {
   background: #f4f8ff;
 }
 
+.server-main:active {
+  background: #eaf1fb;
+}
+
 .server-main.no-meta {
   min-height: 48px;
   justify-content: center;
 }
 
 .server-item.is-active .server-main {
-  background: #ffd8c2;
+  background: rgb(255,84,0);
 }
 
 .server-name {
@@ -202,20 +208,21 @@ h2 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #2f3338;
+  color: #1a2530;
 }
 
 .server-meta {
   font-size: 0.8rem;
-  color: #556983;
+  color: #1f3249;
+  font-weight: 500;
 }
 
 .server-edit-btn {
   min-width: 35px;
   border: none;
   border-radius: 0 11px 11px 0;
-  background: #dcebff;
-  color: #0f58b8;
+  background: white;
+  color: #4f6785;
   font-size: 1rem;
   line-height: 1;
   padding: 0;
@@ -225,14 +232,14 @@ h2 {
 }
 
 .server-edit-btn:hover {
-  background: #c9e0ff;
-  color: var(--brand-blue);
+  background: #234a75;
+  color: #ffffff;
   filter: none;
 }
 
 .server-item.is-active .server-edit-btn {
-  background: #dcebff;
-  color: #0f58b8;
+  background: #ffd8c2;
+  color: #1a2530;
 }
 
 button {
@@ -266,7 +273,7 @@ button.ghost:hover {
   gap: 8px;
   background: #f4f8ff;
   border-radius: 12px;
-  padding: 8px;
+  padding: 16px;
 }
 
 button:focus-visible {
@@ -282,15 +289,13 @@ button:focus-visible {
 .actions {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 16px;
 }
 
 .preferences-card {
-  background: #f4f8ff;
-  border-radius: 12px;
-  padding: 16px 0;
   display: grid;
   gap: 8px;
+  padding: 16px;
 }
 
 .preferences-group {
@@ -300,25 +305,30 @@ button:focus-visible {
 
 .preferences-separator {
   height: 1px;
-  background: #d7e2f3;
+  background: #c1d1e3;
   margin: 2px 0;
 }
 
 .preferences-toggle {
   font-size: 0.86rem;
   font-weight: 600;
-  color: #2f3e53;
+  color: #1f3146;
 }
 
 .preferences-help {
   margin: 0;
   font-size: 0.78rem;
-  color: #4f6179;
+  color: #3d556e;
   line-height: 1.35;
 }
 
 #deleteServer {
   margin-left: auto;
+}
+
+#deleteServer:hover {
+  background: #e63946 !important;
+  color: #ffffff !important;
 }
 
 .empty-state-card {
@@ -351,15 +361,15 @@ button:focus-visible {
 }
 
 .footer-proxy-status {
-  color: #566376;
+  color: #435364;
 }
 
 .footer-proxy-label {
-  color: #566376;
+  color: #435364;
 }
 
 .footer-proxy-value {
-  color: #566376;
+  color: #435364;
 }
 
 .footer-proxy-value.is-active {
@@ -492,7 +502,7 @@ button:focus-visible {
 .log-main {
   font-size: 0.72rem;
   line-height: 1.4;
-  color: #2e3f57;
+  color: #1f3249;
   white-space: pre-wrap;
   word-break: break-word;
   font-family: "SF Mono", "Consolas", monospace;
@@ -511,7 +521,7 @@ button:focus-visible {
   border-radius: 0 4px 4px 0;
   font-size: 0.68rem;
   line-height: 1.45;
-  color: #3a4f68;
+  color: #2d425a;
   font-family: "SF Mono", "Consolas", monospace;
   white-space: pre;
   overflow-x: auto;
