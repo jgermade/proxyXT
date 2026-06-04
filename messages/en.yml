@@ -9,6 +9,7 @@ app:
 footer:
   active: "Active: {{server}}"
   system: System
+  proxyLabel: "Proxy:"
 
 buttons:
   preferences:

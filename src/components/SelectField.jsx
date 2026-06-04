@@ -22,7 +22,7 @@ const Control = styled.select`
   background: #edf2f8;
   box-shadow: inset 0 -2px 0 #9cb2d0;
   transition: background 120ms ease, box-shadow 120ms ease;
-  appearance: none;
+  appearance: base-select;
 
   &:focus {
     outline: none;

@@ -56,9 +56,9 @@ function LogEntry({ log, t }) {
   );
 }
 
-export function LogsView({ t, view, logs }) {
+export function LogsView({ t, logs }) {
   return (
-    <section className={`logs-panel${view === "logs" ? "" : " hidden"}`}>
+    <section className="logs-panel">
       <div className="logs-toolbar">
         <strong>{t("buttons.logs.title")}</strong>
       </div>

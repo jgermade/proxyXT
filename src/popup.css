@@ -29,6 +29,27 @@ body {
   animation: app-reveal 260ms ease-out;
 }
 
+.content-stack {
+  position: relative;
+}
+
+.content-stack .logs-panel {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease;
+}
+
+.content-stack.is-logs .logs-panel {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.content-stack.is-logs .app {
+  visibility: hidden;
+}
+
 @keyframes app-reveal {
   from {
     opacity: 0;
@@ -68,19 +89,19 @@ body {
 }
 
 .header-option-btn {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   padding: 0;
-  border-radius: 10px;
+  border-radius: 11px;
   display: grid;
   place-items: center;
-  background: #ffffff;
-  color: #587090;
+  background: #e6efff;
+  color: #44628d;
   opacity: 1;
 }
 
 .header-option-btn:hover {
-  background: #f0f4fb;
+  background: #dce9ff;
 }
 
 .plus-button {
@@ -93,11 +114,10 @@ body {
   font-size: 1.08rem;
   line-height: 1;
   border-radius: 11px;
-  transition: transform 120ms ease, background 120ms ease;
+  transition: background 120ms ease;
 }
 
 .plus-button:hover {
-  transform: translateY(-1px);
   background: #0967d4;
   filter: none;
 }
@@ -267,6 +287,17 @@ button:focus-visible {
   margin: 0;
 }
 
+.preferences-group {
+  display: grid;
+  gap: 8px;
+}
+
+.preferences-separator {
+  height: 1px;
+  background: #d7e2f3;
+  margin: 2px 0;
+}
+
 .preferences-toggle {
   font-size: 0.86rem;
   font-weight: 600;
@@ -313,6 +344,22 @@ button:focus-visible {
   text-overflow: ellipsis;
 }
 
+.footer-proxy-status {
+  color: #6b7686;
+}
+
+.footer-proxy-label {
+  color: #6b7686;
+}
+
+.footer-proxy-value {
+  color: #6b7686;
+}
+
+.footer-proxy-value.is-active {
+  color: var(--brand-blue);
+}
+
 .footer-actions {
   display: flex;
   align-items: center;
@@ -320,6 +367,7 @@ button:focus-visible {
 }
 
 .language-badge {
+  border: none;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -330,6 +378,18 @@ button:focus-visible {
   font-size: 0.67rem;
   font-weight: 700;
   letter-spacing: 0.02em;
+}
+
+.language-badge.is-clickable {
+  cursor: pointer;
+}
+
+.language-badge.is-clickable:hover {
+  background: #e6edf8;
+}
+
+.language-badge:disabled {
+  opacity: 1;
 }
 
 .language-badge-flag {

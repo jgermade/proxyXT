@@ -1,4 +1,5 @@
 import { Fragment, h } from "preact";
+import { useRef } from "preact/hooks";
 import { AddBackButton } from "./components/AddBackButton.jsx";
 import { LanguageBadge } from "./components/LanguageBadge.jsx";
 import { useProxyApp } from "./hooks/useProxyApp.js";
@@ -9,6 +10,8 @@ import { FormView } from "./views/FormView.jsx";
 import { PreferencesView } from "./views/PreferencesView.jsx";
 
 export function App() {
+  const mainRef = useRef(null);
+
   const {
     t,
     view,
@@ -16,9 +19,11 @@ export function App() {
     formData,
     setFormData,
     subtitle,
-    footerMessage,
-    footerStyle,
+    activeProxyDisplay,
+    footerFeedbackMessage,
+    footerFeedbackStyle,
     logs,
+    logsPanelHeight,
     hasErrorLogs,
     servers,
     activeServerId,
@@ -26,6 +31,7 @@ export function App() {
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,
+    handleOpenPreferences,
     handleTogglePreferences,
     handleToggleLogs,
     handleToggleServer,
@@ -36,74 +42,90 @@ export function App() {
     handleLanguageChange
   } = useProxyApp();
 
+  const stackedStyle = view === "logs" && logsPanelHeight ? { height: `${logsPanelHeight}px` } : undefined;
+
   return (
     <Fragment>
-      <LogsView t={t} view={view} logs={logs} />
+      <div className={`content-stack${view === "logs" ? " is-logs" : ""}`} style={stackedStyle}>
+        <LogsView t={t} logs={logs} />
 
-      <main className={`app${view === "logs" ? " hidden" : ""}`}>
-        <header className="app-header">
-          <div>
-            <h1>{t("app.title")}</h1>
-            <p id="headerSubtitle">{subtitle}</p>
-          </div>
-          <div className="header-actions">
-            <AddBackButton
-              variant="icon"
-              className="header-option-btn"
-              active={view === "preferences"}
-              ariaLabel={view === "preferences" ? t("buttons.preferences.hide") : t("buttons.preferences.show")}
-              title={t("preferences.title")}
-              onClick={handleTogglePreferences}
-            >
-              ⚙
-            </AddBackButton>
+        <main ref={mainRef} className="app">
+          <header className="app-header">
+            <div>
+              <h1>{t("app.title")}</h1>
+              <p id="headerSubtitle">{subtitle}</p>
+            </div>
+            <div className="header-actions">
+              <AddBackButton
+                variant="icon"
+                className="header-option-btn"
+                active={view === "preferences"}
+                ariaLabel={view === "preferences" ? t("buttons.preferences.hide") : t("buttons.preferences.show")}
+                title={t("preferences.title")}
+                onClick={handleTogglePreferences}
+              >
+                ⚙
+              </AddBackButton>
 
-            <AddBackButton
-              variant="plusToggle"
-              view={view}
-              onClick={handlePrimaryAction}
-              ariaLabel={view === "list" ? t("buttons.server.add") : t("buttons.server.backToList")}
-            />
-          </div>
-        </header>
+              <AddBackButton
+                variant="plusToggle"
+                view={view === "form" ? "form" : "list"}
+                onClick={handlePrimaryAction}
+                ariaLabel={view === "form" ? t("buttons.server.backToList") : t("buttons.server.add")}
+              />
+            </div>
+          </header>
 
-        <ListView
-          t={t}
-          view={view}
-          servers={servers}
-          activeServerId={activeServerId}
-          onToggle={handleToggleServer}
-          onEdit={openFormForEdit}
-          getServerDisplayName={getServerDisplayName}
-        />
+          <ListView
+            t={t}
+            view={view}
+            servers={servers}
+            activeServerId={activeServerId}
+            onToggle={handleToggleServer}
+            onEdit={openFormForEdit}
+            getServerDisplayName={getServerDisplayName}
+          />
 
-        <FormView
-          t={t}
-          view={view}
-          formMode={formMode}
-          formData={formData}
-          setFormData={setFormData}
-          onSubmit={handleSubmitForm}
-          onDelete={handleDeleteServer}
-        />
+          <FormView
+            t={t}
+            view={view}
+            formMode={formMode}
+            formData={formData}
+            setFormData={setFormData}
+            onSubmit={handleSubmitForm}
+            onDelete={handleDeleteServer}
+          />
 
-        <PreferencesView
-          t={t}
-          view={view}
-          autoFailoverEnabled={autoFailoverEnabled}
-          language={languagePreference}
-          onAutoFailoverChange={handleAutoFailoverChange}
-          onLanguageChange={handleLanguageChange}
-        />
-      </main>
+          <PreferencesView
+            t={t}
+            view={view}
+            autoFailoverEnabled={autoFailoverEnabled}
+            language={languagePreference}
+            onAutoFailoverChange={handleAutoFailoverChange}
+            onLanguageChange={handleLanguageChange}
+          />
+        </main>
+      </div>
 
       <footer className={`app-footer${view === "form" ? " hidden" : ""}`}>
-        <span id="activeFooter" style={footerStyle}>
-          {footerMessage}
-        </span>
+        {footerFeedbackMessage ? (
+          <span id="activeFooter" style={footerFeedbackStyle}>
+            {footerFeedbackMessage}
+          </span>
+        ) : (
+          <span id="activeFooter" className="footer-proxy-status">
+            <span className="footer-proxy-label">{t("footer.proxyLabel")}</span>
+            <span className={`footer-proxy-value${activeServerId ? " is-active" : ""}`}> {activeProxyDisplay}</span>
+          </span>
+        )}
 
         <div className="footer-actions">
-          <LanguageBadge preference={languagePreference} effectiveLanguage={effectiveLanguage} t={t} />
+          <LanguageBadge
+            preference={languagePreference}
+            effectiveLanguage={effectiveLanguage}
+            t={t}
+            onClick={handleOpenPreferences}
+          />
 
           <AddBackButton
             variant="icon"
@@ -112,7 +134,10 @@ export function App() {
             hasError={hasErrorLogs}
             ariaLabel={view === "logs" ? t("buttons.logs.hide") : t("buttons.logs.show")}
             title={t("buttons.logs.title")}
-            onClick={handleToggleLogs}
+            onClick={() => {
+              const height = mainRef.current?.offsetHeight || 0;
+              handleToggleLogs(height);
+            }}
           >
             🐞
           </AddBackButton>

@@ -11,6 +11,7 @@ import { createTranslator, resolveLanguage } from "../lib/i18n.js";
 export function useProxyApp() {
   const [state, setState] = useState(defaultState);
   const [view, setView] = useState("list");
+  const [logsPanelHeight, setLogsPanelHeight] = useState(null);
   const [formMode, setFormMode] = useState("new");
   const [formData, setFormData] = useState(initialFormState);
   const [feedback, setFeedback] = useState(null);
@@ -34,11 +35,11 @@ export function useProxyApp() {
         ? t("app.subtitle.preferences")
         : t("app.subtitle.selectServer");
 
-  const footerMessage = feedback?.message || t("footer.active", {
-    server: activeServer ? getServerDisplayName(activeServer) : t("footer.system")
-  });
-
-  const footerStyle = feedback ? { color: feedback.isError ? "#b03838" : "#206b35" } : {};
+  const activeProxyDisplay = activeServer
+    ? `${activeServer.host}:${activeServer.port}`
+    : t("footer.system");
+  const footerFeedbackMessage = feedback?.message || null;
+  const footerFeedbackStyle = feedback ? { color: feedback.isError ? "#b03838" : "#206b35" } : {};
 
   async function callBackground(type, payload = {}) {
     const response = await sendMessage({ type, payload });
@@ -84,6 +85,20 @@ export function useProxyApp() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!feedback) {
+      return undefined;
+    }
+
+    const timer = globalThis.setTimeout(() => {
+      setFeedback(null);
+    }, 3000);
+
+    return () => {
+      globalThis.clearTimeout(timer);
+    };
+  }, [feedback]);
+
   function clearFeedback() {
     setFeedback(null);
   }
@@ -116,23 +131,20 @@ export function useProxyApp() {
   }
 
   function handlePrimaryAction() {
-    if (view === "list") {
-      openFormForNewServer();
+    if (view === "form") {
+      closeForm();
+      clearFeedback();
       return;
     }
-    closeForm();
-    clearFeedback();
+
+    openFormForNewServer();
   }
 
   async function handleToggleServer(server) {
     const nextServerId = server.id === state.activeServerId ? null : server.id;
     try {
       await callBackground("proxyxt/activateServer", { serverId: nextServerId });
-      if (nextServerId) {
-        setFeedback({ message: t("messages.proxyEnabled", { server: getServerDisplayName(server) }), isError: false });
-      } else {
-        setFeedback({ message: t("messages.proxyDisabled"), isError: false });
-      }
+      setFeedback(null);
     } catch (error) {
       setFeedback({ message: error.message, isError: true });
     }
@@ -189,16 +201,27 @@ export function useProxyApp() {
     clearFeedback();
   }
 
-  async function handleToggleLogs() {
+  function handleOpenPreferences() {
+    setView("preferences");
+    clearFeedback();
+  }
+
+  async function handleToggleLogs(mainHeight) {
     if (view === "logs") {
       setView("list");
+      setLogsPanelHeight(null);
       return;
+    }
+
+    if (typeof mainHeight === "number" && mainHeight > 0) {
+      setLogsPanelHeight(mainHeight);
     }
 
     try {
       await refreshLogs();
       setView("logs");
     } catch (error) {
+      setLogsPanelHeight(null);
       setFeedback({ message: t("messages.logsLoadError", { error: error.message }), isError: true });
     }
   }
@@ -236,6 +259,8 @@ export function useProxyApp() {
   async function handleLanguageChange(language) {
     const previous = state.preferences?.language || "auto";
     const nextLanguage = ["auto", "en", "es", "fr", "pt"].includes(language) ? language : "auto";
+    const nextEffectiveLanguage = resolveLanguage(nextLanguage, globalThis.navigator?.language);
+    const nextT = createTranslator(nextEffectiveLanguage);
 
     setState((current) => ({
       ...current,
@@ -252,7 +277,7 @@ export function useProxyApp() {
           language: nextLanguage
         }
       });
-      setFeedback({ message: t("messages.preferencesSaved"), isError: false });
+      setFeedback({ message: nextT("messages.preferencesSaved"), isError: false });
     } catch (error) {
       setState((current) => ({
         ...current,
@@ -272,9 +297,11 @@ export function useProxyApp() {
     formData,
     setFormData,
     subtitle,
-    footerMessage,
-    footerStyle,
+    activeProxyDisplay,
+    footerFeedbackMessage,
+    footerFeedbackStyle,
     logs,
+    logsPanelHeight,
     hasErrorLogs,
     servers: state.servers,
     activeServerId: state.activeServerId,
@@ -282,6 +309,7 @@ export function useProxyApp() {
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,
+    handleOpenPreferences,
     handleTogglePreferences,
     handleToggleLogs,
     handleToggleServer,
