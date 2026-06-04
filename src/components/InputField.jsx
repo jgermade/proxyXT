@@ -41,7 +41,7 @@ const Control = styled.input`
 
   &:focus {
     outline: none;
-    background: #e9f1ff;
+    background: white;
     box-shadow: inset 0 0 0 1px #4f79b6, 0 0 0 2px rgba(0, 83, 255, 0.15);
   }
 `;

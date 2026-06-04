@@ -30,14 +30,13 @@ const Control = styled.select`
   font-size: 0.9rem;
   font-weight: 500;
   color: #1f3046;
-  background: #e6edf7;
   box-shadow: inset 0 0 0 1px #8ba4c6;
   transition: background 120ms ease, box-shadow 120ms ease;
   appearance: base-select;
 
   &:focus {
     outline: none;
-    background: #e9f1ff;
+    background: white;
     box-shadow: inset 0 0 0 1px #4f79b6, 0 0 0 2px rgba(0, 83, 255, 0.15);
   }
 `;

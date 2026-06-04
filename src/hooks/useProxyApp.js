@@ -99,6 +99,43 @@ export function useProxyApp() {
     };
   }, [feedback]);
 
+  useEffect(() => {
+    function handleEscapeKey(event) {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      if (view === "form") {
+        event.preventDefault();
+        event.stopPropagation();
+        closeForm();
+        clearFeedback();
+        return;
+      }
+
+      if (view === "preferences") {
+        event.preventDefault();
+        event.stopPropagation();
+        setView("list");
+        clearFeedback();
+        return;
+      }
+
+      if (view === "logs") {
+        event.preventDefault();
+        event.stopPropagation();
+        setView("list");
+        setLogsPanelHeight(null);
+        clearFeedback();
+      }
+    }
+
+    globalThis.addEventListener("keydown", handleEscapeKey, true);
+    return () => {
+      globalThis.removeEventListener("keydown", handleEscapeKey, true);
+    };
+  }, [view]);
+
   function clearFeedback() {
     setFeedback(null);
   }
@@ -203,6 +240,12 @@ export function useProxyApp() {
 
   function handleOpenPreferences() {
     setView("preferences");
+    clearFeedback();
+  }
+
+  function handleOpenList() {
+    setView("list");
+    setLogsPanelHeight(null);
     clearFeedback();
   }
 
@@ -321,6 +364,7 @@ export function useProxyApp() {
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,
+    handleOpenList,
     handleOpenPreferences,
     handleTogglePreferences,
     handleToggleLogs,
