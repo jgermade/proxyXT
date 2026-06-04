@@ -92,42 +92,53 @@ function updateHeaderSubtitle() {
 
 function hideLogsPanel() {
   ui.logsPanel.style.height = "";
-  ui.app.classList.remove("logs-open");
   ui.logsPanel.classList.add("hidden");
+  ui.app.classList.remove("hidden");
   ui.toggleLogs.classList.remove("is-active");
   ui.toggleLogs.setAttribute("aria-label", "Mostrar logs de backend");
 }
 
 function showLogsPanel() {
-  const snapshot = ui.app.offsetHeight;
-  ui.app.classList.add("logs-open");
+  const h = ui.app.offsetHeight;
+  ui.app.classList.add("hidden");
+  ui.logsPanel.style.height = h + "px";
   ui.logsPanel.classList.remove("hidden");
-  const appStyle = getComputedStyle(ui.app);
-  const paddingV = parseFloat(appStyle.paddingTop) + parseFloat(appStyle.paddingBottom);
-  const footerStyle = getComputedStyle(ui.appFooter);
-  const footerGap = parseFloat(footerStyle.marginTop);
-  ui.logsPanel.style.height = (snapshot - paddingV - footerGap - ui.appFooter.offsetHeight) + "px";
   ui.toggleLogs.classList.add("is-active");
   ui.toggleLogs.setAttribute("aria-label", "Ocultar logs de backend");
 }
 
-function formatLogLine(log) {
+function createLogEntry(log) {
   const level = String(log.level || "info").toUpperCase();
   const message = String(log.message || "Sin mensaje");
-  const when = String(log.time || "");
   const context = log.context ? ` | ${JSON.stringify(log.context)}` : "";
-  return `[${when}] ${level}: ${message}${context}`;
+
+  const entry = document.createElement("div");
+  entry.className = "log-entry";
+
+  const main = document.createElement("span");
+  main.className = "log-main";
+  main.textContent = `${level}: ${message}${context}`;
+
+  const time = document.createElement("span");
+  time.className = "log-time";
+  const raw = log.time ? new Date(log.time) : null;
+  time.textContent = raw && !isNaN(raw) ? raw.toLocaleString() : String(log.time || "");
+
+  entry.append(time, main);
+  return entry;
 }
 
 async function refreshLogsPanel() {
   const response = await callBackground("proxyxt/getLogs");
   const logs = Array.isArray(response.logs) ? response.logs : [];
+  ui.logsContent.innerHTML = "";
   if (!logs.length) {
     ui.logsContent.textContent = "Sin logs.";
     return;
   }
 
-  ui.logsContent.textContent = logs.map((log) => formatLogLine(log)).join("\n");
+  logs.forEach((log) => ui.logsContent.appendChild(createLogEntry(log)));
+  ui.logsContent.lastElementChild?.scrollIntoView({ block: "end" });
 }
 
 function showListView() {

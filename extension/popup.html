@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
+    <section id="logsPanel" class="logs-panel hidden">
+      <div class="logs-toolbar">
+        <strong>Logs de backend</strong>
+      </div>
+      <div id="logsContent" class="logs-content"></div>
+    </section>
     <main class="app">
       <header class="app-header">
         <div>
@@ -66,25 +72,19 @@
         </form>
       </section>
 
-      <footer id="appFooter" class="app-footer">
-        <span id="activeFooter">Activo: Sistema</span>
-        <button
-          id="toggleLogs"
-          type="button"
-          class="ghost footer-btn icon-btn"
-          aria-label="Mostrar logs de backend"
-          title="Logs de backend"
-        >
-          &#128027;
-        </button>
-      </footer>
-      <section id="logsPanel" class="logs-panel hidden">
-        <div class="logs-toolbar">
-          <strong>Logs de backend</strong>
-        </div>
-        <pre id="logsContent">Sin logs.</pre>
-      </section>
     </main>
+    <footer id="appFooter" class="app-footer">
+      <span id="activeFooter">Activo: Sistema</span>
+      <button
+        id="toggleLogs"
+        type="button"
+        class="ghost footer-btn icon-btn"
+        aria-label="Mostrar logs de backend"
+        title="Logs de backend"
+      >
+        &#128027;
+      </button>
+    </footer>
 
     <script src="popup.js"></script>
   </body>
