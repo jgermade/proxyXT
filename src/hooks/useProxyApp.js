@@ -243,7 +243,10 @@ export function useProxyApp() {
           language: state.preferences?.language || "auto"
         }
       });
-      setFeedback({ message: t("messages.preferencesSaved"), isError: false });
+      setFeedback({
+        message: enabled ? t("messages.roundRobinEnabled") : t("messages.roundRobinDisabled"),
+        isError: false
+      });
     } catch (error) {
       setState((current) => ({
         ...current,
@@ -277,7 +280,16 @@ export function useProxyApp() {
           language: nextLanguage
         }
       });
-      setFeedback({ message: nextT("messages.preferencesSaved"), isError: false });
+      const explicitLanguageName =
+        nextLanguage === "auto"
+          ? nextT(`language.${nextEffectiveLanguage}`)
+          : nextT(`language.${nextLanguage}`);
+      const languageMessage =
+        nextLanguage === "auto"
+          ? nextT("messages.languageChangedAuto", { language: explicitLanguageName })
+          : nextT("messages.languageChanged", { language: explicitLanguageName });
+
+      setFeedback({ message: languageMessage, isError: false });
     } catch (error) {
       setState((current) => ({
         ...current,

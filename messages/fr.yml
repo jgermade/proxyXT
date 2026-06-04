@@ -57,6 +57,10 @@ messages:
   serverUpdated: Serveur mis a jour
   serverDeleted: Serveur supprime
   preferencesSaved: Preferences enregistrees
+  roundRobinEnabled: Round Robin active
+  roundRobinDisabled: Round Robin desactive
+  languageChanged: "Langue: {{language}}"
+  languageChangedAuto: "Langue: Auto ({{language}})"
   logsLoadError: "Impossible de charger les logs: {{error}}"
 
 preferences:

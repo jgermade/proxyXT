@@ -22,7 +22,6 @@ export function PreferencesView({
   return (
     <section className={`view-panel${view === "preferences" ? "" : " hidden"}`}>
       <div className="preferences-card">
-        <h2>{t("preferences.title")}</h2>
         <div className="preferences-group">
           <SelectField
             id="language"

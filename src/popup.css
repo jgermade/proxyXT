@@ -3,13 +3,13 @@
   font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
   --brand-orange: #ff5a00;
   --brand-blue: #0053ff;
-  --brand-ink: #4a4a4a;
+  --brand-ink: #273140;
   --surface: #ffffff;
-  --surface-soft: #f6f9ff;
+  --surface-soft: #f2f6fd;
   --line: #d4dceb;
   --line-strong: #b9c7df;
-  --text-main: #31353b;
-  --text-muted: #687788;
+  --text-main: #243040;
+  --text-muted: #4f6076;
 }
 
 * {
@@ -20,7 +20,7 @@ body {
   margin: 0;
   width: 360px;
   color: var(--text-main);
-  background: #f7f9fc;
+  background: #f1f5fb;
 }
 
 .app {
@@ -37,17 +37,26 @@ body {
   position: absolute;
   inset: 0;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
+  z-index: 0;
   transition: opacity 140ms ease;
 }
 
 .content-stack.is-logs .logs-panel {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
+  z-index: 2;
 }
 
 .content-stack.is-logs .app {
   visibility: hidden;
+}
+
+.content-stack .app {
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes app-reveal {
@@ -95,13 +104,13 @@ body {
   border-radius: 11px;
   display: grid;
   place-items: center;
-  background: #e6efff;
-  color: #44628d;
+  background: #d8e6ff;
+  color: #2f4f7d;
   opacity: 1;
 }
 
 .header-option-btn:hover {
-  background: #dce9ff;
+  background: #cbdfff;
 }
 
 .plus-button {
@@ -174,7 +183,7 @@ h2 {
 }
 
 .server-main:hover {
-  background: #fafcff;
+  background: #f4f8ff;
 }
 
 .server-main.no-meta {
@@ -197,7 +206,7 @@ h2 {
 
 .server-meta {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: #556983;
 }
 
 .server-edit-btn {
@@ -244,11 +253,11 @@ button:hover {
 
 button.ghost {
   background: #ffffff;
-  color: #4d5c70;
+  color: #334a66;
 }
 
 button.ghost:hover {
-  background: #f2f6fc;
+  background: #eaf1fb;
 }
 
 .proxy-form {
@@ -283,10 +292,6 @@ button:focus-visible {
   gap: 10px;
 }
 
-.preferences-card h2 {
-  margin: 0;
-}
-
 .preferences-group {
   display: grid;
   gap: 8px;
@@ -307,7 +312,7 @@ button:focus-visible {
 .preferences-help {
   margin: 0;
   font-size: 0.78rem;
-  color: #5f7087;
+  color: #4f6179;
   line-height: 1.35;
 }
 
@@ -317,7 +322,7 @@ button:focus-visible {
 
 .empty-state-card {
   background: #e4efff;
-  color: #5b6c82;
+  color: #425773;
   border-radius: 11px;
   padding: 15px 11px;
   text-align: center;
@@ -331,7 +336,7 @@ button:focus-visible {
   justify-content: space-between;
   gap: 8px;
   padding: 8px 14px 14px;
-  color: #4d5d73;
+  color: #40546d;
   font-size: 0.81rem;
   background: #ffffff;
 }
@@ -345,15 +350,15 @@ button:focus-visible {
 }
 
 .footer-proxy-status {
-  color: #6b7686;
+  color: #566376;
 }
 
 .footer-proxy-label {
-  color: #6b7686;
+  color: #566376;
 }
 
 .footer-proxy-value {
-  color: #6b7686;
+  color: #566376;
 }
 
 .footer-proxy-value.is-active {
@@ -373,8 +378,8 @@ button:focus-visible {
   gap: 5px;
   padding: 2px 6px 2px 3px;
   border-radius: 999px;
-  background: #f1f5fb;
-  color: #4d5d73;
+  background: #e8eef8;
+  color: #3a4f69;
   font-size: 0.67rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -385,7 +390,7 @@ button:focus-visible {
 }
 
 .language-badge.is-clickable:hover {
-  background: #e6edf8;
+  background: #dbe6f6;
 }
 
 .language-badge:disabled {
@@ -414,8 +419,8 @@ button:focus-visible {
 .icon-btn {
   border: none;
   background: transparent;
-  color: #60758f;
-  opacity: 0.72;
+  color: #4f6785;
+  opacity: 0.85;
   position: relative;
 }
 
@@ -465,7 +470,7 @@ button:focus-visible {
 
 .logs-toolbar strong {
   font-size: 0.83rem;
-  color: #3f5169;
+  color: #30445f;
 }
 
 .logs-content {
@@ -494,7 +499,7 @@ button:focus-visible {
 
 .log-time {
   font-size: 0.62rem;
-  color: #8399b0;
+  color: #657d98;
   font-family: "SF Mono", "Consolas", monospace;
 }
 
