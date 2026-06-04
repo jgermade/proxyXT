@@ -33,6 +33,7 @@ const Control = styled.select`
   box-shadow: inset 0 0 0 1px #8ba4c6;
   transition: background 120ms ease, box-shadow 120ms ease;
   appearance: base-select;
+  background: #f3f8ff;
 
   &:focus {
     outline: none;

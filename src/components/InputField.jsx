@@ -36,7 +36,7 @@ const Control = styled.input`
   appearance: none;
 
   &::placeholder {
-    color: #5f7592;
+    color: #b0c2da;
   }
 
   &:focus {

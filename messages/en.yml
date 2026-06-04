@@ -34,6 +34,8 @@ labels:
   bypassList: Bypass (comma separated)
   alias: Alias (optional)
   autoFailover: Automatic failover (round-robin)
+  reloadActiveTabOnToggle: Reload active tab when enabling/disabling a server
+  syncServersWithAccount: Sync servers with browser account
   language: Language
 
 language:
@@ -42,6 +44,8 @@ language:
   es: Spanish
   fr: French
   pt: Portuguese
+  it: Italian
+  de: German
 
 placeholders:
   bypassList: localhost, *.internal.local
@@ -59,6 +63,10 @@ messages:
   preferencesSaved: Preferences saved
   roundRobinEnabled: Round Robin enabled
   roundRobinDisabled: Round Robin disabled
+  reloadOnToggleEnabled: Active tab reload enabled
+  reloadOnToggleDisabled: Active tab reload disabled
+  syncServersEnabled: Server sync enabled
+  syncServersDisabled: Server sync disabled
   languageChanged: "Language: {{language}}"
   languageChangedAuto: "Language: Auto ({{language}})"
   logsLoadError: "Could not load logs: {{error}}"
@@ -66,3 +74,5 @@ messages:
 preferences:
   title: Preferences
   help: If the active proxy fails, the extension will automatically switch to the next saved server.
+  reloadHelp: Reloads the current tab each time the active proxy is enabled or disabled.
+  syncHelp: Stores your saved servers in your browser account to keep them available on your other signed-in browsers.

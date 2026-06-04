@@ -28,6 +28,8 @@ export function App() {
     servers,
     activeServerId,
     autoFailoverEnabled,
+    reloadActiveTabOnToggle,
+    syncServersWithAccount,
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,
@@ -40,6 +42,8 @@ export function App() {
     handleSubmitForm,
     handleDeleteServer,
     handleAutoFailoverChange,
+    handleReloadActiveTabChange,
+    handleSyncServersWithAccountChange,
     handleLanguageChange
   } = useProxyApp();
 
@@ -129,8 +133,12 @@ export function App() {
             t={t}
             view={view}
             autoFailoverEnabled={autoFailoverEnabled}
+            reloadActiveTabOnToggle={reloadActiveTabOnToggle}
+            syncServersWithAccount={syncServersWithAccount}
             language={languagePreference}
             onAutoFailoverChange={handleAutoFailoverChange}
+            onReloadActiveTabChange={handleReloadActiveTabChange}
+            onSyncServersWithAccountChange={handleSyncServersWithAccountChange}
             onLanguageChange={handleLanguageChange}
           />
         </main>

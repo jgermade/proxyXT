@@ -3,15 +3,19 @@ import enRaw from "../../messages/en.yml";
 import esRaw from "../../messages/es.yml";
 import frRaw from "../../messages/fr.yml";
 import ptRaw from "../../messages/pt.yml";
+import itRaw from "../../messages/it.yml";
+import deRaw from "../../messages/de.yml";
 
 const dictionaries = {
   en: parseYaml(enRaw) || {},
   es: parseYaml(esRaw) || {},
   fr: parseYaml(frRaw) || {},
-  pt: parseYaml(ptRaw) || {}
+  pt: parseYaml(ptRaw) || {},
+  it: parseYaml(itRaw) || {},
+  de: parseYaml(deRaw) || {}
 };
 
-const supportedLanguages = ["en", "es", "fr", "pt"];
+const supportedLanguages = ["en", "es", "fr", "pt", "it", "de"];
 
 function getByPath(obj, path) {
   const segments = String(path || "").split(".");
@@ -41,6 +45,12 @@ export function resolveLanguage(preference, browserLanguage) {
   const browser = String(browserLanguage || "").toLowerCase();
   if (browser.startsWith("pt")) {
     return "pt";
+  }
+  if (browser.startsWith("it")) {
+    return "it";
+  }
+  if (browser.startsWith("de")) {
+    return "de";
   }
   if (browser.startsWith("fr")) {
     return "fr";

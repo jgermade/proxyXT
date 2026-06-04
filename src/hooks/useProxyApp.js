@@ -283,7 +283,9 @@ export function useProxyApp() {
       await callBackground("proxyxt/updatePreferences", {
         preferences: {
           autoFailoverEnabled: enabled,
-          language: state.preferences?.language || "auto"
+          language: state.preferences?.language || "auto",
+          reloadActiveTabOnToggle: Boolean(state.preferences?.reloadActiveTabOnToggle),
+          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount)
         }
       });
       setFeedback({
@@ -302,9 +304,81 @@ export function useProxyApp() {
     }
   }
 
+  async function handleReloadActiveTabChange(enabled) {
+    const previous = Boolean(state.preferences?.reloadActiveTabOnToggle);
+    setState((current) => ({
+      ...current,
+      preferences: {
+        ...current.preferences,
+        reloadActiveTabOnToggle: enabled
+      }
+    }));
+
+    try {
+      await callBackground("proxyxt/updatePreferences", {
+        preferences: {
+          autoFailoverEnabled: Boolean(state.preferences?.autoFailoverEnabled),
+          language: state.preferences?.language || "auto",
+          reloadActiveTabOnToggle: enabled,
+          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount)
+        }
+      });
+      setFeedback({
+        message: enabled ? t("messages.reloadOnToggleEnabled") : t("messages.reloadOnToggleDisabled"),
+        isError: false
+      });
+    } catch (error) {
+      setState((current) => ({
+        ...current,
+        preferences: {
+          ...current.preferences,
+          reloadActiveTabOnToggle: previous
+        }
+      }));
+      setFeedback({ message: error.message, isError: true });
+    }
+  }
+
+  async function handleSyncServersWithAccountChange(enabled) {
+    const previous = Boolean(state.preferences?.syncServersWithAccount);
+    setState((current) => ({
+      ...current,
+      preferences: {
+        ...current.preferences,
+        syncServersWithAccount: enabled
+      }
+    }));
+
+    try {
+      await callBackground("proxyxt/updatePreferences", {
+        preferences: {
+          autoFailoverEnabled: Boolean(state.preferences?.autoFailoverEnabled),
+          language: state.preferences?.language || "auto",
+          reloadActiveTabOnToggle: Boolean(state.preferences?.reloadActiveTabOnToggle),
+          syncServersWithAccount: enabled
+        }
+      });
+      setFeedback({
+        message: enabled ? t("messages.syncServersEnabled") : t("messages.syncServersDisabled"),
+        isError: false
+      });
+    } catch (error) {
+      setState((current) => ({
+        ...current,
+        preferences: {
+          ...current.preferences,
+          syncServersWithAccount: previous
+        }
+      }));
+      setFeedback({ message: error.message, isError: true });
+    }
+  }
+
   async function handleLanguageChange(language) {
     const previous = state.preferences?.language || "auto";
-    const nextLanguage = ["auto", "en", "es", "fr", "pt"].includes(language) ? language : "auto";
+    const nextLanguage = ["auto", "en", "es", "fr", "pt", "it", "de"].includes(language)
+      ? language
+      : "auto";
     const nextEffectiveLanguage = resolveLanguage(nextLanguage, globalThis.navigator?.language);
     const nextT = createTranslator(nextEffectiveLanguage);
 
@@ -320,7 +394,9 @@ export function useProxyApp() {
       await callBackground("proxyxt/updatePreferences", {
         preferences: {
           autoFailoverEnabled: Boolean(state.preferences?.autoFailoverEnabled),
-          language: nextLanguage
+          language: nextLanguage,
+          reloadActiveTabOnToggle: Boolean(state.preferences?.reloadActiveTabOnToggle),
+          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount)
         }
       });
       const explicitLanguageName =
@@ -361,6 +437,8 @@ export function useProxyApp() {
     servers: state.servers,
     activeServerId: state.activeServerId,
     autoFailoverEnabled: state.preferences?.autoFailoverEnabled,
+    reloadActiveTabOnToggle: state.preferences?.reloadActiveTabOnToggle,
+    syncServersWithAccount: state.preferences?.syncServersWithAccount,
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,
@@ -373,6 +451,8 @@ export function useProxyApp() {
     handleSubmitForm,
     handleDeleteServer,
     handleAutoFailoverChange,
+    handleReloadActiveTabChange,
+    handleSyncServersWithAccountChange,
     handleLanguageChange
   };
 }

@@ -1,0 +1,78 @@
+app:
+  title: ProxyXT
+  subtitle:
+    selectServer: Waehle einen Server
+    addProxy: Proxy-Server hinzufuegen
+    editProxy: Proxy-Server bearbeiten
+    preferences: Verhaltenseinstellungen
+
+footer:
+  active: "Aktiv: {{server}}"
+  system: System
+  proxyLabel: "Proxy:"
+
+buttons:
+  preferences:
+    show: Einstellungen anzeigen
+    hide: Einstellungen ausblenden
+  logs:
+    show: Backend-Logs anzeigen
+    hide: Backend-Logs ausblenden
+    title: Backend-Logs
+  server:
+    save: Server speichern
+    saveChanges: Aenderungen speichern
+    delete: Loeschen
+    add: Server hinzufuegen
+    backToList: Zur Liste
+    edit: Server bearbeiten
+
+labels:
+  scheme: Schema
+  port: Port
+  host: Host/IP
+  bypassList: Bypass (durch Komma getrennt)
+  alias: Alias (optional)
+  autoFailover: Automatischer Failover (round-robin)
+  reloadActiveTabOnToggle: Aktiven Tab beim Aktivieren/Deaktivieren eines Servers neu laden
+  syncServersWithAccount: Server mit dem Browserkonto synchronisieren
+  language: Sprache
+
+language:
+  auto: Auto
+  en: Englisch
+  es: Spanisch
+  fr: Franzoesisch
+  pt: Portugiesisch
+  it: Italienisch
+  de: Deutsch
+
+placeholders:
+  bypassList: localhost, *.internal.local
+
+messages:
+  noServers: Keine gespeicherten Proxys
+  noLogs: Keine Logs.
+  noMessage: Keine Nachricht
+  unknownError: Unbekannter Fehler
+  proxyEnabled: "Proxy aktiv: {{server}}"
+  proxyDisabled: Proxy deaktiviert
+  serverSaved: Server gespeichert
+  serverUpdated: Server aktualisiert
+  serverDeleted: Server geloescht
+  preferencesSaved: Einstellungen gespeichert
+  roundRobinEnabled: Round Robin aktiviert
+  roundRobinDisabled: Round Robin deaktiviert
+  reloadOnToggleEnabled: Neuladen des aktiven Tabs aktiviert
+  reloadOnToggleDisabled: Neuladen des aktiven Tabs deaktiviert
+  syncServersEnabled: Serversynchronisierung aktiviert
+  syncServersDisabled: Serversynchronisierung deaktiviert
+  languageChanged: "Sprache: {{language}}"
+  languageChangedAuto: "Sprache: Auto ({{language}})"
+  logsLoadError: "Logs konnten nicht geladen werden: {{error}}"
+
+preferences:
+  title: Einstellungen
+  help: Wenn der aktive Proxy ausfaellt, wechselt die Erweiterung automatisch zum naechsten gespeicherten Server.
+  reloadHelp: Laedt den aktuellen Tab neu, wenn der aktive Proxy aktiviert oder deaktiviert wird.
+  syncHelp: Speichert Ihre Server im Browserkonto, damit sie auch in anderen angemeldeten Browsern verfuegbar sind.

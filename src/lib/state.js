@@ -3,7 +3,9 @@ export const defaultState = {
   servers: [],
   preferences: {
     autoFailoverEnabled: false,
-    language: "auto"
+    language: "auto",
+    reloadActiveTabOnToggle: false,
+    syncServersWithAccount: false
   }
 };
 

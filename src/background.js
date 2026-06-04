@@ -1,6 +1,7 @@
 const api = globalThis.browser ?? globalThis.chrome;
 
 const STORAGE_KEY = "proxyxt-state";
+const SYNC_SERVERS_KEY = "proxyxt-sync-servers";
 const LOGS_KEY = "proxyxt-logs";
 const MAX_LOGS = 200;
 const FAILOVER_COOLDOWN_MS = 5000;
@@ -22,7 +23,9 @@ const defaultState = {
   servers: [],
   preferences: {
     autoFailoverEnabled: false,
-    language: "auto"
+    language: "auto",
+    reloadActiveTabOnToggle: false,
+    syncServersWithAccount: false
   }
 };
 
@@ -56,6 +59,86 @@ function storageSet(value) {
 
   return new Promise((resolve, reject) => {
     api.storage.local.set(value, () => {
+      if (api.runtime.lastError) {
+        reject(new Error(api.runtime.lastError.message));
+        return;
+      }
+      resolve();
+    });
+  });
+}
+
+function storageSyncGet(key) {
+  if (!api.storage?.sync?.get) {
+    return Promise.resolve({});
+  }
+
+  if (api.storage.sync.get.length <= 1) {
+    return api.storage.sync.get(key);
+  }
+
+  return new Promise((resolve, reject) => {
+    api.storage.sync.get(key, (result) => {
+      if (api.runtime.lastError) {
+        reject(new Error(api.runtime.lastError.message));
+        return;
+      }
+      resolve(result);
+    });
+  });
+}
+
+function storageSyncSet(value) {
+  if (!api.storage?.sync?.set) {
+    return Promise.resolve();
+  }
+
+  if (api.storage.sync.set.length <= 1) {
+    return api.storage.sync.set(value);
+  }
+
+  return new Promise((resolve, reject) => {
+    api.storage.sync.set(value, () => {
+      if (api.runtime.lastError) {
+        reject(new Error(api.runtime.lastError.message));
+        return;
+      }
+      resolve();
+    });
+  });
+}
+
+function tabsQuery(queryInfo) {
+  if (!api.tabs?.query) {
+    return Promise.resolve([]);
+  }
+
+  if (api.tabs.query.length <= 1) {
+    return api.tabs.query(queryInfo);
+  }
+
+  return new Promise((resolve, reject) => {
+    api.tabs.query(queryInfo, (tabs) => {
+      if (api.runtime.lastError) {
+        reject(new Error(api.runtime.lastError.message));
+        return;
+      }
+      resolve(Array.isArray(tabs) ? tabs : []);
+    });
+  });
+}
+
+function tabsReload(tabId) {
+  if (!api.tabs?.reload || tabId === undefined || tabId === null) {
+    return Promise.resolve();
+  }
+
+  if (api.tabs.reload.length <= 1) {
+    return api.tabs.reload(tabId);
+  }
+
+  return new Promise((resolve, reject) => {
+    api.tabs.reload(tabId, {}, () => {
       if (api.runtime.lastError) {
         reject(new Error(api.runtime.lastError.message));
         return;
@@ -138,6 +221,24 @@ async function addLog(level, message, context) {
     context: context || null
   });
   await saveLogs(logs);
+}
+
+async function reloadCurrentActiveTab() {
+  try {
+    const tabs = await tabsQuery({ active: true, currentWindow: true });
+    const activeTab = tabs[0];
+    if (!activeTab?.id) {
+      return;
+    }
+    await tabsReload(activeTab.id);
+    await addLog("debug", "Pestana activa recargada tras cambio de proxy", {
+      tabId: activeTab.id
+    });
+  } catch (error) {
+    await addLog("warn", "No se pudo recargar la pestana activa", {
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
 }
 
 function getLogContext(payload) {
@@ -287,8 +388,56 @@ function sanitizeServer(rawServer) {
   return server;
 }
 
+async function pullServersFromSyncIfEnabled(state) {
+  if (!state.preferences?.syncServersWithAccount || !api.storage?.sync) {
+    return state;
+  }
+
+  const result = await storageSyncGet(SYNC_SERVERS_KEY);
+  const syncedServersRaw = result?.[SYNC_SERVERS_KEY];
+  if (!Array.isArray(syncedServersRaw)) {
+    return state;
+  }
+
+  const syncedServers = [];
+  for (const raw of syncedServersRaw) {
+    try {
+      syncedServers.push(sanitizeServer(raw));
+    } catch (_error) {
+      // Skip invalid synced entries instead of failing the whole sync process.
+    }
+  }
+
+  const localSnapshot = JSON.stringify(state.servers);
+  const syncedSnapshot = JSON.stringify(syncedServers);
+  if (localSnapshot === syncedSnapshot) {
+    return state;
+  }
+
+  const nextState = {
+    ...state,
+    servers: syncedServers,
+    activeServerId: syncedServers.some((server) => server.id === state.activeServerId) ? state.activeServerId : null
+  };
+
+  await saveState(nextState);
+  await addLog("info", "Servidores sincronizados desde la cuenta del navegador", {
+    totalServers: nextState.servers.length
+  });
+  return nextState;
+}
+
+async function pushServersToSyncIfEnabled(state) {
+  if (!state.preferences?.syncServersWithAccount || !api.storage?.sync) {
+    return;
+  }
+
+  await storageSyncSet({ [SYNC_SERVERS_KEY]: state.servers });
+}
+
 async function handleGetState() {
-  return loadState();
+  const state = await loadState();
+  return pullServersFromSyncIfEnabled(state);
 }
 
 async function handleGetLogs() {
@@ -307,6 +456,7 @@ async function handleSaveServer(payload) {
   }
 
   await saveState(state);
+  await pushServersToSyncIfEnabled(state);
   await addLog("debug", "Estado actualizado tras guardar servidor", {
     server: summarizeServer(incoming),
     totalServers: state.servers.length,
@@ -326,6 +476,7 @@ async function handleDeleteServer(payload) {
   }
 
   await saveState(state);
+  await pushServersToSyncIfEnabled(state);
   await applyActiveProxy(state);
   await addLog("debug", "Estado actualizado tras eliminar servidor", {
     serverId,
@@ -357,6 +508,9 @@ async function handleActivateServer(payload) {
 
   await saveState(state);
   await applyActiveProxy(state);
+  if (state.preferences?.reloadActiveTabOnToggle) {
+    await reloadCurrentActiveTab();
+  }
   await addLog("debug", "Estado actualizado tras activar/desactivar", {
     activeServerId: state.activeServerId
   });
@@ -368,7 +522,9 @@ async function handleUpdatePreferences(payload) {
   const incoming = payload?.preferences || {};
   const currentLanguage = String(state.preferences?.language || "auto").toLowerCase();
   const incomingLanguage = String(incoming.language || currentLanguage).toLowerCase();
-  const language = ["auto", "en", "es", "fr", "pt"].includes(incomingLanguage) ? incomingLanguage : "auto";
+  const language = ["auto", "en", "es", "fr", "pt", "it", "de"].includes(incomingLanguage)
+    ? incomingLanguage
+    : "auto";
 
   state.preferences = {
     ...state.preferences,
@@ -376,10 +532,27 @@ async function handleUpdatePreferences(payload) {
       incoming.autoFailoverEnabled === undefined
         ? Boolean(state.preferences?.autoFailoverEnabled)
         : Boolean(incoming.autoFailoverEnabled),
+    reloadActiveTabOnToggle:
+      incoming.reloadActiveTabOnToggle === undefined
+        ? Boolean(state.preferences?.reloadActiveTabOnToggle)
+        : Boolean(incoming.reloadActiveTabOnToggle),
+    syncServersWithAccount:
+      incoming.syncServersWithAccount === undefined
+        ? Boolean(state.preferences?.syncServersWithAccount)
+        : Boolean(incoming.syncServersWithAccount),
     language
   };
 
   await saveState(state);
+  if (state.preferences.syncServersWithAccount) {
+    const syncedState = await pullServersFromSyncIfEnabled(state);
+    await pushServersToSyncIfEnabled(syncedState);
+    await applyActiveProxy(syncedState);
+    await addLog("info", "Preferencias actualizadas", {
+      preferences: syncedState.preferences
+    });
+    return syncedState;
+  }
   await addLog("info", "Preferencias actualizadas", {
     preferences: state.preferences
   });
@@ -447,8 +620,10 @@ async function maybeFailoverOnProxyError(details) {
 
 api.runtime.onInstalled.addListener(async () => {
   try {
-    const state = await loadState();
+    const loadedState = await loadState();
+    const state = await pullServersFromSyncIfEnabled(loadedState);
     await saveState(state);
+    await pushServersToSyncIfEnabled(state);
     await applyActiveProxy(state);
     await addLog("info", "Extension instalada", {
       version: api.runtime.getManifest?.().version || null,
@@ -464,7 +639,8 @@ api.runtime.onInstalled.addListener(async () => {
 
 api.runtime.onStartup?.addListener(async () => {
   try {
-    const state = await loadState();
+    const loadedState = await loadState();
+    const state = await pullServersFromSyncIfEnabled(loadedState);
     await applyActiveProxy(state);
     await addLog("info", "Extension iniciada", {
       activeServerId: state.activeServerId,

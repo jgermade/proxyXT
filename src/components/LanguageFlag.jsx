@@ -30,6 +30,26 @@ export function LanguageFlag({ language, width = 18, height = 12 }) {
     );
   }
 
+  if (language === "it") {
+    return (
+      <svg viewBox="0 0 18 12" width={width} height={height} aria-hidden="true">
+        <rect width="6" height="12" fill="#009246" />
+        <rect x="6" width="6" height="12" fill="#ffffff" />
+        <rect x="12" width="6" height="12" fill="#ce2b37" />
+      </svg>
+    );
+  }
+
+  if (language === "de") {
+    return (
+      <svg viewBox="0 0 18 12" width={width} height={height} aria-hidden="true">
+        <rect width="18" height="4" fill="#000000" />
+        <rect y="4" width="18" height="4" fill="#dd0000" />
+        <rect y="8" width="18" height="4" fill="#ffce00" />
+      </svg>
+    );
+  }
+
   return (
     <svg viewBox="0 0 18 12" width={width} height={height} aria-hidden="true">
       <rect width="18" height="12" fill="#b22234" />

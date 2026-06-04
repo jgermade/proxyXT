@@ -16,11 +16,21 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  width: 360px;
+  min-width: 360px;
+  max-width: 360px;
+}
+
 body {
   margin: 0;
-  width: 360px;
   color: var(--text-main);
   background: #e3ecf8;
+}
+
+#appRoot {
+  width: 100%;
 }
 
 .app {
@@ -326,7 +336,7 @@ button:focus-visible {
 
 .preferences-group {
   display: grid;
-  gap: 8px;
+  gap: 12px;
 }
 
 .preferences-separator {

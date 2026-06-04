@@ -1,0 +1,78 @@
+app:
+  title: ProxyXT
+  subtitle:
+    selectServer: Seleziona un server
+    addProxy: Aggiungi server proxy
+    editProxy: Modifica server proxy
+    preferences: Impostazioni di comportamento
+
+footer:
+  active: "Attivo: {{server}}"
+  system: Sistema
+  proxyLabel: "Proxy:"
+
+buttons:
+  preferences:
+    show: Mostra preferenze
+    hide: Nascondi preferenze
+  logs:
+    show: Mostra log backend
+    hide: Nascondi log backend
+    title: Log backend
+  server:
+    save: Salva server
+    saveChanges: Salva modifiche
+    delete: Elimina
+    add: Aggiungi server
+    backToList: Torna alla lista
+    edit: Modifica server
+
+labels:
+  scheme: Schema
+  port: Porta
+  host: Host/IP
+  bypassList: Bypass (separato da virgola)
+  alias: Alias (opzionale)
+  autoFailover: Failover automatico (round-robin)
+  reloadActiveTabOnToggle: Ricarica la scheda attiva quando attivi/disattivi un server
+  syncServersWithAccount: Sincronizza i server con l'account del browser
+  language: Lingua
+
+language:
+  auto: Auto
+  en: Inglese
+  es: Spagnolo
+  fr: Francese
+  pt: Portoghese
+  it: Italiano
+  de: Tedesco
+
+placeholders:
+  bypassList: localhost, *.internal.local
+
+messages:
+  noServers: Nessun proxy salvato
+  noLogs: Nessun log.
+  noMessage: Nessun messaggio
+  unknownError: Errore sconosciuto
+  proxyEnabled: "Proxy attivo: {{server}}"
+  proxyDisabled: Proxy disattivato
+  serverSaved: Server salvato
+  serverUpdated: Server aggiornato
+  serverDeleted: Server eliminato
+  preferencesSaved: Preferenze salvate
+  roundRobinEnabled: Round Robin attivato
+  roundRobinDisabled: Round Robin disattivato
+  reloadOnToggleEnabled: Ricarica della scheda attiva attivata
+  reloadOnToggleDisabled: Ricarica della scheda attiva disattivata
+  syncServersEnabled: Sincronizzazione server attivata
+  syncServersDisabled: Sincronizzazione server disattivata
+  languageChanged: "Lingua: {{language}}"
+  languageChangedAuto: "Lingua: Auto ({{language}})"
+  logsLoadError: "Impossibile caricare i log: {{error}}"
+
+preferences:
+  title: Preferenze
+  help: Se il proxy attivo fallisce, l'estensione passera automaticamente al server salvato successivo.
+  reloadHelp: Ricarica la scheda corrente ogni volta che il proxy attivo viene attivato o disattivato.
+  syncHelp: Salva i server nel tuo account browser per mantenerli disponibili sugli altri browser con accesso effettuato.

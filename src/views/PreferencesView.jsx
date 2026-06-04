@@ -8,6 +8,8 @@ function languageOptionLabel(language, t) {
   if (language === "es") return `🇪🇸 ${t("language.es")}`;
   if (language === "fr") return `🇫🇷 ${t("language.fr")}`;
   if (language === "pt") return `🇵🇹 ${t("language.pt")}`;
+  if (language === "it") return `🇮🇹 ${t("language.it")}`;
+  if (language === "de") return `🇩🇪 ${t("language.de")}`;
   return t(`language.${language}`);
 }
 
@@ -15,8 +17,12 @@ export function PreferencesView({
   t,
   view,
   autoFailoverEnabled,
+  reloadActiveTabOnToggle,
+  syncServersWithAccount,
   language,
   onAutoFailoverChange,
+  onReloadActiveTabChange,
+  onSyncServersWithAccountChange,
   onLanguageChange
 }) {
   return (
@@ -33,7 +39,9 @@ export function PreferencesView({
               { value: "en", label: languageOptionLabel("en", t) },
               { value: "es", label: languageOptionLabel("es", t) },
               { value: "fr", label: languageOptionLabel("fr", t) },
-              { value: "pt", label: languageOptionLabel("pt", t) }
+              { value: "pt", label: languageOptionLabel("pt", t) },
+              { value: "it", label: languageOptionLabel("it", t) },
+              { value: "de", label: languageOptionLabel("de", t) }
             ]}
           />
         </div>
@@ -49,6 +57,24 @@ export function PreferencesView({
             label={t("labels.autoFailover")}
           />
           <p className="preferences-help">{t("preferences.help")}</p>
+
+          <CheckboxField
+            id="reloadActiveTabOnToggle"
+            className="preferences-toggle"
+            checked={Boolean(reloadActiveTabOnToggle)}
+            onChange={onReloadActiveTabChange}
+            label={t("labels.reloadActiveTabOnToggle")}
+          />
+          <p className="preferences-help">{t("preferences.reloadHelp")}</p>
+
+          <CheckboxField
+            id="syncServersWithAccount"
+            className="preferences-toggle"
+            checked={Boolean(syncServersWithAccount)}
+            onChange={onSyncServersWithAccountChange}
+            label={t("labels.syncServersWithAccount")}
+          />
+          <p className="preferences-help">{t("preferences.syncHelp")}</p>
         </div>
       </div>
     </section>

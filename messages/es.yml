@@ -34,6 +34,8 @@ labels:
   bypassList: Bypass (coma separado)
   alias: Alias (opcional)
   autoFailover: Failover automatico (round-robin)
+  reloadActiveTabOnToggle: Recargar pestana activa al activar/desactivar un servidor
+  syncServersWithAccount: Sincronizar servidores con la cuenta del navegador
   language: Idioma
 
 language:
@@ -42,6 +44,8 @@ language:
   es: Espanol
   fr: Frances
   pt: Portugues
+  it: Italiano
+  de: Aleman
 
 placeholders:
   bypassList: localhost, *.internal.local
@@ -59,6 +63,10 @@ messages:
   preferencesSaved: Preferencias guardadas
   roundRobinEnabled: Round Robin activado
   roundRobinDisabled: Round Robin desactivado
+  reloadOnToggleEnabled: Recarga de pestana activa activada
+  reloadOnToggleDisabled: Recarga de pestana activa desactivada
+  syncServersEnabled: Sincronizacion de servidores activada
+  syncServersDisabled: Sincronizacion de servidores desactivada
   languageChanged: "Idioma: {{language}}"
   languageChangedAuto: "Idioma: Auto ({{language}})"
   logsLoadError: "No se pudieron cargar logs: {{error}}"
@@ -66,3 +74,5 @@ messages:
 preferences:
   title: Preferencias
   help: Si el proxy activo falla, la extension cambiara automaticamente al siguiente servidor guardado.
+  reloadHelp: Recarga la pestana actual cada vez que se activa o desactiva el proxy.
+  syncHelp: Guarda tus servidores en la cuenta del navegador para mantenerlos disponibles en otros navegadores con sesion iniciada.
