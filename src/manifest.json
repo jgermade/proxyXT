@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ProxyXT",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Cliente proxy para Chrome y Firefox con multiples servidores y cambio rapido.",
   "permissions": ["storage", "proxy"],
   "optional_permissions": ["tabs"],
