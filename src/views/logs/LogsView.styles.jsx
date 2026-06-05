@@ -38,6 +38,17 @@ const placeholderShake = keyframes`
   100% { transform: translateX(0); }
 `;
 
+const sadFaceDrop = keyframes`
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(12px);
+    opacity: 0.92;
+  }
+`;
+
 export const LogsPanel = styled.section`
   display: flex;
   flex-direction: column;
@@ -230,6 +241,51 @@ export const EmptyLogsIllustration = styled.div`
           ${placeholderShake} 280ms ease-in-out
         `
       : "none"};
+`;
+
+export const EmptyLogsSadFace = styled.div`
+  position: relative;
+  width: 52px;
+  height: 52px;
+`;
+
+export const EmptyLogsSadEye = styled.span`
+  position: absolute;
+  top: 14px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+  animation: ${sadFaceDrop} 3s ease-out forwards;
+`;
+
+export const EmptyLogsSadEyeLeft = styled(EmptyLogsSadEye)`
+  left: 12px;
+`;
+
+export const EmptyLogsSadEyeRight = styled(EmptyLogsSadEye)`
+  right: 12px;
+`;
+
+export const EmptyLogsSadNose = styled.span`
+  position: absolute;
+  left: 50%;
+  top: 22px;
+  width: 6px;
+  height: 12px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translateX(-50%);
+  animation: ${sadFaceDrop} 3s ease-out forwards;
+`;
+
+export const EmptyLogsSadFaceOutline = styled.span`
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1.5px solid currentColor;
+  opacity: 0.85;
+  transform: scale(0.98);
 `;
 
 export const ConfirmOverlay = styled.div`

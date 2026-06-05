@@ -16,6 +16,11 @@ import {
   ConfirmOverlay,
   ConfirmText,
   EmptyLogsIllustration,
+  EmptyLogsSadFace,
+  EmptyLogsSadFaceOutline,
+  EmptyLogsSadEyeLeft,
+  EmptyLogsSadEyeRight,
+  EmptyLogsSadNose,
   EmptyLogsState,
   FilterCheckbox,
   FilterLabel,
@@ -109,13 +114,20 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [isConfirmClosing, setIsConfirmClosing] = useState(false);
   const [emptyStateShakeNonce, setEmptyStateShakeNonce] = useState(0);
+  const [emptyClearClicks, setEmptyClearClicks] = useState(0);
+  const [isSadEasterEggActive, setIsSadEasterEggActive] = useState(false);
     const closeConfirmTimerRef = useRef(null);
+  const sadEasterEggTimerRef = useRef(null);
 
     useEffect(() => {
       return () => {
         if (closeConfirmTimerRef.current) {
           globalThis.clearTimeout(closeConfirmTimerRef.current);
           closeConfirmTimerRef.current = null;
+        }
+        if (sadEasterEggTimerRef.current) {
+          globalThis.clearTimeout(sadEasterEggTimerRef.current);
+          sadEasterEggTimerRef.current = null;
         }
       };
     }, []);
@@ -235,8 +247,13 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
 
   function handleOpenClearConfirm() {
     if (!orderedLogs.length) {
+      if (isSadEasterEggActive) {
+        onFeedback?.(noLogsLabel, false, FEEDBACK_QUICK_DURATION_MS);
+        return;
+      }
       onFeedback?.(noLogsLabel, false, FEEDBACK_QUICK_DURATION_MS);
       setEmptyStateShakeNonce((value) => value + 1);
+      setEmptyClearClicks((value) => value + 1);
       return;
     }
     if (closeConfirmTimerRef.current) {
@@ -274,6 +291,24 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
       handleDismissClearConfirm();
     }
   }
+
+  useEffect(() => {
+    if (isSadEasterEggActive || emptyClearClicks < 10) {
+      return undefined;
+    }
+
+    setEmptyClearClicks(0);
+    if (sadEasterEggTimerRef.current) {
+      globalThis.clearTimeout(sadEasterEggTimerRef.current);
+    }
+    sadEasterEggTimerRef.current = globalThis.setTimeout(() => {
+      setIsSadEasterEggActive(false);
+      sadEasterEggTimerRef.current = null;
+    }, 3000);
+
+    setIsSadEasterEggActive(true);
+    return undefined;
+  }, [emptyClearClicks, isSadEasterEggActive]);
 
   return (
     <LogsPanel>
@@ -344,7 +379,16 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
                 key={`empty-logs-illustration-${emptyStateShakeNonce}`}
                 $shouldShake={emptyStateShakeNonce > 0}
               >
-                <LogsSvg size={40} color="currentColor" />
+                {isSadEasterEggActive ? (
+                  <EmptyLogsSadFace>
+                    <EmptyLogsSadFaceOutline />
+                    <EmptyLogsSadEyeLeft />
+                    <EmptyLogsSadEyeRight />
+                    <EmptyLogsSadNose />
+                  </EmptyLogsSadFace>
+                ) : (
+                  <LogsSvg size={40} color="currentColor" />
+                )}
               </EmptyLogsIllustration>
             </EmptyLogsState>
           )}
