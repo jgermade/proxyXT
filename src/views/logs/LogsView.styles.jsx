@@ -14,6 +14,8 @@ const logsReveal = keyframes`
 export const LogsPanel = styled.section`
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 0;
   background: #ffffff;
   overflow: hidden;
   animation: ${logsReveal} 220ms ease-out;
@@ -33,8 +35,44 @@ export const ToolbarTitle = styled.strong`
   color: #30445f;
 `;
 
+export const ToolbarActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+export const OpenWindowButton = styled.button`
+  border: none;
+  background: transparent;
+  color: #355170;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+
+  &:hover {
+    background: #d4e5ff;
+    color: #203c5c;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 83, 255, 0.2);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+`;
+
 export const LogsContent = styled.div`
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 8px;
   display: flex;

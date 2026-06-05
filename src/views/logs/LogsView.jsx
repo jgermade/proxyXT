@@ -1,4 +1,5 @@
 import { h } from "preact";
+import { NewWindowSvg } from "../../components/icons/NewWindowSvg.jsx";
 import {
   LogContext,
   LogEntryContainer,
@@ -7,6 +8,8 @@ import {
   LogsPanel,
   LogsToolbar,
   LogTime,
+  OpenWindowButton,
+  ToolbarActions,
   ToolbarTitle
 } from "./LogsView.styles.jsx";
 
@@ -67,10 +70,28 @@ function LogEntry({ log, t }) {
 }
 
 export function LogsView({ t, logs }) {
+  function handleOpenInNewWindow() {
+    const api = globalThis.browser ?? globalThis.chrome;
+    const logsUrl = api?.runtime?.getURL ? api.runtime.getURL("logs.html") : "logs.html";
+    globalThis.open(logsUrl, "_blank", "noopener,noreferrer,width=640,height=760");
+  }
+
+  const openInWindowLabel = t("buttons.logs.openInWindow");
+
   return (
     <LogsPanel>
       <LogsToolbar>
         <ToolbarTitle>{t("buttons.logs.title")}</ToolbarTitle>
+        <ToolbarActions>
+          <OpenWindowButton
+            type="button"
+            onClick={handleOpenInNewWindow}
+            title={openInWindowLabel}
+            aria-label={openInWindowLabel}
+          >
+            <NewWindowSvg width={14} height={14} />
+          </OpenWindowButton>
+        </ToolbarActions>
       </LogsToolbar>
       <LogsContent>
         {logs.length

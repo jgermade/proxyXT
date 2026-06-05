@@ -13,8 +13,12 @@ await rm(distDir, { recursive: true, force: true });
 await mkdir(distDir, { recursive: true });
 
 await build({
-  entryPoints: [path.join(srcDir, "popup.js")],
-  outfile: path.join(distDir, "popup.js"),
+  entryPoints: {
+    popup: path.join(srcDir, "popup.js"),
+    logs: path.join(srcDir, "logs.jsx")
+  },
+  outdir: distDir,
+  entryNames: "[name]",
   bundle: true,
   format: "esm",
   target: "es2020",
@@ -36,6 +40,8 @@ await build({
 const staticFiles = [
   "popup.html",
   "popup.css",
+  "logs.html",
+  "logs.css",
   "background.js",
   "manifest.json",
   "proxyxt.png",

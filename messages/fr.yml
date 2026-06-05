@@ -19,6 +19,7 @@ buttons:
     show: Afficher les logs backend
     hide: Masquer les logs backend
     title: Logs backend
+    openInWindow: Ouvrir dans une nouvelle fenetre
   server:
     save: Enregistrer le serveur
     saveChanges: Enregistrer les modifications
