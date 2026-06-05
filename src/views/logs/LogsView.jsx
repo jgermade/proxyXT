@@ -1,9 +1,10 @@
 import { h } from "preact";
-import { useMemo, useState } from "preact/hooks";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { BanSymbolSvg } from "../../components/icons/BanSymbolSvg.jsx";
 import { CopySymbolSvg } from "../../components/icons/CopySymbolSvg.jsx";
 import { CrossSymbolSvg } from "../../components/icons/CrossSymbolSvg.jsx";
 import { FilterSymbolSvg } from "../../components/icons/FilterSymbolSvg.jsx";
+import { LogsSvg } from "../../components/icons/LogsSvg.jsx";
 import { NewWindowSvg } from "../../components/icons/NewWindowSvg.jsx";
 import {
   CopyLogsButton,
@@ -14,6 +15,8 @@ import {
   ConfirmDismissButton,
   ConfirmOverlay,
   ConfirmText,
+  EmptyLogsIllustration,
+  EmptyLogsState,
   FilterCheckbox,
   FilterLabel,
   FilterMenu,
@@ -103,6 +106,17 @@ function serializeLogForClipboard(log) {
 
 export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [isConfirmClosing, setIsConfirmClosing] = useState(false);
+    const closeConfirmTimerRef = useRef(null);
+
+    useEffect(() => {
+      return () => {
+        if (closeConfirmTimerRef.current) {
+          globalThis.clearTimeout(closeConfirmTimerRef.current);
+          closeConfirmTimerRef.current = null;
+        }
+      };
+    }, []);
   const [levelFilters, setLevelFilters] = useState({
     success: true,
     info: true,
@@ -219,14 +233,30 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
 
   function handleOpenClearConfirm() {
     if (!orderedLogs.length) {
-      onFeedback?.(noLogsLabel, false);
+      onFeedback?.(noLogsLabel, false, 500);
       return;
     }
+    if (closeConfirmTimerRef.current) {
+      globalThis.clearTimeout(closeConfirmTimerRef.current);
+      closeConfirmTimerRef.current = null;
+    }
+    setIsConfirmClosing(false);
     setIsConfirmOpen(true);
   }
 
   function handleDismissClearConfirm() {
-    setIsConfirmOpen(false);
+    if (!isConfirmOpen) {
+      return;
+    }
+    setIsConfirmClosing(true);
+    if (closeConfirmTimerRef.current) {
+      globalThis.clearTimeout(closeConfirmTimerRef.current);
+    }
+    closeConfirmTimerRef.current = globalThis.setTimeout(() => {
+      setIsConfirmOpen(false);
+      setIsConfirmClosing(false);
+      closeConfirmTimerRef.current = null;
+    }, 170);
   }
 
   async function handleConfirmClearLogs() {
@@ -236,9 +266,9 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
 
     try {
       await onClearLogs();
-      setIsConfirmOpen(false);
+      handleDismissClearConfirm();
     } catch (_error) {
-      setIsConfirmOpen(false);
+      handleDismissClearConfirm();
     }
   }
 
@@ -305,12 +335,24 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
       <LogsContent>
         {orderedLogs.length
           ? orderedLogs.map((log, index) => <LogEntry key={`${log.time || index}-${index}`} log={log} t={t} />)
-          : t("messages.noLogs")}
+          : (
+            <EmptyLogsState aria-label={t("messages.noLogs")} title={t("messages.noLogs")}>
+              <EmptyLogsIllustration>
+                <LogsSvg size={40} color="currentColor" />
+              </EmptyLogsIllustration>
+            </EmptyLogsState>
+          )}
       </LogsContent>
 
       {isConfirmOpen ? (
-        <ConfirmOverlay role="dialog" aria-modal="true" aria-label={clearLogsLabel}>
-          <ConfirmCard>
+        <ConfirmOverlay
+          role="dialog"
+          aria-modal="true"
+          aria-label={clearLogsLabel}
+          $isClosing={isConfirmClosing}
+          onClick={handleDismissClearConfirm}
+        >
+          <ConfirmCard onClick={(event) => event.stopPropagation()}>
             <ConfirmText>{clearConfirmText}</ConfirmText>
             <ConfirmDangerButton type="button" onClick={handleConfirmClearLogs}>
               {confirmClearLabel}

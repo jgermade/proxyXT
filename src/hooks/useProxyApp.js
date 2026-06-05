@@ -8,6 +8,8 @@ import {
 } from "../lib/state.js";
 import { createTranslator, resolveLanguage } from "../lib/i18n.js";
 
+const FEEDBACK_DEFAULT_DURATION_MS = 1500;
+
 export function useProxyApp() {
   const [state, setState] = useState(defaultState);
   const [view, setView] = useState("list");
@@ -110,7 +112,7 @@ export function useProxyApp() {
 
     const timer = globalThis.setTimeout(() => {
       setFeedback(null);
-    }, 3000);
+    }, Number.isFinite(feedback.durationMs) ? feedback.durationMs : FEEDBACK_DEFAULT_DURATION_MS);
 
     return () => {
       globalThis.clearTimeout(timer);
@@ -456,8 +458,12 @@ export function useProxyApp() {
     }
   }
 
-  function handleLogsFeedback(message, isError = false) {
-    setFeedback({ message, isError: Boolean(isError) });
+  function handleLogsFeedback(message, isError = false, durationMs) {
+    setFeedback({
+      message,
+      isError: Boolean(isError),
+      durationMs: Number.isFinite(durationMs) ? durationMs : undefined
+    });
   }
 
   return {

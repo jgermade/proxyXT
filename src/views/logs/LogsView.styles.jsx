@@ -11,6 +11,24 @@ const logsReveal = keyframes`
   }
 `;
 
+const overlayFadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const overlayFadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
 export const LogsPanel = styled.section`
   display: flex;
   flex-direction: column;
@@ -179,6 +197,26 @@ export const LogsContent = styled.div`
   gap: 8px;
 `;
 
+export const EmptyLogsState = styled.div`
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  color: #8fa1b7;
+`;
+
+export const EmptyLogsIllustration = styled.div`
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  border: 1px solid #d9e3ef;
+  background: #f7fbff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.92;
+`;
+
 export const ConfirmOverlay = styled.div`
   position: absolute;
   inset: 0;
@@ -189,6 +227,7 @@ export const ConfirmOverlay = styled.div`
   padding: 20px;
   background: rgba(18, 28, 42, 0.82);
   backdrop-filter: blur(6px);
+  animation: ${({ $isClosing }) => ($isClosing ? overlayFadeOut : overlayFadeIn)} 160ms ease forwards;
 `;
 
 export const ConfirmCard = styled.div`
