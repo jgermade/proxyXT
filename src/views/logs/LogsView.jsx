@@ -108,6 +108,7 @@ function serializeLogForClipboard(log) {
 export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [isConfirmClosing, setIsConfirmClosing] = useState(false);
+  const [emptyStateShakeNonce, setEmptyStateShakeNonce] = useState(0);
     const closeConfirmTimerRef = useRef(null);
 
     useEffect(() => {
@@ -235,6 +236,7 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
   function handleOpenClearConfirm() {
     if (!orderedLogs.length) {
       onFeedback?.(noLogsLabel, false, FEEDBACK_QUICK_DURATION_MS);
+      setEmptyStateShakeNonce((value) => value + 1);
       return;
     }
     if (closeConfirmTimerRef.current) {
@@ -338,7 +340,10 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
           ? orderedLogs.map((log, index) => <LogEntry key={`${log.time || index}-${index}`} log={log} t={t} />)
           : (
             <EmptyLogsState aria-label={t("messages.noLogs")} title={t("messages.noLogs")}>
-              <EmptyLogsIllustration>
+              <EmptyLogsIllustration
+                key={`empty-logs-illustration-${emptyStateShakeNonce}`}
+                $shouldShake={emptyStateShakeNonce > 0}
+              >
                 <LogsSvg size={40} color="currentColor" />
               </EmptyLogsIllustration>
             </EmptyLogsState>

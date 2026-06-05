@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 const logsReveal = keyframes`
   from {
@@ -27,6 +27,15 @@ const overlayFadeOut = keyframes`
   to {
     opacity: 0;
   }
+`;
+
+const placeholderShake = keyframes`
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
 `;
 
 export const LogsPanel = styled.section`
@@ -215,6 +224,12 @@ export const EmptyLogsIllustration = styled.div`
   align-items: center;
   justify-content: center;
   opacity: 0.92;
+  animation: ${({ $shouldShake }) =>
+    $shouldShake
+      ? css`
+          ${placeholderShake} 280ms ease-in-out
+        `
+      : "none"};
 `;
 
 export const ConfirmOverlay = styled.div`
