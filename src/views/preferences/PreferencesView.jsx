@@ -1,6 +1,6 @@
 import { h } from "preact";
-import { CheckboxField } from "../components/CheckboxField.jsx";
-import { SelectField } from "../components/SelectField.jsx";
+import { SelectField } from "../../components/form/SelectField.jsx";
+import { CheckboxField } from "../../components/form/CheckboxField.jsx";
 
 function languageOptionLabel(language, t) {
   if (language === "auto") return `🌐 ${t("language.auto")}`;

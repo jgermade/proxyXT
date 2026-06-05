@@ -1,6 +1,6 @@
 import { h } from "preact";
-import { InputField } from "../components/InputField.jsx";
-import { SelectField } from "../components/SelectField.jsx";
+import { InputField } from "../../components/form/InputField.jsx";
+import { SelectField } from "../../components/form/SelectField.jsx";
 
 export function FormView({
   t,

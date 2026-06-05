@@ -1,4 +1,6 @@
 import { h } from "preact";
+import { BackSymbolSvg } from "./icons/BackSymbolSvg.jsx";
+import { PlusSymbolSvg } from "./icons/PlusSymbolSvg.jsx";
 
 function buildClassName(variant, className, active, hasError) {
   const classes = [variant === "plusToggle" ? "plus-button" : "ghost icon-btn", className];
@@ -22,7 +24,8 @@ export function AddBackButton({
   ariaLabel,
   children
 }) {
-  const content = variant === "plusToggle" ? (view === "list" ? "+" : "←") : children;
+  const content =
+    variant === "plusToggle" ? (view === "list" ? <PlusSymbolSvg /> : <BackSymbolSvg />) : children;
 
   return (
     <button
