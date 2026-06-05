@@ -2,6 +2,10 @@ export const defaultState = {
   activeServerId: null,
   servers: [],
   userColorPresets: [],
+  footerStatus: {
+    connectionFailure: null,
+    activeError: null
+  },
   preferences: {
     autoFailoverEnabled: false,
     language: "auto",
@@ -35,6 +39,53 @@ function normalizeUserColorPresets(colors) {
   return normalized;
 }
 
+function normalizeFooterServerSummary(summary) {
+  if (!summary || typeof summary !== "object") {
+    return null;
+  }
+
+  const id = String(summary.id || "").trim();
+  if (!id) {
+    return null;
+  }
+
+  return {
+    id,
+    name: String(summary.name || "").trim() || null,
+    scheme: String(summary.scheme || "").trim().toLowerCase() || null,
+    host: String(summary.host || "").trim() || null,
+    port: String(summary.port || "").trim() || null,
+    hasBypass: Boolean(summary.hasBypass)
+  };
+}
+
+function normalizeFooterStatus(status) {
+  const connectionFailure = status?.connectionFailure;
+  const activeError = status?.activeError;
+
+  return {
+    connectionFailure:
+      connectionFailure && typeof connectionFailure === "object"
+        ? {
+            startedAt: Number(connectionFailure.startedAt) || 0,
+            attemptCount: Number(connectionFailure.attemptCount) || 0,
+            lastError: String(connectionFailure.lastError || "").trim() || null,
+            lastErrorAt: Number(connectionFailure.lastErrorAt) || 0
+          }
+        : null,
+    activeError:
+      activeError && typeof activeError === "object"
+        ? {
+            id: String(activeError.id || "").trim() || null,
+            createdAt: Number(activeError.createdAt) || 0,
+            previousServerId: activeError.previousServerId == null ? null : String(activeError.previousServerId),
+            nextServerId: activeError.nextServerId == null ? null : String(activeError.nextServerId),
+            error: String(activeError.error || "").trim() || null
+          }
+        : null
+  };
+}
+
 export const initialFormState = {
   id: "",
   name: "",
@@ -66,6 +117,7 @@ export function normalizeState(state) {
     ...(state || {}),
     servers: normalizedServers,
     userColorPresets: normalizedUserColorPresets,
+    footerStatus: normalizeFooterStatus(state?.footerStatus),
     preferences: {
       ...defaultState.preferences,
       ...(state?.preferences || {})

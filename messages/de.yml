@@ -15,6 +15,7 @@ buttons:
   preferences:
     show: Einstellungen anzeigen
     hide: Einstellungen ausblenden
+  dismiss: Verwerfen
   logs:
     show: Backend-Logs anzeigen
     hide: Backend-Logs ausblenden
@@ -63,6 +64,8 @@ messages:
   noLogs: Keine Logs.
   noMessage: Keine Nachricht
   unknownError: Unbekannter Fehler
+  footerConnectionFailure: "Verbindung instabil: {{attempts}} Versuche"
+  footerFailoverError: Proxy-Failover erkannt. Pruefe die Verbindung und verwerfe diesen Hinweis.
   proxyEnabled: "Proxy aktiv: {{server}}"
   proxyDisabled: Proxy deaktiviert
   serverSaved: Server gespeichert

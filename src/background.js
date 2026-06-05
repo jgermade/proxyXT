@@ -29,6 +29,10 @@ const defaultState = {
   activeServerId: null,
   servers: [],
   userColorPresets: [],
+  footerStatus: {
+    connectionFailure: null,
+    activeError: null
+  },
   preferences: {
     autoFailoverEnabled: false,
     language: "auto",
@@ -50,6 +54,27 @@ function resetProxyErrorStreak() {
 
 function generateId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+async function broadcastStateUpdate(state) {
+  if (!api.runtime?.sendMessage) {
+    return;
+  }
+
+  try {
+    if (api.runtime.sendMessage.length <= 1) {
+      await api.runtime.sendMessage({ type: "proxyxt/stateUpdated", state });
+      return;
+    }
+
+    await new Promise((resolve) => {
+      api.runtime.sendMessage({ type: "proxyxt/stateUpdated", state }, () => {
+        resolve();
+      });
+    });
+  } catch (_error) {
+    // Ignore broadcast failures when no UI listeners are attached.
+  }
 }
 
 function storageGet(key) {
@@ -208,6 +233,10 @@ async function loadState() {
     ...state,
     servers: Array.isArray(state.servers) ? state.servers : [],
     userColorPresets: sanitizeUserColorPresets(state.userColorPresets),
+    footerStatus: {
+      ...defaultState.footerStatus,
+      ...(state.footerStatus || {})
+    },
     preferences: {
       ...defaultState.preferences,
       ...(state.preferences || {})
@@ -316,6 +345,78 @@ function sanitizeUserColorPresets(rawColors) {
     }
   }
   return result;
+}
+
+function updateConnectionFailure(state, details) {
+  const now = Date.now();
+  const current = state.footerStatus?.connectionFailure || null;
+  const lastAttemptAt = current ? Number(current.lastAttemptAt || current.startedAt || 0) : 0;
+  const needsReset = !current || now - lastAttemptAt > FAILOVER_ERROR_ACCUMULATION_WINDOW_MS;
+
+  state.footerStatus = {
+    ...(state.footerStatus || defaultState.footerStatus),
+    connectionFailure: needsReset
+      ? {
+          startedAt: now,
+          attemptCount: 1,
+          lastAttemptAt: now,
+          lastError: details?.error == null ? null : String(details.error)
+        }
+      : {
+          startedAt: Number(current.startedAt || now),
+          attemptCount: Math.max(1, Number(current.attemptCount || 1) + 1),
+          lastAttemptAt: now,
+          lastError: details?.error == null ? null : String(details.error)
+        }
+  };
+
+  return state;
+}
+
+function clearConnectionFailure(state) {
+  if (!state.footerStatus?.connectionFailure) {
+    return state;
+  }
+
+  state.footerStatus = {
+    ...(state.footerStatus || defaultState.footerStatus),
+    connectionFailure: null
+  };
+
+  return state;
+}
+
+function setFailoverError(state, details, previousServer, nextServer) {
+  state.footerStatus = {
+    ...(state.footerStatus || defaultState.footerStatus),
+    connectionFailure: null,
+    activeError: {
+      id: generateId(),
+      createdAt: Date.now(),
+      previousServerId: previousServer?.id || null,
+      nextServerId: nextServer?.id || null,
+      error: details?.error == null ? null : String(details.error)
+    }
+  };
+
+  return state;
+}
+
+async function handleDismissFooterError() {
+  const state = await loadState();
+  if (!state.footerStatus?.activeError) {
+    return state;
+  }
+
+  state.footerStatus = {
+    ...(state.footerStatus || defaultState.footerStatus),
+    activeError: null
+  };
+
+  await saveState(state);
+  await broadcastStateUpdate(state);
+  await addLog("debug", "Error activo del footer descartado por el usuario", null);
+  return state;
 }
 
 async function updateActionIcon(isProxyActive) {
@@ -726,6 +827,11 @@ function getNextServerForRoundRobin(state) {
 }
 
 async function maybeFailoverOnProxyError(details) {
+  const state = await loadState();
+  updateConnectionFailure(state, details);
+  await saveState(state);
+  await broadcastStateUpdate(state);
+
   const now = Date.now();
   if (now - lastProxyErrorAt > FAILOVER_ERROR_ACCUMULATION_WINDOW_MS) {
     consecutiveProxyErrors = 0;
@@ -764,7 +870,6 @@ async function maybeFailoverOnProxyError(details) {
 
   failoverInProgress = true;
   try {
-    const state = await loadState();
     if (!state.preferences.autoFailoverEnabled) {
       await addLog("debug", "Failover omitido: autoFailover desactivado", null);
       return;
@@ -781,7 +886,9 @@ async function maybeFailoverOnProxyError(details) {
 
     const previousServer = state.servers.find((server) => server.id === state.activeServerId) || null;
     state.activeServerId = nextServer.id;
-    await saveState(state);
+  setFailoverError(state, details, previousServer, nextServer);
+  await saveState(state);
+  await broadcastStateUpdate(state);
     await applyActiveProxy(state);
     lastFailoverAt = Date.now();
     resetProxyErrorStreak();
@@ -842,12 +949,23 @@ async function probeProxyConnectivityAndFailoverIfNeeded() {
           url: CONNECTIVITY_CHECK_URL
         }
       });
-    } else if (consecutiveProxyErrors > 0) {
-      resetProxyErrorStreak();
-      await addLog("debug", "Health-check exitoso: racha de fallos reiniciada", {
-        status: response.status,
-        url: CONNECTIVITY_CHECK_URL
-      });
+    } else {
+      const state = await loadState();
+      if (state.footerStatus?.connectionFailure) {
+        clearConnectionFailure(state);
+        await saveState(state);
+        await broadcastStateUpdate(state);
+        await addLog("debug", "Health-check exitoso: racha de fallos reiniciada", {
+          status: response.status,
+          url: CONNECTIVITY_CHECK_URL
+        });
+      } else if (consecutiveProxyErrors > 0) {
+        resetProxyErrorStreak();
+        await addLog("debug", "Health-check exitoso: racha de fallos reiniciada", {
+          status: response.status,
+          url: CONNECTIVITY_CHECK_URL
+        });
+      }
     }
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -1028,6 +1146,11 @@ api.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
     if (actionType === "proxyxt/updatePreferences") {
       const state = await handleUpdatePreferences(message.payload || {});
+      return { state };
+    }
+
+    if (actionType === "proxyxt/dismissFooterError") {
+      const state = await handleDismissFooterError();
       return { state };
     }
 

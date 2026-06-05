@@ -20,6 +20,7 @@ export function App() {
     activeProxyDisplay,
     footerFeedbackMessage,
     isFooterFeedbackError,
+    footerStatus,
     logs,
     logsPanelHeight,
     hasErrorLogs,
@@ -39,6 +40,7 @@ export function App() {
     handleToggleLogs,
     handleClearLogs,
     handleLogsFeedback,
+    handleDismissFooterError,
     handleToggleServer,
     openFormForEdit,
     handleReorderServers,
@@ -104,6 +106,7 @@ export function App() {
         isHidden={view === "form"}
         footerFeedbackMessage={footerFeedbackMessage}
         isFooterFeedbackError={isFooterFeedbackError}
+        footerStatus={footerStatus}
         handleOpenList={handleOpenList}
         t={t}
         activeServerId={activeServerId}
@@ -113,6 +116,7 @@ export function App() {
         handleOpenPreferences={handleOpenPreferences}
         view={view}
         hasErrorLogs={hasErrorLogs}
+        handleDismissFooterError={handleDismissFooterError}
         onToggleLogs={() => {
           const height = mainRef.current?.offsetHeight || 0;
           handleToggleLogs(height);

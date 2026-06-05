@@ -43,6 +43,7 @@ export function useProxyApp() {
     : t("footer.system");
   const footerFeedbackMessage = feedback?.message || null;
   const isFooterFeedbackError = Boolean(feedback?.isError);
+  const footerStatus = state.footerStatus || null;
 
   async function callBackground(type, payload = {}) {
     const response = await sendMessage({ type, payload });
@@ -77,6 +78,14 @@ export function useProxyApp() {
     }
   }
 
+  async function handleDismissFooterError() {
+    try {
+      await callBackground("proxyxt/dismissFooterError");
+    } catch (error) {
+      setFeedback({ message: error.message, isError: true });
+    }
+  }
+
   useEffect(() => {
     let isMounted = true;
 
@@ -102,6 +111,29 @@ export function useProxyApp() {
 
     return () => {
       isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const api = globalThis.browser ?? globalThis.chrome;
+    const runtimeApi = api?.runtime;
+    const onMessage = runtimeApi?.onMessage;
+
+    if (!onMessage?.addListener) {
+      return undefined;
+    }
+
+    const listener = (message) => {
+      if (message?.type !== "proxyxt/stateUpdated" || !message.state) {
+        return;
+      }
+
+      setState(normalizeState(message.state));
+    };
+
+    onMessage.addListener(listener);
+    return () => {
+      onMessage.removeListener?.(listener);
     };
   }, []);
 
@@ -541,6 +573,7 @@ export function useProxyApp() {
     activeProxyDisplay,
     footerFeedbackMessage,
     isFooterFeedbackError,
+    footerStatus,
     logs,
     logsPanelHeight,
     hasErrorLogs,
@@ -560,6 +593,7 @@ export function useProxyApp() {
     handleToggleLogs,
     handleClearLogs,
     handleLogsFeedback,
+    handleDismissFooterError,
     handleToggleServer,
     openFormForEdit,
     handleSubmitForm,

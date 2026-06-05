@@ -62,9 +62,14 @@ export const ServerListItem = styled.div`
     bottom: 0;
     width: 10px;
     background: ${({ $rowColor }) => $rowColor || "var(--brand-orange)"};
-    opacity: ${({ $isActive }) => ($isActive ? 0 : 1)};
+    opacity: ${({ $isActive }) => ($isActive ? 0 : 0.60)};
     pointer-events: none;
     z-index: 2;
+    transition: opacity 120ms ease;
+  }
+
+  &:hover::before {
+    opacity: ${({ $isActive }) => ($isActive ? 0 : 1)};
   }
 `;
 

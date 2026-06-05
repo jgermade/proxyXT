@@ -15,6 +15,7 @@ buttons:
   preferences:
     show: Mostrar preferencias
     hide: Ocultar preferencias
+    dismiss: Descarta
   logs:
     show: Mostrar logs de backend
     hide: Ocultar logs de backend
@@ -63,6 +64,8 @@ messages:
   noLogs: Sem logs.
   noMessage: Sem mensagem
   unknownError: Erro desconhecido
+  footerConnectionFailure: "Conexao instavel: {{attempts}} tentativas"
+  footerFailoverError: Failover de proxy detectado. Verifique a conexao e descarte este aviso.
   proxyEnabled: "Proxy ativo: {{server}}"
   proxyDisabled: Proxy desativado
   serverSaved: Servidor salvo

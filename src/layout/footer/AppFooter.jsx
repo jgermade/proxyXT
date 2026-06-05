@@ -3,11 +3,8 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { SquaredButton } from "../../components/SquaredButton.jsx";
 import { LanguageBadge } from "../../components/LanguageBadge.jsx";
 import { LogsSvg } from "../../components/icons/LogsSvg.jsx";
-import { ActiveFooter } from "./ActiveFooter.jsx";
 import { FooterActions } from "./FooterActions.jsx";
-import { FooterProxyLabel } from "./FooterProxyLabel.jsx";
 import { FooterProxyStatus } from "./FooterProxyStatus.jsx";
-import { FooterProxyValue } from "./FooterProxyValue.jsx";
 import { StyledAppFooter } from "./AppFooter.styles.jsx";
 
 const FEEDBACK_ANIMATION_MS = 220;
@@ -16,6 +13,7 @@ export function AppFooter({
   isHidden = false,
   footerFeedbackMessage,
   isFooterFeedbackError,
+  footerStatus,
   handleOpenList,
   t,
   activeServerId,
@@ -25,10 +23,12 @@ export function AppFooter({
   handleOpenPreferences,
   view,
   hasErrorLogs,
+  handleDismissFooterError,
   onToggleLogs
 }) {
   const [feedbackState, setFeedbackState] = useState(null);
   const animationTimerRef = useRef(null);
+  const [footerNow, setFooterNow] = useState(() => Date.now());
 
   useEffect(() => {
     if (animationTimerRef.current) {
@@ -70,23 +70,52 @@ export function AppFooter({
     };
   }, []);
 
+  useEffect(() => {
+    if (!footerStatus?.connectionFailure) {
+      return undefined;
+    }
+
+    const timer = globalThis.setInterval(() => {
+      setFooterNow(Date.now());
+    }, 1000);
+
+    return () => {
+      globalThis.clearInterval(timer);
+    };
+  }, [footerStatus?.connectionFailure?.startedAt, footerStatus?.connectionFailure?.attemptCount]);
+
+  const connectionFailure = footerStatus?.connectionFailure || null;
+  const connectionFailureVisible = Boolean(
+    connectionFailure && footerNow - Number(connectionFailure.startedAt || 0) >= 60000
+  );
+
+  const activeFooterError = footerStatus?.activeError
+    ? {
+        message: t("messages.footerFailoverError"),
+        dismissable: true
+      }
+    : connectionFailureVisible
+      ? {
+          message: t("messages.footerConnectionFailure", {
+            attempts: String(connectionFailure.attemptCount || 1)
+          }),
+          dismissable: false
+        }
+      : null;
+
   return (
     <StyledAppFooter $isHidden={isHidden}>
       <div>
-        {feedbackState ? (
-          <ActiveFooter
-            id="activeFooter"
-            $isFeedback
-            $isError={feedbackState.isError}
-            $feedbackPhase={feedbackState.phase}
-          >
-            {feedbackState.message}
-          </ActiveFooter>
-        ) : (
-          <FooterProxyStatus id="activeFooter" onClick={handleOpenList}>
-            <FooterProxyValue isActive={Boolean(activeServerId)}> {activeProxyDisplay}</FooterProxyValue>
-          </FooterProxyStatus>
-        )}
+        <FooterProxyStatus
+          id="activeFooter"
+          feedbackState={feedbackState}
+          activeError={activeFooterError}
+          proxyDisplay={activeProxyDisplay}
+          isProxyActive={Boolean(activeServerId)}
+          handleOpenList={handleOpenList}
+          handleDismissFooterError={handleDismissFooterError}
+          t={t}
+        />
       </div>
 
       <FooterActions>
