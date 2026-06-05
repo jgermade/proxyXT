@@ -115,7 +115,7 @@ const footerSlotStyles = css`
     `}
 `;
 
-export const StyledAddBackButton = styled.button`
+export const StyledSquaredButton = styled.button`
   ${sharedButtonStyles}
 
   ${({ $variant }) => ($variant === "plusToggle" ? plusToggleStyles : iconDefaultStyles)}

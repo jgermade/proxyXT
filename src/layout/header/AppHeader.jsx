@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { AddBackButton } from "../../components/AddBackButton.jsx";
+import { SquaredButton } from "../../components/SquaredButton.jsx";
 import { PreferencesSvg } from "../../components/icons/PreferencesSvg.jsx";
 import { AppLogo } from "./AppLogo.jsx";
 import { HeaderBrand, HeaderText } from "./HeaderBrand.jsx";
@@ -39,7 +39,7 @@ export function AppHeader({
         </HeaderBrand>
       </HeaderHome>
       <HeaderActions>
-        <AddBackButton
+        <SquaredButton
           variant="icon"
           slot="header"
           active={view === "preferences"}
@@ -48,9 +48,9 @@ export function AppHeader({
           onClick={handleTogglePreferences}
         >
           <PreferencesSvg />
-        </AddBackButton>
+        </SquaredButton>
 
-        <AddBackButton
+        <SquaredButton
           variant="plusToggle"
           view={view === "form" ? "form" : "list"}
           onClick={handlePrimaryAction}

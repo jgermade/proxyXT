@@ -20,6 +20,7 @@ buttons:
     hide: Backend-Logs ausblenden
     title: Backend-Logs
     openInWindow: In neuem Fenster oeffnen
+    closeWindow: Fenster schliessen
   server:
     save: Server speichern
     saveChanges: Aenderungen speichern

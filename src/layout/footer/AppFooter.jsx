@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { AddBackButton } from "../../components/AddBackButton.jsx";
+import { SquaredButton } from "../../components/SquaredButton.jsx";
 import { LanguageBadge } from "../../components/LanguageBadge.jsx";
 import { LogsSvg } from "../../components/icons/LogsSvg.jsx";
 import { ActiveFooter } from "./ActiveFooter.jsx";
@@ -33,21 +33,13 @@ export function AppFooter({
           </ActiveFooter>
         ) : (
           <FooterProxyStatus id="activeFooter" onClick={handleOpenList}>
-            <FooterProxyLabel>{t("footer.proxyLabel")}</FooterProxyLabel>
             <FooterProxyValue isActive={Boolean(activeServerId)}> {activeProxyDisplay}</FooterProxyValue>
           </FooterProxyStatus>
         )}
       </div>
 
       <FooterActions>
-        <LanguageBadge
-          preference={languagePreference}
-          effectiveLanguage={effectiveLanguage}
-          t={t}
-          onClick={handleOpenPreferences}
-        />
-
-        <AddBackButton
+        <SquaredButton
           variant="icon"
           slot="footer"
           active={view === "logs"}
@@ -57,7 +49,14 @@ export function AppFooter({
           onClick={onToggleLogs}
         >
           <LogsSvg />
-        </AddBackButton>
+        </SquaredButton>
+        
+        <LanguageBadge
+          preference={languagePreference}
+          effectiveLanguage={effectiveLanguage}
+          t={t}
+          onClick={handleOpenPreferences}
+        />
       </FooterActions>
     </StyledAppFooter>
   );

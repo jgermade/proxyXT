@@ -21,7 +21,6 @@ export function LanguageBadge({ preference, effectiveLanguage, t, onClick }) {
       <BadgeFlag>
         <LanguageFlag language={effectiveLanguage} />
       </BadgeFlag>
-      <BadgeText>{label}</BadgeText>
     </StyledLanguageBadge>
   );
 }

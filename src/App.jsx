@@ -51,7 +51,7 @@ export function App() {
     <Fragment>
       <ContentStack style={stackedStyle}>
         <LogsLayer isVisible={view === "logs"}>
-          <LogsView t={t} logs={logs} />
+          <LogsView t={t} logs={logs} onClose={handleOpenList} />
         </LogsLayer>
 
         <AppMain

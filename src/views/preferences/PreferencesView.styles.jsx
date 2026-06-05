@@ -30,7 +30,7 @@ export const PreferenceToggle = styled(CheckboxField)`
 `;
 
 export const PreferencesHelp = styled.p`
-  margin: 0;
+  margin: 0 0 0 28px;
   font-size: 0.78rem;
   color: #3d556e;
   line-height: 1.35;

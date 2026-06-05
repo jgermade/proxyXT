@@ -63,12 +63,9 @@ export const OpenWindowButton = styled.button`
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 83, 255, 0.2);
   }
-
-  svg {
-    width: 14px;
-    height: 14px;
-  }
 `;
+
+export const CloseWindowButton = styled(OpenWindowButton)``;
 
 export const LogsContent = styled.div`
   flex: 1;

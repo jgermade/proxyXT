@@ -1,9 +1,9 @@
 import { h } from "preact";
 import { BackSymbolSvg } from "./icons/BackSymbolSvg.jsx";
 import { PlusSymbolSvg } from "./icons/PlusSymbolSvg.jsx";
-import { StyledAddBackButton } from "./AddBackButton.styles.jsx";
+import { StyledSquaredButton } from "./SquaredButton.styles.jsx";
 
-export function AddBackButton({
+export function SquaredButton({
   view,
   onClick,
   variant = "icon",
@@ -19,7 +19,7 @@ export function AddBackButton({
     variant === "plusToggle" ? (view === "list" ? <PlusSymbolSvg /> : <BackSymbolSvg />) : children;
 
   return (
-    <StyledAddBackButton
+    <StyledSquaredButton
       type="button"
       className={className}
       $variant={variant}
@@ -31,6 +31,6 @@ export function AddBackButton({
       onClick={onClick}
     >
       {content}
-    </StyledAddBackButton>
+    </StyledSquaredButton>
   );
 }

@@ -1,6 +1,8 @@
 import { h } from "preact";
+import { CrossSymbolSvg } from "../../components/icons/CrossSymbolSvg.jsx";
 import { NewWindowSvg } from "../../components/icons/NewWindowSvg.jsx";
 import {
+  CloseWindowButton,
   LogContext,
   LogEntryContainer,
   LogMain,
@@ -69,7 +71,7 @@ function LogEntry({ log, t }) {
   );
 }
 
-export function LogsView({ t, logs }) {
+export function LogsView({ t, logs, onClose }) {
   function handleOpenInNewWindow() {
     const api = globalThis.browser ?? globalThis.chrome;
     const logsUrl = api?.runtime?.getURL ? api.runtime.getURL("logs.html") : "logs.html";
@@ -77,6 +79,15 @@ export function LogsView({ t, logs }) {
   }
 
   const openInWindowLabel = t("buttons.logs.openInWindow");
+  const closeWindowLabel = t("buttons.logs.closeWindow");
+
+  function handleCloseWindow() {
+    if (typeof onClose === "function") {
+      onClose();
+      return;
+    }
+    globalThis.close();
+  }
 
   return (
     <LogsPanel>
@@ -89,8 +100,16 @@ export function LogsView({ t, logs }) {
             title={openInWindowLabel}
             aria-label={openInWindowLabel}
           >
-            <NewWindowSvg width={14} height={14} />
+            <NewWindowSvg size={12} />
           </OpenWindowButton>
+          <CloseWindowButton
+            type="button"
+            onClick={handleCloseWindow}
+            title={closeWindowLabel}
+            aria-label={closeWindowLabel}
+          >
+            <CrossSymbolSvg width={14} height={14} />
+          </CloseWindowButton>
         </ToolbarActions>
       </LogsToolbar>
       <LogsContent>

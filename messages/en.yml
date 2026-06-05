@@ -20,6 +20,7 @@ buttons:
     hide: Hide backend logs
     title: Backend logs
     openInWindow: Open in new window
+    closeWindow: Close window
   server:
     save: Save server
     saveChanges: Save changes
