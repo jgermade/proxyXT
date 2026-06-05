@@ -5,7 +5,8 @@ export const StyledAppFooter = styled.footer`
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 0 16px;
+  min-height: 48px;
   color: #40546d;
   font-size: 0.81rem;
   background: #ffffff;
@@ -14,4 +15,9 @@ export const StyledAppFooter = styled.footer`
     css`
       display: none;
     `}
+
+  > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
 `;
