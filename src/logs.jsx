@@ -1,8 +1,11 @@
 import { h, render } from "preact";
 import { useEffect, useMemo, useState } from "preact/hooks";
+import { setup } from "goober";
 import { sendMessage } from "./lib/runtime.js";
 import { createTranslator, resolveLanguage } from "./lib/i18n.js";
 import { LogsView } from "./views/logs/LogsView.jsx";
+
+setup(h);
 
 function LogsWindowApp() {
   const [logs, setLogs] = useState([]);

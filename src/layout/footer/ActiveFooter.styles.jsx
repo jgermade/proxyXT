@@ -1,66 +1,83 @@
-import styled, { css, keyframes } from "styled-components";
+import { css } from "goober";
 
-const feedbackFadeInDown = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+export function getActiveFooterClassName({ isFeedback = false, isError = false, feedbackPhase } = {}) {
+  const animationRule =
+    isFeedback && feedbackPhase === "enter"
+      ? "animation: activeFooterFadeInDown 250ms ease-out both;"
+      : isFeedback && feedbackPhase === "exit"
+        ? "animation: activeFooterFadeOutDown 220ms ease both;"
+        : "";
 
-const feedbackFadeOutDown = keyframes`
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-`;
+  return css`
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    max-width: 100%;
+    font-size: 0.62rem;
+    line-height: ${isFeedback ? "1.15" : "1"};
+    padding: ${isFeedback ? "4px 6px" : "0"};
+    border-radius: ${isFeedback ? "999px" : "0"};
+    border: ${isFeedback ? "1px solid" : "none"};
+    font-family: ${isFeedback ? '"SF Mono", "Consolas", monospace' : "inherit"};
+    color: ${!isFeedback ? "inherit" : isError ? "#8a2f0a" : "#195c2f"};
+    background: ${!isFeedback ? "transparent" : isError ? "#fff2e8" : "#e9f9ee"};
+    border-color: ${!isFeedback ? "transparent" : isError ? "#f4c6aa" : "#a8e1bc"};
+    ${animationRule}
 
-export const StyledActiveFooter = styled.span`
-  min-width: 0;
-  display: ${({ $isFeedback }) => ($isFeedback ? "block" : "inline-flex")};
-  align-items: ${({ $isFeedback }) => ($isFeedback ? "initial" : "center")};
-  max-width: 100%;
-  white-space: ${({ $isFeedback }) => ($isFeedback ? "normal" : "nowrap")};
-  overflow-wrap: ${({ $isFeedback }) => ($isFeedback ? "anywhere" : "normal")};
-  overflow: ${({ $isFeedback }) => ($isFeedback ? "visible" : "hidden")};
-  text-overflow: ${({ $isFeedback }) => ($isFeedback ? "clip" : "ellipsis")};
-  font-size: 0.62rem;
-  line-height: ${({ $isFeedback }) => ($isFeedback ? "1.15" : "1")};
-  padding: ${({ $isFeedback }) => ($isFeedback ? "4px 6px" : "0")};
-  border-radius: ${({ $isFeedback }) => ($isFeedback ? "999px" : "0")};
-  border: ${({ $isFeedback }) => ($isFeedback ? "1px solid" : "none")};
-  font-family: ${({ $isFeedback }) => ($isFeedback ? '"SF Mono", "Consolas", monospace' : "inherit")};
-  color: ${({ $isFeedback, $isError }) => {
-    if (!$isFeedback) return "inherit";
-    return $isError ? "#8a2f0a" : "#195c2f";
-  }};
-  background: ${({ $isFeedback, $isError }) => {
-    if (!$isFeedback) return "transparent";
-    return $isError ? "#fff2e8" : "#e9f9ee";
-  }};
-  border-color: ${({ $isFeedback, $isError }) => {
-    if (!$isFeedback) return "transparent";
-    return $isError ? "#f4c6aa" : "#a8e1bc";
-  }};
+    > [data-role="message"] {
+      min-width: 0;
+      white-space: nowrap;
+      overflow-wrap: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-  ${({ $isFeedback, $feedbackPhase }) =>
-    $isFeedback &&
-    $feedbackPhase === "enter" &&
-    css`
-      animation: ${feedbackFadeInDown} 250ms ease-out both;
-    `}
+    > button[data-kind="dismiss"] {
+      margin-left: 2px;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: #37506b;
+      cursor: pointer;
+      transition: color 120ms ease;
+      flex: 0 0 auto;
+    }
 
-  ${({ $isFeedback, $feedbackPhase }) =>
-    $isFeedback &&
-    $feedbackPhase === "exit" &&
-    css`
-      animation: ${feedbackFadeOutDown} 220ms ease both;
-    `}
-`;
+    > button[data-kind="dismiss"]:hover {
+      background: transparent;
+      color: #1f3249;
+    }
+
+    @keyframes activeFooterFadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes activeFooterFadeOutDown {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      to {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+    }
+  `;
+}

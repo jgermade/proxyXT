@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 
-export const StyledAppFooter = styled.footer`
+export const StyledAppFooter = styled.footer.attrs({
+  "data-component": "AppFooter"
+})`
   display: flex;
   align-items: center;
   justify-content: space-between;

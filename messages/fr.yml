@@ -64,7 +64,8 @@ messages:
   noLogs: Aucun log.
   noMessage: Sans message
   unknownError: Erreur inconnue
-  footerConnectionFailure: "Connexion instable: {{attempts}} tentatives"
+  footerConnectionFailureOne: "Connexion instable: {{attempts}} tentative"
+  footerConnectionFailureMany: "Connexion instable: {{attempts}} tentatives"
   footerFailoverError: Basculement de proxy detecte. Verifiez la connexion et ignorez cet avertissement.
   proxyEnabled: "Proxy actif: {{server}}"
   proxyDisabled: Proxy desactive

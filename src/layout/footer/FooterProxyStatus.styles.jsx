@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
-export const StyledFooterProxyStatus = styled.div`
-  display: grid;
+export const StyledFooterProxyStatus = styled.div.attrs({
+  "data-component": "FooterProxyStatus"
+})`
+  display: inline-grid;
+  width: fit-content;
   min-width: 0;
   max-width: 100%;
   color: #435364;
@@ -38,22 +41,5 @@ export const StyledFooterProxyStatus = styled.div`
 
   > div:last-child:hover {
     color: #2f445d;
-  }
-
-  button {
-    border: none;
-    border-radius: 999px;
-    padding: 4px 8px;
-    background: #f2f6fb;
-    color: #37506b;
-    font-size: 0.62rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 120ms ease, color 120ms ease;
-  }
-
-  button:hover {
-    background: #e4edf8;
-    color: #1f3249;
   }
 `;

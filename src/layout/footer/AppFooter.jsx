@@ -2,12 +2,19 @@ import { h } from "preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { SquaredButton } from "../../components/SquaredButton.jsx";
 import { LanguageBadge } from "../../components/LanguageBadge.jsx";
+import { CrossSymbolSvg } from "../../components/icons/CrossSymbolSvg.jsx";
 import { LogsSvg } from "../../components/icons/LogsSvg.jsx";
 import { FooterActions } from "./FooterActions.jsx";
+import {
+  StyledFooterConnectionBadge,
+  StyledFooterConnectionNotice,
+  StyledLogsBadgeAnchor
+} from "./FooterActions.styles.jsx";
 import { FooterProxyStatus } from "./FooterProxyStatus.jsx";
 import { StyledAppFooter } from "./AppFooter.styles.jsx";
 
 const FEEDBACK_ANIMATION_MS = 220;
+const CONNECTION_NOTICE_ANIMATION_MS = 200;
 
 export function AppFooter({
   isHidden = false,
@@ -24,11 +31,14 @@ export function AppFooter({
   view,
   hasErrorLogs,
   handleDismissFooterError,
+  handleDismissFooterFeedback,
   onToggleLogs
 }) {
   const [feedbackState, setFeedbackState] = useState(null);
   const animationTimerRef = useRef(null);
+  const connectionNoticeTimerRef = useRef(null);
   const [footerNow, setFooterNow] = useState(() => Date.now());
+  const [connectionNoticeState, setConnectionNoticeState] = useState("badge");
 
   useEffect(() => {
     if (animationTimerRef.current) {
@@ -67,6 +77,10 @@ export function AppFooter({
         globalThis.clearTimeout(animationTimerRef.current);
         animationTimerRef.current = null;
       }
+      if (connectionNoticeTimerRef.current) {
+        globalThis.clearTimeout(connectionNoticeTimerRef.current);
+        connectionNoticeTimerRef.current = null;
+      }
     };
   }, []);
 
@@ -88,20 +102,52 @@ export function AppFooter({
   const connectionFailureVisible = Boolean(
     connectionFailure && footerNow - Number(connectionFailure.startedAt || 0) >= 60000
   );
+  const connectionFailureAttempts = Number(connectionFailure?.attemptCount || 1);
+  const connectionFailureMessageKey =
+    connectionFailureAttempts === 1
+      ? "messages.footerConnectionFailureOne"
+      : "messages.footerConnectionFailureMany";
+  const connectionFailureMessage = t(connectionFailureMessageKey, {
+    attempts: String(connectionFailureAttempts)
+  });
 
   const activeFooterError = footerStatus?.activeError
     ? {
         message: t("messages.footerFailoverError"),
         dismissable: true
       }
-    : connectionFailureVisible
-      ? {
-          message: t("messages.footerConnectionFailure", {
-            attempts: String(connectionFailure.attemptCount || 1)
-          }),
-          dismissable: false
-        }
-      : null;
+    : null;
+
+  useEffect(() => {
+    if (!connectionFailureVisible) {
+      if (connectionNoticeTimerRef.current) {
+        globalThis.clearTimeout(connectionNoticeTimerRef.current);
+        connectionNoticeTimerRef.current = null;
+      }
+      setConnectionNoticeState("badge");
+    }
+  }, [connectionFailureVisible]);
+
+  function handleExpandConnectionNotice() {
+    if (connectionNoticeTimerRef.current) {
+      globalThis.clearTimeout(connectionNoticeTimerRef.current);
+      connectionNoticeTimerRef.current = null;
+    }
+    setConnectionNoticeState("notice");
+  }
+
+  function handleDismissConnectionNotice() {
+    if (connectionNoticeTimerRef.current) {
+      globalThis.clearTimeout(connectionNoticeTimerRef.current);
+      connectionNoticeTimerRef.current = null;
+    }
+
+    setConnectionNoticeState("closing");
+    connectionNoticeTimerRef.current = globalThis.setTimeout(() => {
+      setConnectionNoticeState("badge");
+      connectionNoticeTimerRef.current = null;
+    }, CONNECTION_NOTICE_ANIMATION_MS);
+  }
 
   return (
     <StyledAppFooter $isHidden={isHidden}>
@@ -114,22 +160,60 @@ export function AppFooter({
           isProxyActive={Boolean(activeServerId)}
           handleOpenList={handleOpenList}
           handleDismissFooterError={handleDismissFooterError}
+          handleDismissFooterFeedback={handleDismissFooterFeedback}
           t={t}
         />
       </div>
 
       <FooterActions>
-        <SquaredButton
-          variant="icon"
-          slot="footer"
-          active={view === "logs"}
-          hasError={hasErrorLogs}
-          ariaLabel={view === "logs" ? t("buttons.logs.hide") : t("buttons.logs.show")}
-          title={t("buttons.logs.title")}
-          onClick={onToggleLogs}
-        >
-          <LogsSvg />
-        </SquaredButton>
+        <StyledLogsBadgeAnchor>
+          {connectionFailureVisible ? (
+            <>
+              <StyledFooterConnectionBadge
+                type="button"
+                title={connectionFailureMessage}
+                aria-label={connectionFailureMessage}
+                $isHidden={connectionNoticeState !== "badge"}
+                onClick={handleExpandConnectionNotice}
+              >
+                <span aria-hidden="true">!</span>
+                <span>{connectionFailureAttempts}</span>
+              </StyledFooterConnectionBadge>
+
+              {connectionNoticeState !== "badge" ? (
+                <StyledFooterConnectionNotice
+                  role="status"
+                  aria-live="polite"
+                  $isClosing={connectionNoticeState === "closing"}
+                >
+                  <span>{connectionFailureMessage}</span>
+                  <button
+                    type="button"
+                    aria-label={t("buttons.dismiss")}
+                    title={t("buttons.dismiss")}
+                    onClick={() => {
+                      handleDismissConnectionNotice();
+                    }}
+                  >
+                    <CrossSymbolSvg width={11} height={11} color="currentColor" />
+                  </button>
+                </StyledFooterConnectionNotice>
+              ) : null}
+            </>
+          ) : null}
+
+          <SquaredButton
+            variant="icon"
+            slot="footer"
+            active={view === "logs"}
+            hasError={hasErrorLogs}
+            ariaLabel={view === "logs" ? t("buttons.logs.hide") : t("buttons.logs.show")}
+            title={t("buttons.logs.title")}
+            onClick={onToggleLogs}
+          >
+            <LogsSvg />
+          </SquaredButton>
+        </StyledLogsBadgeAnchor>
         
         <LanguageBadge
           preference={languagePreference}

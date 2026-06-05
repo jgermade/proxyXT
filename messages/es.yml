@@ -64,7 +64,8 @@ messages:
   noLogs: Sin logs.
   noMessage: Sin mensaje
   unknownError: Error desconocido
-  footerConnectionFailure: "Conexión inestable: {{attempts}} intentos"
+  footerConnectionFailureOne: "Conexión inestable: {{attempts}} intento"
+  footerConnectionFailureMany: "Conexión inestable: {{attempts}} intentos"
   footerFailoverError: Fallo de proxy detectado. Revisa la conexión y descarta este aviso.
   proxyEnabled: "Proxy activo: {{server}}"
   proxyDisabled: Proxy desactivado

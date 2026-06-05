@@ -64,7 +64,8 @@ messages:
   noLogs: No logs.
   noMessage: No message
   unknownError: Unknown error
-  footerConnectionFailure: "Connection unstable: {{attempts}} attempts"
+  footerConnectionFailureOne: "Connection unstable: {{attempts}} attempt"
+  footerConnectionFailureMany: "Connection unstable: {{attempts}} attempts"
   footerFailoverError: Proxy failover detected. Check the connection and dismiss this notice.
   proxyEnabled: "Proxy active: {{server}}"
   proxyDisabled: Proxy disabled

@@ -227,7 +227,9 @@ export const CloseWindowButton = styled(OpenWindowButton)``;
 
 export const LogsContent = styled.div`
   flex: 1;
-  min-height: 0;
+  min-height: 120px;
+  max-height: 100%;
+  resize: vertical;
   overflow-y: auto;
   padding: 8px;
   display: flex;

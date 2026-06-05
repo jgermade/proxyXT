@@ -404,18 +404,24 @@ function setFailoverError(state, details, previousServer, nextServer) {
 
 async function handleDismissFooterError() {
   const state = await loadState();
-  if (!state.footerStatus?.activeError) {
+  const hasActiveError = Boolean(state.footerStatus?.activeError);
+  const hasConnectionFailure = Boolean(state.footerStatus?.connectionFailure);
+  if (!hasActiveError && !hasConnectionFailure) {
     return state;
   }
 
   state.footerStatus = {
     ...(state.footerStatus || defaultState.footerStatus),
-    activeError: null
+    activeError: null,
+    connectionFailure: null
   };
 
   await saveState(state);
   await broadcastStateUpdate(state);
-  await addLog("debug", "Error activo del footer descartado por el usuario", null);
+  await addLog("debug", "Aviso del footer descartado por el usuario", {
+    hadActiveError: hasActiveError,
+    hadConnectionFailure: hasConnectionFailure
+  });
   return state;
 }
 

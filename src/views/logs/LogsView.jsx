@@ -117,6 +117,7 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
     const closeConfirmTimerRef = useRef(null);
   const sadEasterEggTimerRef = useRef(null);
   const confirmButtonRef = useRef(null);
+  const filterMenuRef = useRef(null);
 
     useEffect(() => {
       return () => {
@@ -165,6 +166,28 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
       globalThis.removeEventListener("keydown", handleEscapeKey, true);
     };
   }, [isConfirmOpen]);
+
+  useEffect(() => {
+    function handlePointerDownOutsideFilterMenu(event) {
+      const menuElement = filterMenuRef.current;
+      if (!menuElement || !menuElement.hasAttribute("open")) {
+        return;
+      }
+
+      const targetNode = event.target;
+      if (targetNode && menuElement.contains(targetNode)) {
+        return;
+      }
+
+      menuElement.removeAttribute("open");
+    }
+
+    globalThis.addEventListener("pointerdown", handlePointerDownOutsideFilterMenu, true);
+    return () => {
+      globalThis.removeEventListener("pointerdown", handlePointerDownOutsideFilterMenu, true);
+    };
+  }, []);
+
   const [levelFilters, setLevelFilters] = useState({
     success: true,
     info: true,
@@ -352,7 +375,7 @@ export function LogsView({ t, logs, onClose, onClearLogs, onFeedback }) {
           <CopyLogsButton type="button" onClick={handleCopyLogs} title={copyLogsLabel} aria-label={copyLogsLabel}>
             <CopySymbolSvg size={13} />
           </CopyLogsButton>
-          <FilterMenu>
+          <FilterMenu ref={filterMenuRef}>
             <FilterToggleButton title={filtersLabel} aria-label={filtersLabel}>
               <FilterSymbolSvg size={16} />
             </FilterToggleButton>

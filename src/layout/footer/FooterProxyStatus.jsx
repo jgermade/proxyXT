@@ -10,6 +10,7 @@ export function FooterProxyStatus({
   isProxyActive = false,
   handleOpenList,
   handleDismissFooterError,
+  handleDismissFooterFeedback,
   t,
   ...rest
 }) {
@@ -21,7 +22,14 @@ export function FooterProxyStatus({
     <StyledFooterProxyStatus {...rest}>
       <div data-visible={hasFeedback ? "true" : "false"} aria-hidden={!hasFeedback}>
         {feedbackState ? (
-          <ActiveFooter $isFeedback $isError={feedbackState.isError} $feedbackPhase={feedbackState.phase}>
+          <ActiveFooter
+            $isFeedback
+            $isError={feedbackState.isError}
+            $feedbackPhase={feedbackState.phase}
+            dismissable
+            dismissLabel={t("buttons.dismiss")}
+            onDismiss={handleDismissFooterFeedback}
+          >
             {feedbackState.message}
           </ActiveFooter>
         ) : null}
@@ -29,20 +37,16 @@ export function FooterProxyStatus({
 
       <div data-visible={hasActiveError ? "true" : "false"} aria-hidden={!hasActiveError}>
         {activeError ? (
-          <ActiveFooter $isFeedback $isError $feedbackPhase="enter">
+          <ActiveFooter
+            $isFeedback
+            $isError
+            $feedbackPhase="enter"
+            dismissable
+            dismissLabel={t("buttons.dismiss")}
+            onDismiss={handleDismissFooterError}
+          >
             {activeError.message}
           </ActiveFooter>
-        ) : null}
-        {activeError?.dismissable ? (
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              handleDismissFooterError?.();
-            }}
-          >
-            {t("buttons.dismiss")}
-          </button>
         ) : null}
       </div>
 

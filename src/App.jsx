@@ -41,6 +41,7 @@ export function App() {
     handleClearLogs,
     handleLogsFeedback,
     handleDismissFooterError,
+    handleDismissFooterFeedback,
     handleToggleServer,
     openFormForEdit,
     handleReorderServers,
@@ -117,6 +118,7 @@ export function App() {
         view={view}
         hasErrorLogs={hasErrorLogs}
         handleDismissFooterError={handleDismissFooterError}
+        handleDismissFooterFeedback={handleDismissFooterFeedback}
         onToggleLogs={() => {
           const height = mainRef.current?.offsetHeight || 0;
           handleToggleLogs(height);

@@ -64,7 +64,8 @@ messages:
   noLogs: Keine Logs.
   noMessage: Keine Nachricht
   unknownError: Unbekannter Fehler
-  footerConnectionFailure: "Verbindung instabil: {{attempts}} Versuche"
+  footerConnectionFailureOne: "Verbindung instabil: {{attempts}} Versuch"
+  footerConnectionFailureMany: "Verbindung instabil: {{attempts}} Versuche"
   footerFailoverError: Proxy-Failover erkannt. Pruefe die Verbindung und verwerfe diesen Hinweis.
   proxyEnabled: "Proxy aktiv: {{server}}"
   proxyDisabled: Proxy deaktiviert

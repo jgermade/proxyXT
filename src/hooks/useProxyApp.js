@@ -192,6 +192,10 @@ export function useProxyApp() {
     setFeedback(null);
   }
 
+  function handleDismissFooterFeedback() {
+    clearFeedback();
+  }
+
   function openFormForNewServer() {
     setFormMode("new");
     setFormData({ ...initialFormState });
@@ -594,6 +598,7 @@ export function useProxyApp() {
     handleClearLogs,
     handleLogsFeedback,
     handleDismissFooterError,
+    handleDismissFooterFeedback,
     handleToggleServer,
     openFormForEdit,
     handleSubmitForm,
