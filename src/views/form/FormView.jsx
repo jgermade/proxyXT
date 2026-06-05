@@ -57,21 +57,21 @@ export function FormView({
         />
 
         <InputField
-          label={t("labels.bypassList")}
-          id="bypassList"
-          type="text"
-          value={formData.bypassList}
-          placeholder={t("placeholders.bypassList")}
-          onInput={(value) => setFormData((current) => ({ ...current, bypassList: value }))}
-        />
-
-        <InputField
           label={t("labels.alias")}
           id="name"
           type="text"
           value={formData.name}
           maxLength={80}
           onInput={(value) => setFormData((current) => ({ ...current, name: value }))}
+        />
+
+        <InputField
+          label={t("labels.bypassList")}
+          id="bypassList"
+          type="text"
+          value={formData.bypassList}
+          placeholder={t("placeholders.bypassList")}
+          onInput={(value) => setFormData((current) => ({ ...current, bypassList: value }))}
         />
 
         <Actions>
