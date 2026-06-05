@@ -67,6 +67,17 @@ const plusToggleStyles = css`
     background: #0967d4;
     filter: none;
   }
+
+  ${({ $view }) =>
+    $view === "form" &&
+    css`
+      background: #ffd9c4;
+      color: #8d2f00;
+
+      &:hover {
+        background: #ffc9ab;
+      }
+    `}
 `;
 
 const headerSlotStyles = css`

@@ -23,6 +23,7 @@ export function SquaredButton({
       type="button"
       className={className}
       $variant={variant}
+      $view={view}
       $slot={slot}
       $active={active}
       $hasError={hasError}
