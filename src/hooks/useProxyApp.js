@@ -290,6 +290,26 @@ export function useProxyApp() {
     }
   }
 
+  async function handleUpdateUserColorPresets(userColorPresets) {
+    const nextUserColorPresets = Array.isArray(userColorPresets) ? userColorPresets : [];
+    const previousUserColorPresets = state.userColorPresets;
+
+    setState((current) => ({
+      ...current,
+      userColorPresets: nextUserColorPresets
+    }));
+
+    try {
+      await callBackground("proxyxt/updateUserColorPresets", { userColorPresets: nextUserColorPresets });
+    } catch (error) {
+      setState((current) => ({
+        ...current,
+        userColorPresets: previousUserColorPresets
+      }));
+      setFeedback({ message: error.message, isError: true });
+    }
+  }
+
   function handleTogglePreferences() {
     if (view === "preferences") {
       setView("list");
@@ -523,6 +543,7 @@ export function useProxyApp() {
     hasErrorLogs,
     isInitialStateLoading,
     servers: state.servers,
+    userColorPresets: state.userColorPresets,
     activeServerId: state.activeServerId,
     autoFailoverEnabled: state.preferences?.autoFailoverEnabled,
     reloadActiveTabOnToggle: state.preferences?.reloadActiveTabOnToggle,
@@ -541,6 +562,7 @@ export function useProxyApp() {
     handleSubmitForm,
     handleDeleteServer,
     handleReorderServers,
+    handleUpdateUserColorPresets,
     handleAutoFailoverChange,
     handleReloadActiveTabChange,
     handleSyncServersWithAccountChange,

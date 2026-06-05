@@ -18,6 +18,7 @@ export function AppMain({
   handleTogglePreferences,
   handlePrimaryAction,
   servers,
+  userColorPresets,
   activeServerId,
   handleToggleServer,
   handleReorderServers,
@@ -25,6 +26,7 @@ export function AppMain({
   formMode,
   formData,
   setFormData,
+  handleUpdateUserColorPresets,
   handleSubmitForm,
   handleDeleteServer,
   autoFailoverEnabled,
@@ -66,6 +68,8 @@ export function AppMain({
         formMode={formMode}
         formData={formData}
         setFormData={setFormData}
+        userColorPresets={userColorPresets}
+        onUpdateUserColorPresets={handleUpdateUserColorPresets}
         onSubmit={handleSubmitForm}
         onDelete={handleDeleteServer}
       />

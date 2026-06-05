@@ -25,6 +25,7 @@ export function App() {
     hasErrorLogs,
     isInitialStateLoading,
     servers,
+    userColorPresets,
     activeServerId,
     autoFailoverEnabled,
     reloadActiveTabOnToggle,
@@ -41,6 +42,7 @@ export function App() {
     handleToggleServer,
     openFormForEdit,
     handleReorderServers,
+    handleUpdateUserColorPresets,
     handleSubmitForm,
     handleDeleteServer,
     handleAutoFailoverChange,
@@ -76,6 +78,7 @@ export function App() {
           handleTogglePreferences={handleTogglePreferences}
           handlePrimaryAction={handlePrimaryAction}
           servers={servers}
+          userColorPresets={userColorPresets}
           activeServerId={activeServerId}
           handleToggleServer={handleToggleServer}
           handleReorderServers={handleReorderServers}
@@ -83,6 +86,7 @@ export function App() {
           formMode={formMode}
           formData={formData}
           setFormData={setFormData}
+          handleUpdateUserColorPresets={handleUpdateUserColorPresets}
           handleSubmitForm={handleSubmitForm}
           handleDeleteServer={handleDeleteServer}
           autoFailoverEnabled={autoFailoverEnabled}

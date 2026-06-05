@@ -6,6 +6,7 @@ const LOGS_KEY = "proxyxt-logs";
 const MAX_LOGS = 200;
 const FAILOVER_COOLDOWN_MS = 5000;
 const DEFAULT_SELECTION_COLOR = "#FF5400";
+const MAX_USER_COLOR_PRESETS = 32;
 const CONNECTIVITY_CHECK_COOLDOWN_MS = 4000;
 const CONNECTIVITY_CHECK_TIMEOUT_MS = 3500;
 const CONNECTIVITY_CHECK_URL = "https://clients3.google.com/generate_204";
@@ -25,6 +26,7 @@ const INACTIVE_ICON_PATHS = {
 const defaultState = {
   activeServerId: null,
   servers: [],
+  userColorPresets: [],
   preferences: {
     autoFailoverEnabled: false,
     language: "auto",
@@ -196,6 +198,7 @@ async function loadState() {
     ...defaultState,
     ...state,
     servers: Array.isArray(state.servers) ? state.servers : [],
+    userColorPresets: sanitizeUserColorPresets(state.userColorPresets),
     preferences: {
       ...defaultState.preferences,
       ...(state.preferences || {})
@@ -278,6 +281,32 @@ function summarizeProxyValue(value) {
     singleProxy,
     bypassCount: Array.isArray(value?.rules?.bypassList) ? value.rules.bypassList.length : 0
   };
+}
+
+function sanitizeColorHex(color) {
+  const normalized = String(color || "").trim().toUpperCase();
+  return /^#([0-9A-F]{3}|[0-9A-F]{6})$/.test(normalized) ? normalized : null;
+}
+
+function sanitizeUserColorPresets(rawColors) {
+  if (!Array.isArray(rawColors)) {
+    return [];
+  }
+
+  const result = [];
+  const seen = new Set();
+  for (const rawColor of rawColors) {
+    const color = sanitizeColorHex(rawColor);
+    if (!color || seen.has(color)) {
+      continue;
+    }
+    seen.add(color);
+    result.push(color);
+    if (result.length >= MAX_USER_COLOR_PRESETS) {
+      break;
+    }
+  }
+  return result;
 }
 
 async function updateActionIcon(isProxyActive) {
@@ -405,24 +434,43 @@ async function pullServersFromSyncIfEnabled(state) {
   }
 
   const result = await storageSyncGet([SYNC_SERVERS_KEY, STORAGE_KEY]);
-  const syncedServersRaw = result?.[SYNC_SERVERS_KEY];
+  const syncedPayloadRaw = result?.[SYNC_SERVERS_KEY];
   const legacyState = result?.[STORAGE_KEY];
   const legacyServersRaw = Array.isArray(legacyState?.servers) ? legacyState.servers : null;
+  const legacyColorsRaw = Array.isArray(legacyState?.userColorPresets) ? legacyState.userColorPresets : null;
+
+  const syncedServersRaw = Array.isArray(syncedPayloadRaw)
+    ? syncedPayloadRaw
+    : Array.isArray(syncedPayloadRaw?.servers)
+      ? syncedPayloadRaw.servers
+      : null;
+  const syncedColorsRaw = Array.isArray(syncedPayloadRaw?.userColorPresets)
+    ? syncedPayloadRaw.userColorPresets
+    : Array.isArray(syncedPayloadRaw?.userColors)
+      ? syncedPayloadRaw.userColors
+      : null;
 
   const sourceRaw = Array.isArray(syncedServersRaw)
     ? syncedServersRaw
     : Array.isArray(legacyServersRaw)
       ? legacyServersRaw
       : null;
+  const sourceColorsRaw = Array.isArray(syncedColorsRaw)
+    ? syncedColorsRaw
+    : Array.isArray(legacyColorsRaw)
+      ? legacyColorsRaw
+      : null;
 
-  if (!Array.isArray(sourceRaw)) {
+  if (!Array.isArray(sourceRaw) && !Array.isArray(sourceColorsRaw)) {
     await addLog("debug", "No hay servidores disponibles en storage.sync", null);
     return state;
   }
 
+  const sourceServers = Array.isArray(sourceRaw) ? sourceRaw : state.servers;
   const syncedServers = [];
+  const syncedUserColorPresets = sanitizeUserColorPresets(sourceColorsRaw || []);
   let skipped = 0;
-  for (const raw of sourceRaw) {
+  for (const raw of sourceServers) {
     try {
       syncedServers.push(sanitizeServer(raw));
     } catch (_error) {
@@ -432,27 +480,32 @@ async function pullServersFromSyncIfEnabled(state) {
   }
 
   await addLog("debug", "Lectura de servidores desde storage.sync", {
-    source: Array.isArray(syncedServersRaw) ? SYNC_SERVERS_KEY : STORAGE_KEY,
-    received: sourceRaw.length,
+    source: Array.isArray(syncedServersRaw) || Array.isArray(syncedColorsRaw) ? SYNC_SERVERS_KEY : STORAGE_KEY,
+    received: sourceServers.length,
     valid: syncedServers.length,
-    skipped
+    skipped,
+    syncedUserColorPresets: syncedUserColorPresets.length
   });
 
   const localSnapshot = JSON.stringify(state.servers);
   const syncedSnapshot = JSON.stringify(syncedServers);
-  if (localSnapshot === syncedSnapshot) {
+  const localUserColorsSnapshot = JSON.stringify(sanitizeUserColorPresets(state.userColorPresets));
+  const syncedUserColorsSnapshot = JSON.stringify(syncedUserColorPresets);
+  if (localSnapshot === syncedSnapshot && localUserColorsSnapshot === syncedUserColorsSnapshot) {
     return state;
   }
 
   const nextState = {
     ...state,
     servers: syncedServers,
+    userColorPresets: syncedUserColorPresets,
     activeServerId: syncedServers.some((server) => server.id === state.activeServerId) ? state.activeServerId : null
   };
 
   await saveState(nextState);
   await addLog("info", "Servidores sincronizados desde la cuenta del navegador", {
-    totalServers: nextState.servers.length
+    totalServers: nextState.servers.length,
+    userColorPresets: nextState.userColorPresets.length
   });
   return nextState;
 }
@@ -462,7 +515,12 @@ async function pushServersToSyncIfEnabled(state) {
     return;
   }
 
-  await storageSyncSet({ [SYNC_SERVERS_KEY]: state.servers });
+  await storageSyncSet({
+    [SYNC_SERVERS_KEY]: {
+      servers: state.servers,
+      userColorPresets: sanitizeUserColorPresets(state.userColorPresets)
+    }
+  });
 }
 
 async function handleGetState() {
@@ -536,6 +594,17 @@ async function handleReorderServers(payload) {
   await pushServersToSyncIfEnabled(state);
   await addLog("debug", "Estado actualizado tras reordenar servidores", {
     totalServers: state.servers.length
+  });
+  return state;
+}
+
+async function handleUpdateUserColorPresets(payload) {
+  const state = await loadState();
+  state.userColorPresets = sanitizeUserColorPresets(payload?.userColorPresets || payload?.colors || []);
+  await saveState(state);
+  await pushServersToSyncIfEnabled(state);
+  await addLog("debug", "Estado actualizado tras guardar colores personalizados", {
+    userColorPresets: state.userColorPresets.length
   });
   return state;
 }
@@ -910,6 +979,11 @@ api.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
     if (actionType === "proxyxt/reorderServers") {
       const state = await handleReorderServers(message.payload || {});
+      return { state };
+    }
+
+    if (actionType === "proxyxt/updateUserColorPresets") {
+      const state = await handleUpdateUserColorPresets(message.payload || {});
       return { state };
     }
 
