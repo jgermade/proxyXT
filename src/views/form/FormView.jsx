@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { ColorField } from "../../components/form/ColorField.jsx";
+import { BanSymbolSvg } from "../../components/icons/BanSymbolSvg.jsx";
 import { ColorPickerSvg } from "../../components/icons/ColorPickerSvg.jsx";
 import { InputField } from "../../components/form/InputField.jsx";
 import { SelectField } from "../../components/form/SelectField.jsx";
@@ -8,6 +9,10 @@ import {
   Actions,
   DeleteButton,
   ColorPresetRow,
+  UserColorActions,
+  UserColorAddIcon,
+  UserColorList,
+  UserColorRow,
   ColorPresetButton,
   ColorPresetPanel,
   ColorPresetSwatch,
@@ -16,7 +21,9 @@ import {
   HiddenColorInput,
   HostColorRow,
   ProxyForm,
+  UserColorBanIcon,
   UserColorButton,
+  UserColorDeleteToggleIcon,
   UserColorPickerIcon,
   SubmitButton
 } from "./FormView.styles.jsx";
@@ -36,6 +43,8 @@ const COLOR_PRESETS = [
   "#ef476f"
 ];
 
+const MAX_USER_COLORS = Math.max(1, COLOR_PRESETS.length - 1);
+
 export function FormView({
   t,
   view,
@@ -48,10 +57,12 @@ export function FormView({
   onDelete
 }) {
   const [showColorPresets, setShowColorPresets] = useState(false);
+  const [isDeleteModeEnabled, setIsDeleteModeEnabled] = useState(false);
   const hostColorRowRef = useRef(null);
   const customColorInputRefs = useRef([]);
   const addCustomColorInputRef = useRef(null);
   const customColors = Array.isArray(userColorPresets) ? userColorPresets : [];
+  const displayedCustomColors = customColors.slice(0, MAX_USER_COLORS);
 
   useEffect(() => {
     if (!showColorPresets) {
@@ -61,6 +72,7 @@ export function FormView({
     function handlePointerDown(event) {
       if (!hostColorRowRef.current?.contains(event.target)) {
         setShowColorPresets(false);
+        setIsDeleteModeEnabled(false);
       }
     }
 
@@ -76,11 +88,18 @@ export function FormView({
   useEffect(() => {
     if (view !== "form") {
       setShowColorPresets(false);
+      setIsDeleteModeEnabled(false);
     }
   }, [view]);
 
   function handleToggleColorPresets() {
-    setShowColorPresets((current) => !current);
+    setShowColorPresets((current) => {
+      const next = !current;
+      if (!next) {
+        setIsDeleteModeEnabled(false);
+      }
+      return next;
+    });
   }
 
   function handleSelectColor(color) {
@@ -100,7 +119,7 @@ export function FormView({
 
     let nextColors;
     if (index < 0) {
-      nextColors = customColors.includes(normalized) ? customColors : [...customColors, normalized];
+      nextColors = customColors.includes(normalized) ? customColors : [...customColors, normalized].slice(0, MAX_USER_COLORS);
     } else {
       nextColors = customColors.slice();
       nextColors[index] = normalized;
@@ -110,10 +129,19 @@ export function FormView({
     setFormData((current) => ({ ...current, selectionColor: normalized }));
   }
 
+  function handleDeleteCustomColor(index) {
+    const nextColors = customColors.filter((_, colorIndex) => colorIndex !== index);
+    onUpdateUserColorPresets?.(nextColors);
+  }
+
   function closeNativeColorPicker(inputElement) {
     if (inputElement && typeof inputElement.blur === "function") {
       inputElement.blur();
     }
+  }
+
+  function handleToggleDeleteMode() {
+    setIsDeleteModeEnabled((current) => !current);
   }
 
   function handleOpenAddColorPicker() {
@@ -173,54 +201,86 @@ export function FormView({
               </ColorPresetRow>
 
               <ColorPresetRow>
-                {customColors.map((customColor, index) => {
-                  return (
+                <UserColorRow>
+                  <UserColorList>
+                    {displayedCustomColors.map((customColor, index) => {
+                      return (
+                        <UserColorButton
+                          key={`custom-${customColor}-${index}`}
+                          type="button"
+                          aria-label={customColor.toUpperCase()}
+                          title={customColor.toUpperCase()}
+                          $deleteMode={isDeleteModeEnabled}
+                          onClick={() => {
+                            if (isDeleteModeEnabled) {
+                              handleDeleteCustomColor(index);
+                              return;
+                            }
+                            handleOpenUserColorPicker(index);
+                          }}
+                        >
+                          <ColorPresetSwatch $value={customColor} aria-hidden="true" />
+                          <UserColorPickerIcon style={{ opacity: isDeleteModeEnabled ? 0 : undefined }}>
+                            <ColorPickerSvg size={11} color="currentColor" />
+                          </UserColorPickerIcon>
+                          <UserColorBanIcon style={{ opacity: isDeleteModeEnabled ? undefined : 0 }}>
+                            <BanSymbolSvg size={10} color="currentColor" />
+                          </UserColorBanIcon>
+                          <HiddenColorInput
+                            ref={(element) => {
+                              customColorInputRefs.current[index] = element;
+                            }}
+                            type="color"
+                            value={customColor}
+                            onChange={(event) => {
+                              handleCustomColorInput(index, event.currentTarget.value);
+                              closeNativeColorPicker(event.currentTarget);
+                            }}
+                          />
+                        </UserColorButton>
+                      );
+                    })}
+                  </UserColorList>
+
+                  <UserColorActions>
                     <UserColorButton
-                      key={`custom-${customColor}-${index}`}
                       type="button"
-                      aria-label={customColor.toUpperCase()}
-                      title={customColor.toUpperCase()}
-                      onClick={() => handleOpenUserColorPicker(index)}
+                      aria-label={t("labels.selectionColor")}
+                      title={t("labels.selectionColor")}
+                      onClick={handleOpenAddColorPicker}
                     >
-                      <ColorPresetSwatch $value={customColor} aria-hidden="true" />
-                      <UserColorPickerIcon>
+                      <ColorPresetSwatch $value={null} aria-hidden="true" />
+                      <UserColorAddIcon>
                         <ColorPickerSvg size={11} color="currentColor" />
-                      </UserColorPickerIcon>
+                      </UserColorAddIcon>
                       <HiddenColorInput
-                        ref={(element) => {
-                          customColorInputRefs.current[index] = element;
-                        }}
+                        ref={addCustomColorInputRef}
                         type="color"
-                        value={customColor}
+                        value={formData.selectionColor}
                         onChange={(event) => {
-                          handleCustomColorInput(index, event.currentTarget.value);
+                          handleCustomColorInput(-1, event.currentTarget.value);
                           closeNativeColorPicker(event.currentTarget);
                         }}
                       />
                     </UserColorButton>
-                  );
-                })}
 
-                <UserColorButton
-                  type="button"
-                  aria-label={t("labels.selectionColor")}
-                  title={t("labels.selectionColor")}
-                  onClick={handleOpenAddColorPicker}
-                >
-                  <ColorPresetSwatch $value={null} aria-hidden="true" />
-                  <UserColorPickerIcon>
-                    <ColorPickerSvg size={11} color="currentColor" />
-                  </UserColorPickerIcon>
-                  <HiddenColorInput
-                    ref={addCustomColorInputRef}
-                    type="color"
-                    value={formData.selectionColor}
-                    onChange={(event) => {
-                      handleCustomColorInput(-1, event.currentTarget.value);
-                      closeNativeColorPicker(event.currentTarget);
-                    }}
-                  />
-                </UserColorButton>
+                    {displayedCustomColors.length > 0 ? (
+                      <UserColorButton
+                        type="button"
+                        aria-label={t("labels.selectionColor")}
+                        title={t("buttons.server.delete")}
+                        $isDeleteToggle
+                        $deleteMode={isDeleteModeEnabled}
+                        onClick={handleToggleDeleteMode}
+                      >
+                        <ColorPresetSwatch $value={null} aria-hidden="true" />
+                        <UserColorDeleteToggleIcon>
+                          <BanSymbolSvg size={10} color="currentColor" />
+                        </UserColorDeleteToggleIcon>
+                      </UserColorButton>
+                    ) : null}
+                  </UserColorActions>
+                </UserColorRow>
               </ColorPresetRow>
             </ColorPresetPanel>
           ) : (

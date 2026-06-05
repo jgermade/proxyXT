@@ -1,4 +1,12 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+
+const userColorShake = keyframes`
+  0% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-0.6px) rotate(-1deg); }
+  50% { transform: translateX(0.6px) rotate(1deg); }
+  75% { transform: translateX(-0.4px) rotate(-0.6deg); }
+  100% { transform: translateX(0) rotate(0deg); }
+`;
 
 const buttonBaseStyles = css`
   border: none;
@@ -60,6 +68,30 @@ export const ColorPresetRow = styled.div`
   overflow: hidden;
 `;
 
+export const UserColorRow = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px;
+  align-items: center;
+`;
+
+export const UserColorActions = styled.div`
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 18px;
+  gap: 4px;
+  align-items: center;
+`;
+
+export const UserColorList = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 18px;
+  gap: 4px;
+  align-items: center;
+  overflow: hidden;
+`;
+
 export const ColorPresetButton = styled.button`
   width: 18px;
   height: 18px;
@@ -94,10 +126,33 @@ export const UserColorButton = styled(ColorPresetButton)`
   position: relative;
   overflow: hidden;
 
+  ${({ $deleteMode, $isDeleteToggle }) =>
+    $deleteMode &&
+    !$isDeleteToggle &&
+    css`
+      animation: ${userColorShake} 360ms ease-in-out infinite;
+    `}
+
+  ${({ $isDeleteToggle, $deleteMode }) =>
+    $isDeleteToggle &&
+    css`
+      background: ${$deleteMode ? "#ffd9c4" : "transparent"};
+      box-shadow: none;
+
+      &:hover {
+        background: ${$deleteMode ? "#ffc9ab" : "transparent"};
+      }
+
+      &:active {
+        background: ${$deleteMode ? "#ffb892" : "transparent"};
+      }
+    `}
+
   &:hover {
     background: #d2def2;
     filter: none;
     transform: translateY(-1px);
+    animation: none;
   }
 
   &:active {
@@ -121,6 +176,27 @@ export const UserColorPickerIcon = styled.span`
   color: #395170;
   opacity: 0;
   transition: opacity 120ms ease;
+
+  ${UserColorButton}:hover & {
+    opacity: 1;
+  }
+`;
+
+export const UserColorBanIcon = styled(UserColorPickerIcon)`
+  color: #8a2f0a;
+`;
+
+export const UserColorDeleteToggleIcon = styled(UserColorPickerIcon)`
+  color: #8a2f0a;
+  opacity: 0.92;
+
+  ${UserColorButton}:hover & {
+    opacity: 1;
+  }
+`;
+
+export const UserColorAddIcon = styled(UserColorPickerIcon)`
+  opacity: 0.92;
 
   ${UserColorButton}:hover & {
     opacity: 1;

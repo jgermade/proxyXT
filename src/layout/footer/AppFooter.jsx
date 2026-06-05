@@ -1,4 +1,5 @@
 import { h } from "preact";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { SquaredButton } from "../../components/SquaredButton.jsx";
 import { LanguageBadge } from "../../components/LanguageBadge.jsx";
 import { LogsSvg } from "../../components/icons/LogsSvg.jsx";
@@ -8,6 +9,8 @@ import { FooterProxyLabel } from "./FooterProxyLabel.jsx";
 import { FooterProxyStatus } from "./FooterProxyStatus.jsx";
 import { FooterProxyValue } from "./FooterProxyValue.jsx";
 import { StyledAppFooter } from "./AppFooter.styles.jsx";
+
+const FEEDBACK_ANIMATION_MS = 220;
 
 export function AppFooter({
   isHidden = false,
@@ -24,12 +27,60 @@ export function AppFooter({
   hasErrorLogs,
   onToggleLogs
 }) {
+  const [feedbackState, setFeedbackState] = useState(null);
+  const animationTimerRef = useRef(null);
+
+  useEffect(() => {
+    if (animationTimerRef.current) {
+      globalThis.clearTimeout(animationTimerRef.current);
+      animationTimerRef.current = null;
+    }
+
+    if (footerFeedbackMessage) {
+      setFeedbackState({
+        message: footerFeedbackMessage,
+        isError: Boolean(isFooterFeedbackError),
+        phase: "enter"
+      });
+      return undefined;
+    }
+
+    setFeedbackState((current) => {
+      if (!current) {
+        return null;
+      }
+
+      const next = { ...current, phase: "exit" };
+      animationTimerRef.current = globalThis.setTimeout(() => {
+        setFeedbackState(null);
+        animationTimerRef.current = null;
+      }, FEEDBACK_ANIMATION_MS);
+      return next;
+    });
+
+    return undefined;
+  }, [footerFeedbackMessage, isFooterFeedbackError]);
+
+  useEffect(() => {
+    return () => {
+      if (animationTimerRef.current) {
+        globalThis.clearTimeout(animationTimerRef.current);
+        animationTimerRef.current = null;
+      }
+    };
+  }, []);
+
   return (
     <StyledAppFooter $isHidden={isHidden}>
       <div>
-        {footerFeedbackMessage ? (
-          <ActiveFooter id="activeFooter" $isFeedback $isError={isFooterFeedbackError}>
-            {footerFeedbackMessage}
+        {feedbackState ? (
+          <ActiveFooter
+            id="activeFooter"
+            $isFeedback
+            $isError={feedbackState.isError}
+            $feedbackPhase={feedbackState.phase}
+          >
+            {feedbackState.message}
           </ActiveFooter>
         ) : (
           <FooterProxyStatus id="activeFooter" onClick={handleOpenList}>

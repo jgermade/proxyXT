@@ -47,9 +47,25 @@ export const ServerListItem = styled.div`
   align-items: stretch;
   gap: 0;
   min-height: 48px;
+  border-radius: 11px;
+  overflow: hidden;
+  position: relative;
   animation: ${cardEnter} 220ms ease both;
   cursor: ${({ $isDragging }) => ($isDragging ? "grabbing" : "grab")};
   user-select: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    background: ${({ $rowColor }) => $rowColor || "var(--brand-orange)"};
+    opacity: ${({ $isActive }) => ($isActive ? 0 : 1)};
+    pointer-events: none;
+    z-index: 2;
+  }
 `;
 
 export const ServerDragPlaceholder = styled.div`
@@ -69,9 +85,8 @@ export const ServerMainButton = styled.button`
   flex: 1;
   border: none;
   background: ${({ $isActive, $activeColor }) => ($isActive ? $activeColor : "var(--surface)")};
-  color: inherit;
+  color: ${({ $isActive, $activeTextColor }) => ($isActive ? $activeTextColor : "#1a2530")};
   padding: 8px 16px;
-  border-radius: 11px 0 0 11px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -97,21 +112,20 @@ export const ServerName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${({ $isActive }) => ($isActive ? "#ffffff" : "#1a2530")};
+  color: ${({ $isActive, $activeTextColor }) => ($isActive ? $activeTextColor : "#1a2530")};
 `;
 
 export const ServerMeta = styled.span`
   font-size: 0.8rem;
-  color: ${({ $isActive }) => ($isActive ? "#ffe3d5" : "#1f3249")};
+  color: ${({ $isActive, $activeMetaColor }) => ($isActive ? $activeMetaColor : "#1f3249")};
   font-weight: 500;
 `;
 
 export const ServerEditButton = styled.button`
   min-width: 35px;
   border: none;
-  border-radius: 0 11px 11px 0;
-  background: ${({ $isActive, $activeColor }) => ($isActive ? $activeColor : "#ffffff")};
-  color: ${({ $isActive }) => ($isActive ? "#1a2530" : "#4f6785")};
+  background: ${({ $isActive, $activeColor }) => ($isActive ? $activeColor : "var(--surface)")};
+  color: ${({ $isActive, $activeTextColor }) => ($isActive ? $activeTextColor : "#1a2530")};
   font-size: 1rem;
   line-height: 1;
   padding: 0;
@@ -121,9 +135,14 @@ export const ServerEditButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: ${({ $isActive, $activeColor }) => ($isActive ? $activeColor : "#234a75")};
-    color: ${({ $isActive }) => ($isActive ? "#1a2530" : "#ffffff")};
+    background: #ffd9c4;
+    color: #8d2f00;
     filter: none;
+  }
+
+  &:active {
+    background: #ffc9ab;
+    color: #7d2a00;
   }
 `;
 

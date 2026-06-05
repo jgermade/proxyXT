@@ -5,6 +5,8 @@ const SYNC_SERVERS_KEY = "proxyxt-sync-servers";
 const LOGS_KEY = "proxyxt-logs";
 const MAX_LOGS = 200;
 const FAILOVER_COOLDOWN_MS = 5000;
+const FAILOVER_ERRORS_BEFORE_SWITCH = 3;
+const FAILOVER_ERROR_ACCUMULATION_WINDOW_MS = 20000;
 const DEFAULT_SELECTION_COLOR = "#FF5400";
 const MAX_USER_COLOR_PRESETS = 32;
 const CONNECTIVITY_CHECK_COOLDOWN_MS = 4000;
@@ -38,6 +40,13 @@ const defaultState = {
 let failoverInProgress = false;
 let lastFailoverAt = 0;
 let lastConnectivityCheckAt = 0;
+let consecutiveProxyErrors = 0;
+let lastProxyErrorAt = 0;
+
+function resetProxyErrorStreak() {
+  consecutiveProxyErrors = 0;
+  lastProxyErrorAt = 0;
+}
 
 function generateId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
@@ -717,17 +726,34 @@ function getNextServerForRoundRobin(state) {
 }
 
 async function maybeFailoverOnProxyError(details) {
+  const now = Date.now();
+  if (now - lastProxyErrorAt > FAILOVER_ERROR_ACCUMULATION_WINDOW_MS) {
+    consecutiveProxyErrors = 0;
+  }
+  lastProxyErrorAt = now;
+  consecutiveProxyErrors += 1;
+
   await addLog("debug", "Evaluando failover por error de proxy", {
     error: details?.error || null,
-    fatal: Boolean(details?.fatal)
+    fatal: Boolean(details?.fatal),
+    consecutiveErrors: consecutiveProxyErrors,
+    requiredErrors: FAILOVER_ERRORS_BEFORE_SWITCH
   });
+
+  if (consecutiveProxyErrors < FAILOVER_ERRORS_BEFORE_SWITCH) {
+    await addLog("debug", "Failover omitido: esperando mas fallos consecutivos", {
+      consecutiveErrors: consecutiveProxyErrors,
+      requiredErrors: FAILOVER_ERRORS_BEFORE_SWITCH,
+      accumulationWindowMs: FAILOVER_ERROR_ACCUMULATION_WINDOW_MS
+    });
+    return;
+  }
 
   if (failoverInProgress) {
     await addLog("debug", "Failover omitido: ya hay uno en progreso", null);
     return;
   }
 
-  const now = Date.now();
   if (now - lastFailoverAt < FAILOVER_COOLDOWN_MS) {
     await addLog("debug", "Failover omitido: cooldown activo", {
       cooldownMs: FAILOVER_COOLDOWN_MS,
@@ -758,6 +784,7 @@ async function maybeFailoverOnProxyError(details) {
     await saveState(state);
     await applyActiveProxy(state);
     lastFailoverAt = Date.now();
+    resetProxyErrorStreak();
 
     await addLog("warn", "Failover round-robin aplicado tras error de proxy", {
       previousServer: summarizeServer(previousServer),
@@ -814,6 +841,12 @@ async function probeProxyConnectivityAndFailoverIfNeeded() {
           status: response?.status || null,
           url: CONNECTIVITY_CHECK_URL
         }
+      });
+    } else if (consecutiveProxyErrors > 0) {
+      resetProxyErrorStreak();
+      await addLog("debug", "Health-check exitoso: racha de fallos reiniciada", {
+        status: response.status,
+        url: CONNECTIVITY_CHECK_URL
       });
     }
   } catch (error) {

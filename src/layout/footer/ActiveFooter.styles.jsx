@@ -1,4 +1,26 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+
+const feedbackFadeInDown = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const feedbackFadeOutDown = keyframes`
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+`;
 
 export const StyledActiveFooter = styled.span`
   min-width: 0;
@@ -27,4 +49,18 @@ export const StyledActiveFooter = styled.span`
     if (!$isFeedback) return "transparent";
     return $isError ? "#f4c6aa" : "#a8e1bc";
   }};
+
+  ${({ $isFeedback, $feedbackPhase }) =>
+    $isFeedback &&
+    $feedbackPhase === "enter" &&
+    css`
+      animation: ${feedbackFadeInDown} 250ms ease-out both;
+    `}
+
+  ${({ $isFeedback, $feedbackPhase }) =>
+    $isFeedback &&
+    $feedbackPhase === "exit" &&
+    css`
+      animation: ${feedbackFadeOutDown} 220ms ease both;
+    `}
 `;
