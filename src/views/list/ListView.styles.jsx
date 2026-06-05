@@ -11,27 +11,58 @@ const cardEnter = keyframes`
   }
 `;
 
-const driftStars = keyframes`
-  from { background-position: 0 0, 28px 22px; }
-  to   { background-position: 28px 18px, 56px 40px; }
-`;
+const driftOverlay = keyframes`
+  0% {
+    transform: translate(0, 0);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
 
-const driftMoons = keyframes`
-  from { background-position: 0 0, 40px 32px; }
-  to   { background-position: -22px 24px, 18px 56px; }
+  16% {
+    transform: translate(-34px, -20px);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  32% {
+    transform: translate(30px, -34px);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  48% {
+    transform: translate(46px, 14px);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  64% {
+    transform: translate(-24px, 38px);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  80% {
+    transform: translate(-48px, -10px);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  92% {
+    transform: translate(12px, -22px);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 `;
 
 // Light shapes (for dark backgrounds)
-const STAR_L    = `url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='5,0 6.5,3.5 10,5 6.5,6.5 5,10 3.5,6.5 0,5 3.5,3.5' fill='%23c8d8e8' opacity='0.55'/%3E%3C/svg%3E")`;
-const STAR_SM_L = `url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='5,0 6.5,3.5 10,5 6.5,6.5 5,10 3.5,6.5 0,5 3.5,3.5' fill='%23c8d8e8' opacity='0.4'/%3E%3C/svg%3E")`;
-const MOON_L    = `url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M10,2 A8,8,0,1,0,10,18 A8,8,0,1,0,10,2 Z M7,4 A6,6,0,1,0,7,16 A6,6,0,1,0,7,4 Z' fill='%23c8d8e8' opacity='0.45'/%3E%3C/svg%3E")`;
-const MOON_SM_L = `url("data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M10,2 A8,8,0,1,0,10,18 A8,8,0,1,0,10,2 Z M7,4 A6,6,0,1,0,7,16 A6,6,0,1,0,7,4 Z' fill='%23c8d8e8' opacity='0.35'/%3E%3C/svg%3E")`;
+const STAR_L    = `url("data:image/svg+xml,%3Csvg width='50' height='40' viewBox='0 0 50 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='25,16 26.5,19.5 30,21 26.5,22.5 25,26 23.5,22.5 20,21 23.5,19.5' fill='%23c8d8e8' opacity='0.12'/%3E%3C/svg%3E")`;
+const STAR_SM_L = `url("data:image/svg+xml,%3Csvg width='40' height='32' viewBox='0 0 40 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='20,13 21,15.5 24,16.5 21,17.5 20,20 19,17.5 16,16.5 19,15.5' fill='%23c8d8e8' opacity='0.08'/%3E%3C/svg%3E")`;
+const MOON_L    = `url("data:image/svg+xml,%3Csvg width='80' height='56' viewBox='0 0 80 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M40,19 A9,9,0,1,0,40,37 A9,9,0,1,0,40,19 Z M38,22 A6,6,0,1,0,38,34 A6,6,0,1,0,38,22 Z' fill='%23c8d8e8' opacity='0.09'/%3E%3C/svg%3E")`;
+const MOON_SM_L = `url("data:image/svg+xml,%3Csvg width='60' height='44' viewBox='0 0 60 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M30,15 A7,7,0,1,0,30,29 A7,7,0,1,0,30,15 Z M28,17.4 A4.6,4.6,0,1,0,28,26.6 A4.6,4.6,0,1,0,28,17.4 Z' fill='%23c8d8e8' opacity='0.06'/%3E%3C/svg%3E")`;
 
 // Dark shapes (for light backgrounds)
-const STAR_D    = `url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='5,0 6.5,3.5 10,5 6.5,6.5 5,10 3.5,6.5 0,5 3.5,3.5' fill='%231e3246' opacity='0.4'/%3E%3C/svg%3E")`;
-const STAR_SM_D = `url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='5,0 6.5,3.5 10,5 6.5,6.5 5,10 3.5,6.5 0,5 3.5,3.5' fill='%231e3246' opacity='0.3'/%3E%3C/svg%3E")`;
-const MOON_D    = `url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M10,2 A8,8,0,1,0,10,18 A8,8,0,1,0,10,2 Z M7,4 A6,6,0,1,0,7,16 A6,6,0,1,0,7,4 Z' fill='%231e3246' opacity='0.35'/%3E%3C/svg%3E")`;
-const MOON_SM_D = `url("data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M10,2 A8,8,0,1,0,10,18 A8,8,0,1,0,10,2 Z M7,4 A6,6,0,1,0,7,16 A6,6,0,1,0,7,4 Z' fill='%231e3246' opacity='0.3'/%3E%3C/svg%3E")`;
+const STAR_D    = `url("data:image/svg+xml,%3Csvg width='50' height='40' viewBox='0 0 50 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='25,16 26.5,19.5 30,21 26.5,22.5 25,26 23.5,22.5 20,21 23.5,19.5' fill='%231e3246' opacity='0.08'/%3E%3C/svg%3E")`;
+const STAR_SM_D = `url("data:image/svg+xml,%3Csvg width='40' height='32' viewBox='0 0 40 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='20,13 21,15.5 24,16.5 21,17.5 20,20 19,17.5 16,16.5 19,15.5' fill='%231e3246' opacity='0.06'/%3E%3C/svg%3E")`;
+const MOON_D    = `url("data:image/svg+xml,%3Csvg width='80' height='56' viewBox='0 0 80 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M40,19 A9,9,0,1,0,40,37 A9,9,0,1,0,40,19 Z M38,22 A6,6,0,1,0,38,34 A6,6,0,1,0,38,22 Z' fill='%231e3246' opacity='0.07'/%3E%3C/svg%3E")`;
+const MOON_SM_D = `url("data:image/svg+xml,%3Csvg width='60' height='44' viewBox='0 0 60 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M30,15 A7,7,0,1,0,30,29 A7,7,0,1,0,30,15 Z M28,17.4 A4.6,4.6,0,1,0,28,26.6 A4.6,4.6,0,1,0,28,17.4 Z' fill='%231e3246' opacity='0.05'/%3E%3C/svg%3E")`;
 
 export const ListPanel = styled.section`
   min-height: 192px;
@@ -166,14 +197,16 @@ export const ServerEditButton = styled.button`
   z-index: 2;
 
   &:hover {
-    background: #ffd9c4;
-    color: #8d2f00;
+    background: ${({ $isActive, $activeHoverOverlay }) =>
+      $isActive ? $activeHoverOverlay || "rgba(255, 255, 255, 0.22)" : "#ffd9c4"};
+    color: ${({ $isActive, $activeTextColor }) => ($isActive ? $activeTextColor : "#8d2f00")};
     filter: none;
   }
 
   &:active {
-    background: #ffc9ab;
-    color: #7d2a00;
+    background: ${({ $isActive, $activeHoverOverlayStrong }) =>
+      $isActive ? $activeHoverOverlayStrong || "rgba(255, 255, 255, 0.3)" : "#ffc9ab"};
+    color: ${({ $isActive, $activeTextColor }) => ($isActive ? $activeTextColor : "#7d2a00")};
   }
 `;
 
@@ -217,29 +250,14 @@ export const EmptyStateActionButton = styled.button`
 
 export const ServerActivePatternOverlay = styled.span`
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  overflow: hidden;
+  inset: -60px;
   pointer-events: none;
   z-index: 3;
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      ${({ $v }) => $v === "dark" ? STAR_D    : STAR_L}    0    0    / 54px 42px repeat,
-      ${({ $v }) => $v === "dark" ? STAR_SM_D : STAR_SM_L} 28px 22px / 42px 34px repeat;
-    animation: ${driftStars} 14s ease-in-out infinite alternate;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      ${({ $v }) => $v === "dark" ? MOON_D    : MOON_L}    0    0    / 80px 60px repeat,
-      ${({ $v }) => $v === "dark" ? MOON_SM_D : MOON_SM_L} 40px 32px / 60px 48px repeat;
-    animation: ${driftMoons} 18s ease-in-out infinite alternate;
-  }
+  will-change: transform;
+  background:
+    ${({ $v }) => $v === "dark" ? STAR_D    : STAR_L}    0    0    / 68px 52px repeat,
+    ${({ $v }) => $v === "dark" ? STAR_SM_D : STAR_SM_L} 34px 26px / 54px 42px repeat,
+    ${({ $v }) => $v === "dark" ? MOON_D    : MOON_L}    10px 5px  / 100px 72px repeat,
+    ${({ $v }) => $v === "dark" ? MOON_SM_D : MOON_SM_L} 60px 36px / 76px 56px repeat;
+  animation: ${driftOverlay} 30s infinite;
 `;

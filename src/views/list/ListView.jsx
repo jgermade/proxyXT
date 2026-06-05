@@ -56,6 +56,10 @@ function ServerRow({
   const activeTextColor = getContrastingTextColor(activeColor);
   const activeMetaColor = activeTextColor === "#ffffff" ? "rgba(255,255,255,0.82)" : "rgba(26,37,48,0.82)";
   const activePatternVariant = activeTextColor === "#ffffff" ? "light" : "dark";
+  const activeEditHoverOverlay =
+    activeTextColor === "#ffffff" ? "rgba(255, 255, 255, 0.2)" : "rgba(26, 37, 48, 0.14)";
+  const activeEditHoverOverlayStrong =
+    activeTextColor === "#ffffff" ? "rgba(255, 255, 255, 0.28)" : "rgba(26, 37, 48, 0.2)";
 
   return (
     <ServerRowContainer>
@@ -89,6 +93,8 @@ function ServerRow({
           $isActive={isActive}
           $activeColor={activeColor}
           $activeTextColor={activeTextColor}
+          $activeHoverOverlay={activeEditHoverOverlay}
+          $activeHoverOverlayStrong={activeEditHoverOverlayStrong}
           title={t("buttons.server.edit")}
           aria-label={`${t("buttons.server.edit")} ${getServerDisplayName(server)}`}
           onClick={() => onEdit(server)}
