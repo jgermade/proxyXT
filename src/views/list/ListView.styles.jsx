@@ -99,7 +99,8 @@ export const ServerEditButton = styled.button`
 `;
 
 export const EmptyStateCard = styled.div`
-  background: #e4efff;
+  background: #f7faff;
+  border: 1px dashed #c1d1e3;
   color: #425773;
   border-radius: 11px;
   padding: 16px 8px;
@@ -107,4 +108,30 @@ export const EmptyStateCard = styled.div`
   margin: 8px 0;
   font-size: 0.84rem;
   display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
+`;
+
+export const EmptyStateMessage = styled.div`
+  margin: 0;
+`;
+
+export const EmptyStateActionButton = styled.button`
+  margin-top: 10px;
+  border: none;
+  border-radius: 9px;
+  padding: 8px 12px;
+  background: var(--brand-blue);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease;
+
+  &:hover {
+    background: #0967d4;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(9, 103, 212, 0.24);
+  }
 `;

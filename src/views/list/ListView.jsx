@@ -1,6 +1,8 @@
 import { h } from "preact";
 import {
+  EmptyStateActionButton,
   EmptyStateCard,
+  EmptyStateMessage,
   ListContainer,
   ListPanel,
   ServerEditButton,
@@ -36,24 +38,31 @@ function ServerRow({ server, activeServerId, onToggle, onEdit, getServerDisplayN
   );
 }
 
-export function ListView({ t, view, servers, activeServerId, onToggle, onEdit, getServerDisplayName }) {
+export function ListView({ t, view, servers, activeServerId, onToggle, onEdit, getServerDisplayName, onAddServer }) {
+  const isEmpty = !servers.length;
+
   return (
     <ListPanel $isVisible={view === "list"}>
       <ListContainer>
         <ServerList>
-            {servers.map((server) => (
+          {servers.map((server) => (
             <ServerRow
-                key={server.id}
-                server={server}
-                activeServerId={activeServerId}
-                onToggle={onToggle}
-                onEdit={onEdit}
-                getServerDisplayName={getServerDisplayName}
-                t={t}
+              key={server.id}
+              server={server}
+              activeServerId={activeServerId}
+              onToggle={onToggle}
+              onEdit={onEdit}
+              getServerDisplayName={getServerDisplayName}
+              t={t}
             />
-            ))}
+          ))}
         </ServerList>
-        <EmptyStateCard $isVisible={!servers.length}>{t("messages.noServers")}</EmptyStateCard>
+        <EmptyStateCard $isVisible={isEmpty}>
+          <EmptyStateMessage>{t("messages.noServers")}</EmptyStateMessage>
+          <EmptyStateActionButton type="button" onClick={onAddServer}>
+            {t("app.subtitle.addProxy")}
+          </EmptyStateActionButton>
+        </EmptyStateCard>
       </ListContainer>
     </ListPanel>
   );

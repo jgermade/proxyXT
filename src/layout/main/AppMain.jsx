@@ -51,6 +51,7 @@ export function AppMain({
         onToggle={handleToggleServer}
         onEdit={openFormForEdit}
         getServerDisplayName={getServerDisplayName}
+        onAddServer={handlePrimaryAction}
       />
 
       <FormView
