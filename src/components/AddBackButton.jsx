@@ -1,22 +1,13 @@
 import { h } from "preact";
 import { BackSymbolSvg } from "./icons/BackSymbolSvg.jsx";
 import { PlusSymbolSvg } from "./icons/PlusSymbolSvg.jsx";
-
-function buildClassName(variant, className, active, hasError) {
-  const classes = [variant === "plusToggle" ? "plus-button" : "ghost icon-btn", className];
-  if (active) {
-    classes.push("is-active");
-  }
-  if (hasError) {
-    classes.push("has-error");
-  }
-  return classes.filter(Boolean).join(" ");
-}
+import { StyledAddBackButton } from "./AddBackButton.styles.jsx";
 
 export function AddBackButton({
   view,
   onClick,
   variant = "icon",
+  slot = "default",
   className = "",
   active = false,
   hasError = false,
@@ -28,14 +19,18 @@ export function AddBackButton({
     variant === "plusToggle" ? (view === "list" ? <PlusSymbolSvg /> : <BackSymbolSvg />) : children;
 
   return (
-    <button
+    <StyledAddBackButton
       type="button"
-      className={buildClassName(variant, className, active, hasError)}
+      className={className}
+      $variant={variant}
+      $slot={slot}
+      $active={active}
+      $hasError={hasError}
       aria-label={ariaLabel || (view === "list" ? "Agregar servidor" : "Volver al listado")}
       title={title}
       onClick={onClick}
     >
       {content}
-    </button>
+    </StyledAddBackButton>
   );
 }

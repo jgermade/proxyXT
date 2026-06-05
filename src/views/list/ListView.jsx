@@ -7,13 +7,13 @@ function ServerItem({ server, activeServerId, onToggle, onEdit, getServerDisplay
 
   return (
     <li className={`server-item${isActive ? " is-active" : ""}`}>
-      <button type="button" className={`server-main${alias ? "" : " no-meta"}`} onClick={() => onToggle(server)}>
+      <button type="button" className={`btn server-main${alias ? "" : " no-meta"}`} onClick={() => onToggle(server)}>
         <span className="server-name">{alias || `${server.host}:${server.port}`}</span>
         {alias ? <span className="server-meta">{endpoint}</span> : null}
       </button>
       <button
         type="button"
-        className="server-edit-btn"
+        className="btn server-edit-btn"
         title={t("buttons.server.edit")}
         aria-label={`${t("buttons.server.edit")} ${getServerDisplayName(server)}`}
         onClick={() => onEdit(server)}

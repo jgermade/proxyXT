@@ -67,11 +67,11 @@ export function FormView({
         />
 
         <div className="actions">
-          <button type="submit">{formMode === "edit" ? t("buttons.server.saveChanges") : t("buttons.server.save")}</button>
+          <button type="submit" className="btn">{formMode === "edit" ? t("buttons.server.saveChanges") : t("buttons.server.save")}</button>
           <button
             id="deleteServer"
             type="button"
-            className={`ghost${formData.id ? "" : " hidden"}`}
+            className={`btn ghost${formData.id ? "" : " hidden"}`}
             onClick={onDelete}
           >
             {t("buttons.server.delete")}

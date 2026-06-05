@@ -76,7 +76,7 @@ export function App() {
             <div className="header-actions">
               <AddBackButton
                 variant="icon"
-                className="header-option-btn"
+                slot="header"
                 active={view === "preferences"}
                 ariaLabel={view === "preferences" ? t("buttons.preferences.hide") : t("buttons.preferences.show")}
                 title={t("preferences.title")}
@@ -153,7 +153,7 @@ export function App() {
 
           <AddBackButton
             variant="icon"
-            className="footer-btn"
+            slot="footer"
             active={view === "logs"}
             hasError={hasErrorLogs}
             ariaLabel={view === "logs" ? t("buttons.logs.hide") : t("buttons.logs.show")}

@@ -1,5 +1,6 @@
 import { h } from "preact";
 import { LanguageFlag } from "./LanguageFlag.jsx";
+import { BadgeFlag, BadgeText, StyledLanguageBadge } from "./LanguageBadge.styles.jsx";
 
 export function LanguageBadge({ preference, effectiveLanguage, t, onClick }) {
   const isAuto = preference === "auto";
@@ -9,18 +10,18 @@ export function LanguageBadge({ preference, effectiveLanguage, t, onClick }) {
   const clickableLabel = `${label} · ${t("buttons.preferences.show")}`;
 
   return (
-    <button
+    <StyledLanguageBadge
       type="button"
-      className={`language-badge${isClickable ? " is-clickable" : ""}`}
+      $isClickable={isClickable}
       title={isClickable ? clickableLabel : label}
       aria-label={isClickable ? clickableLabel : label}
       onClick={onClick}
       disabled={!isClickable}
     >
-      <span className="language-badge-flag">
+      <BadgeFlag>
         <LanguageFlag language={effectiveLanguage} />
-      </span>
-      <span className="language-badge-text">{label}</span>
-    </button>
+      </BadgeFlag>
+      <BadgeText>{label}</BadgeText>
+    </StyledLanguageBadge>
   );
 }

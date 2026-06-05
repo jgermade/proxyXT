@@ -115,53 +115,6 @@ body {
   gap: 8px;
 }
 
-.header-option-btn {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border-radius: 11px;
-  display: grid;
-  place-items: center;
-  background: #d8e6ff;
-  color: #2f4f7d;
-  opacity: 1;
-}
-
-.header-option-btn:hover {
-  background: #cbdfff;
-}
-
-.header-option-btn.is-active {
-  background: #ffd9c4;
-  color: #8d2f00;
-  opacity: 1;
-}
-
-.header-option-btn.is-active:hover {
-  background: #ffc9ab;
-}
-
-.plus-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: none;
-  background: var(--brand-blue);
-  color: #ffffff;
-  font-size: 1.08rem;
-  line-height: 1;
-  border-radius: 11px;
-  transition: background 120ms ease;
-}
-
-.plus-button:hover {
-  background: #0967d4;
-  filter: none;
-}
-
 .view-panel {
   min-height: 192px;
 }
@@ -281,7 +234,7 @@ h2 {
   color: #1a2530;
 }
 
-button {
+.btn {
   border: none;
   background: var(--brand-blue);
   color: #fff;
@@ -293,17 +246,17 @@ button {
   transition: background 120ms ease;
 }
 
-button:hover {
+.btn:hover {
   background: #0967d4;
   filter: none;
 }
 
-button.ghost {
+.btn.ghost {
   background: #ffffff;
   color: #334a66;
 }
 
-button.ghost:hover {
+.btn.ghost:hover {
   background: #eaf1fb;
 }
 
@@ -315,7 +268,7 @@ button.ghost:hover {
   padding: 16px;
 }
 
-button:focus-visible {
+.btn:focus-visible {
   outline: none;
 }
 
@@ -424,97 +377,6 @@ button:focus-visible {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.language-badge {
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 2px 6px 2px 3px;
-  border-radius: 999px;
-  color: #3a4f69;
-  font-size: 0.67rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.language-badge.is-clickable {
-  cursor: pointer;
-}
-
-.language-badge.is-clickable:hover {
-  background: #dbe6f6;
-}
-
-.language-badge:disabled {
-  opacity: 1;
-}
-
-.language-badge-flag {
-  display: inline-flex;
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.language-badge svg {
-  display: block;
-}
-
-.language-badge-text {
-  line-height: 1;
-}
-
-.footer-btn {
-  font-size: 0.9rem;
-  padding: 2px 4px;
-  border-radius: 8px;
-}
-
-.footer-btn.is-active {
-  background: #ffd9c4;
-  color: #8d2f00;
-  opacity: 1;
-}
-
-.footer-btn.is-active:hover {
-  background: #ffc9ab;
-  color: #7d2a00;
-}
-
-.icon-btn {
-  border: none;
-  background: transparent;
-  color: #4f6785;
-  opacity: 0.85;
-  position: relative;
-}
-
-.icon-btn:hover {
-  opacity: 1;
-  filter: none;
-}
-
-.icon-btn.is-active {
-  color: var(--brand-orange);
-  opacity: 1;
-}
-
-.icon-btn.has-error::after {
-  content: "!";
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background: var(--brand-orange);
-  color: #fff;
-  border-radius: 50%;
-  width: 13px;
-  height: 13px;
-  font-size: 0.6rem;
-  font-weight: 700;
-  line-height: 13px;
-  text-align: center;
-  pointer-events: none;
 }
 
 .logs-panel {
