@@ -130,6 +130,7 @@ export function App() {
       </div>
 
       <footer className={`app-footer${view === "form" ? " hidden" : ""}`}>
+        <div>
         {footerFeedbackMessage ? (
           <span id="activeFooter" style={footerFeedbackStyle}>
             {footerFeedbackMessage}
@@ -140,6 +141,7 @@ export function App() {
             <span className={`footer-proxy-value${activeServerId ? " is-active" : ""}`}> {activeProxyDisplay}</span>
           </span>
         )}
+        </div>
 
         <div className="footer-actions">
           <LanguageBadge
