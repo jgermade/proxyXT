@@ -5,6 +5,7 @@ import { BanSymbolSvg } from "../../components/icons/BanSymbolSvg.jsx";
 import { ColorPickerSvg } from "../../components/icons/ColorPickerSvg.jsx";
 import { InputField } from "../../components/form/InputField.jsx";
 import { SelectField } from "../../components/form/SelectField.jsx";
+import { getContrastingTextColor } from "../../lib/colors.js";
 import {
   Actions,
   DeleteButton,
@@ -237,6 +238,8 @@ export function FormView({
                 <UserColorRow>
                   <UserColorList>
                     {displayedCustomColors.map((customColor, index) => {
+                      const iconContrastColor = getContrastingTextColor(customColor);
+
                       return (
                         <UserColorButton
                           key={`custom-${customColor}-${index}`}
@@ -249,14 +252,21 @@ export function FormView({
                               handleDeleteCustomColor(index);
                               return;
                             }
-                            handleOpenUserColorPicker(index);
+                            // handleOpenUserColorPicker(index);
+                            handleSelectColor(customColor)
                           }}
                         >
                           <ColorPresetSwatch $value={customColor} aria-hidden="true" />
-                          <UserColorPickerIcon style={{ opacity: isDeleteModeEnabled ? 0 : undefined }}>
+                          {/* <UserColorPickerIcon
+                            $iconColor={iconContrastColor}
+                            style={{ opacity: isDeleteModeEnabled ? 0 : undefined }}
+                          >
                             <ColorPickerSvg size={11} color="currentColor" />
-                          </UserColorPickerIcon>
-                          <UserColorBanIcon style={{ opacity: isDeleteModeEnabled ? undefined : 0 }}>
+                          </UserColorPickerIcon> */}
+                          <UserColorBanIcon
+                            $iconColor={iconContrastColor}
+                            style={{ opacity: isDeleteModeEnabled ? undefined : 0 }}
+                          >
                             <BanSymbolSvg size={10} color="currentColor" />
                           </UserColorBanIcon>
                           <HiddenColorInput

@@ -75,7 +75,6 @@ export const ColorPresetRow = styled.div`
   min-height: 18px;
   align-items: center;
   justify-content: start;
-  overflow: hidden;
 `;
 
 export const UserColorRow = styled.div`
@@ -105,7 +104,6 @@ export const UserColorList = styled.div`
   width: max-content;
   min-height: 18px;
   align-items: center;
-  overflow: hidden;
 `;
 
 export const ColorPresetButton = styled.button`
@@ -119,8 +117,6 @@ export const ColorPresetButton = styled.button`
   box-shadow: none;
   cursor: pointer;
   appearance: none;
-  outline: 1px solid transparent;
-  outline-offset: 1px;
   transition: outline-color 120ms ease, filter 120ms ease, opacity 120ms ease, background 120ms ease;
 
   &:hover {
@@ -143,7 +139,7 @@ export const UserColorButton = styled(ColorPresetButton)`
   background: transparent;
   box-shadow: inset 0 0 0 1px #b6c8e2;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   outline: none;
 
   ${({ $deleteMode, $isDeleteToggle }) =>
@@ -186,6 +182,12 @@ export const ColorPresetSwatch = styled.span`
   height: 100%;
   border-radius: 4px;
   background: ${({ $value }) => $value || "transparent"};
+
+  &:hover {
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: ${({ $value }) => $value || "transparent"};
+  }
 `;
 
 export const UserColorPickerIcon = styled.span`
@@ -193,7 +195,7 @@ export const UserColorPickerIcon = styled.span`
   inset: 0;
   display: grid;
   place-items: center;
-  color: #395170;
+  color: ${({ $iconColor }) => $iconColor || "#395170"};
   opacity: 0;
   transition: opacity 120ms ease;
 
@@ -203,7 +205,7 @@ export const UserColorPickerIcon = styled.span`
 `;
 
 export const UserColorBanIcon = styled(UserColorPickerIcon)`
-  color: #8a2f0a;
+  color: ${({ $iconColor }) => $iconColor || "#8a2f0a"};
 `;
 
 export const UserColorDeleteToggleIcon = styled(UserColorPickerIcon)`
@@ -216,6 +218,7 @@ export const UserColorDeleteToggleIcon = styled(UserColorPickerIcon)`
 `;
 
 export const UserColorAddIcon = styled(UserColorPickerIcon)`
+  color: ${({ $iconColor }) => $iconColor || "#395170"};
   opacity: 0.92;
 
   ${UserColorButton}:hover & {
