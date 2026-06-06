@@ -26,10 +26,12 @@ export function PreferencesView({
   autoFailoverEnabled,
   reloadActiveTabOnToggle,
   syncServersWithAccount,
+  showFailoverNotifications,
   language,
   onAutoFailoverChange,
   onReloadActiveTabChange,
   onSyncServersWithAccountChange,
+  onShowFailoverNotificationsChange,
   onLanguageChange
 }) {
   return (
@@ -79,6 +81,14 @@ export function PreferencesView({
             label={t("labels.syncServersWithAccount")}
           />
           <PreferencesHelp>{t("preferences.syncHelp")}</PreferencesHelp>
+
+          <PreferenceToggle
+            id="showFailoverNotifications"
+            checked={Boolean(showFailoverNotifications)}
+            onChange={onShowFailoverNotificationsChange}
+            label={t("labels.showFailoverNotifications")}
+          />
+          <PreferencesHelp>{t("preferences.failoverNotificationsHelp")}</PreferencesHelp>
         </PreferencesGroup>
       </PreferencesCard>
     </PreferencesPanel>

@@ -45,6 +45,7 @@ labels:
   autoFailover: Automatischer Failover (round-robin)
   reloadActiveTabOnToggle: Aktiven Tab beim Aktivieren/Deaktivieren eines Servers neu laden
   syncServersWithAccount: Server mit dem Browserkonto synchronisieren
+  showFailoverNotifications: Benachrichtigungen bei Serverwechsel durch Failover anzeigen
   language: Sprache
 
 language:
@@ -81,6 +82,9 @@ messages:
   syncServersEnabled: Serversynchronisierung aktiviert
   syncServersDisabled: Serversynchronisierung deaktiviert
   tabsPermissionDenied: Die Berechtigung tabs ist erforderlich, um den aktiven Tab neu zu laden
+  notificationsPermissionDenied: Die Berechtigung notifications ist erforderlich, um Serverwechsel durch Failover anzuzeigen
+  failoverNotificationsEnabled: Failover-Benachrichtigungen aktiviert
+  failoverNotificationsDisabled: Failover-Benachrichtigungen deaktiviert
   languageChanged: "Sprache: {{language}}"
   languageChangedAuto: "Sprache: Auto ({{language}})"
   logsLoadError: "Logs konnten nicht geladen werden: {{error}}"
@@ -95,3 +99,4 @@ preferences:
   help: Wenn der aktive Proxy ausfaellt, wechselt die Erweiterung automatisch zum naechsten gespeicherten Server.
   reloadHelp: Laedt den aktuellen Tab neu, wenn der aktive Proxy aktiviert oder deaktiviert wird.
   syncHelp: Speichert Ihre Server im Browserkonto, damit sie auch in anderen angemeldeten Browsern verfuegbar sind.
+  failoverNotificationsHelp: Zeigt eine Benachrichtigung, wenn die Erweiterung durch Failover automatisch zum naechsten Server wechselt.

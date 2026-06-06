@@ -10,7 +10,8 @@ export const defaultState = {
     autoFailoverEnabled: false,
     language: "auto",
     reloadActiveTabOnToggle: false,
-    syncServersWithAccount: false
+    syncServersWithAccount: false,
+    showFailoverNotifications: false
   }
 };
 

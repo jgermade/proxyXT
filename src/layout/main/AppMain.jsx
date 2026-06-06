@@ -32,10 +32,12 @@ export function AppMain({
   autoFailoverEnabled,
   reloadActiveTabOnToggle,
   syncServersWithAccount,
+  showFailoverNotifications,
   languagePreference,
   handleAutoFailoverChange,
   handleReloadActiveTabChange,
   handleSyncServersWithAccountChange,
+  handleShowFailoverNotificationsChange,
   handleLanguageChange
 }) {
   return (
@@ -80,10 +82,12 @@ export function AppMain({
         autoFailoverEnabled={autoFailoverEnabled}
         reloadActiveTabOnToggle={reloadActiveTabOnToggle}
         syncServersWithAccount={syncServersWithAccount}
+        showFailoverNotifications={showFailoverNotifications}
         language={languagePreference}
         onAutoFailoverChange={handleAutoFailoverChange}
         onReloadActiveTabChange={handleReloadActiveTabChange}
         onSyncServersWithAccountChange={handleSyncServersWithAccountChange}
+        onShowFailoverNotificationsChange={handleShowFailoverNotificationsChange}
         onLanguageChange={handleLanguageChange}
       />
     </StyledAppMain>

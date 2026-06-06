@@ -31,6 +31,7 @@ export function App() {
     autoFailoverEnabled,
     reloadActiveTabOnToggle,
     syncServersWithAccount,
+    showFailoverNotifications,
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,
@@ -51,6 +52,7 @@ export function App() {
     handleAutoFailoverChange,
     handleReloadActiveTabChange,
     handleSyncServersWithAccountChange,
+    handleShowFailoverNotificationsChange,
     handleLanguageChange
   } = useProxyApp();
 
@@ -95,10 +97,12 @@ export function App() {
           autoFailoverEnabled={autoFailoverEnabled}
           reloadActiveTabOnToggle={reloadActiveTabOnToggle}
           syncServersWithAccount={syncServersWithAccount}
+          showFailoverNotifications={showFailoverNotifications}
           languagePreference={languagePreference}
           handleAutoFailoverChange={handleAutoFailoverChange}
           handleReloadActiveTabChange={handleReloadActiveTabChange}
           handleSyncServersWithAccountChange={handleSyncServersWithAccountChange}
+          handleShowFailoverNotificationsChange={handleShowFailoverNotificationsChange}
           handleLanguageChange={handleLanguageChange}
         />
       </ContentStack>

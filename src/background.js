@@ -41,7 +41,8 @@ const defaultState = {
     autoFailoverEnabled: false,
     language: "auto",
     reloadActiveTabOnToggle: false,
-    syncServersWithAccount: false
+    syncServersWithAccount: false,
+    showFailoverNotifications: false
   }
 };
 
@@ -484,6 +485,73 @@ async function setActionIcon(details) {
       resolve();
     });
   });
+}
+
+function permissionsContains(details) {
+  if (!api.permissions?.contains) {
+    return Promise.resolve(false);
+  }
+
+  if (api.permissions.contains.length <= 1) {
+    return api.permissions.contains(details);
+  }
+
+  return new Promise((resolve, reject) => {
+    api.permissions.contains(details, (result) => {
+      if (api.runtime.lastError) {
+        reject(new Error(api.runtime.lastError.message));
+        return;
+      }
+      resolve(Boolean(result));
+    });
+  });
+}
+
+function notificationsCreate(notificationId, options) {
+  if (!api.notifications?.create) {
+    return Promise.resolve(null);
+  }
+
+  if (api.notifications.create.length <= 2) {
+    return api.notifications.create(notificationId, options);
+  }
+
+  return new Promise((resolve, reject) => {
+    api.notifications.create(notificationId, options, (createdId) => {
+      if (api.runtime.lastError) {
+        reject(new Error(api.runtime.lastError.message));
+        return;
+      }
+      resolve(createdId || null);
+    });
+  });
+}
+
+async function maybeNotifyFailoverSwitch(state, previousServer, nextServer) {
+  if (!state?.preferences?.showFailoverNotifications) {
+    return;
+  }
+
+  try {
+    const hasPermission = await permissionsContains({ permissions: ["notifications"] });
+    if (!hasPermission) {
+      return;
+    }
+
+    const previousLabel = previousServer?.name || (previousServer ? `${previousServer.host}:${previousServer.port}` : "Sistema");
+    const nextLabel = nextServer?.name || (nextServer ? `${nextServer.host}:${nextServer.port}` : "Sistema");
+    const notificationId = `proxyxt-failover-${Date.now()}`;
+    await notificationsCreate(notificationId, {
+      type: "basic",
+      iconUrl: ACTIVE_ICON_PATHS[128],
+      title: "ProxyXT",
+      message: `Failover automático: ${previousLabel} -> ${nextLabel}`
+    });
+  } catch (error) {
+    await addLog("warn", "No se pudo mostrar notificacion de failover", {
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
 }
 
 function getCanvasContext(size) {
@@ -957,6 +1025,10 @@ async function handleUpdatePreferences(payload) {
       incoming.syncServersWithAccount === undefined
         ? Boolean(state.preferences?.syncServersWithAccount)
         : Boolean(incoming.syncServersWithAccount),
+    showFailoverNotifications:
+      incoming.showFailoverNotifications === undefined
+        ? Boolean(state.preferences?.showFailoverNotifications)
+        : Boolean(incoming.showFailoverNotifications),
     language
   };
 
@@ -1053,6 +1125,7 @@ async function maybeFailoverOnProxyError(details) {
   await saveState(state);
   await broadcastStateUpdate(state);
     await applyActiveProxy(state);
+    await maybeNotifyFailoverSwitch(state, previousServer, nextServer);
     lastFailoverAt = Date.now();
     resetProxyErrorStreak();
 

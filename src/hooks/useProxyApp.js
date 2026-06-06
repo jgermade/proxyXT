@@ -406,7 +406,8 @@ export function useProxyApp() {
           autoFailoverEnabled: enabled,
           language: state.preferences?.language || "auto",
           reloadActiveTabOnToggle: Boolean(state.preferences?.reloadActiveTabOnToggle),
-          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount)
+          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount),
+          showFailoverNotifications: Boolean(state.preferences?.showFailoverNotifications)
         }
       });
       setFeedback({
@@ -458,7 +459,8 @@ export function useProxyApp() {
           autoFailoverEnabled: Boolean(state.preferences?.autoFailoverEnabled),
           language: state.preferences?.language || "auto",
           reloadActiveTabOnToggle: enabled,
-          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount)
+          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount),
+          showFailoverNotifications: Boolean(state.preferences?.showFailoverNotifications)
         }
       });
       setFeedback({
@@ -493,7 +495,8 @@ export function useProxyApp() {
           autoFailoverEnabled: Boolean(state.preferences?.autoFailoverEnabled),
           language: state.preferences?.language || "auto",
           reloadActiveTabOnToggle: Boolean(state.preferences?.reloadActiveTabOnToggle),
-          syncServersWithAccount: enabled
+          syncServersWithAccount: enabled,
+          showFailoverNotifications: Boolean(state.preferences?.showFailoverNotifications)
         }
       });
       setFeedback({
@@ -506,6 +509,59 @@ export function useProxyApp() {
         preferences: {
           ...current.preferences,
           syncServersWithAccount: previous
+        }
+      }));
+      setFeedback({ message: error.message, isError: true });
+    }
+  }
+
+  async function handleShowFailoverNotificationsChange(enabled) {
+    const previous = Boolean(state.preferences?.showFailoverNotifications);
+
+    if (enabled) {
+      try {
+        const hasNotificationsPermission = await containsPermissions(["notifications"]);
+        if (!hasNotificationsPermission) {
+          const granted = await requestPermissions(["notifications"]);
+          if (!granted) {
+            setFeedback({ message: t("messages.notificationsPermissionDenied"), isError: true });
+            return;
+          }
+        }
+      } catch (error) {
+        setFeedback({ message: error.message || t("messages.notificationsPermissionDenied"), isError: true });
+        return;
+      }
+    }
+
+    setState((current) => ({
+      ...current,
+      preferences: {
+        ...current.preferences,
+        showFailoverNotifications: enabled
+      }
+    }));
+
+    try {
+      await callBackground("proxyxt/updatePreferences", {
+        preferences: {
+          autoFailoverEnabled: Boolean(state.preferences?.autoFailoverEnabled),
+          language: state.preferences?.language || "auto",
+          reloadActiveTabOnToggle: Boolean(state.preferences?.reloadActiveTabOnToggle),
+          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount),
+          showFailoverNotifications: enabled
+        }
+      });
+      setFeedback({
+        message: enabled ? t("messages.failoverNotificationsEnabled") : t("messages.failoverNotificationsDisabled"),
+        isError: false
+      });
+    } catch (error) {
+      setState((current) => ({
+        ...current,
+        preferences: {
+          ...current.preferences,
+          showFailoverNotifications: previous
         }
       }));
       setFeedback({ message: error.message, isError: true });
@@ -534,7 +590,8 @@ export function useProxyApp() {
           autoFailoverEnabled: Boolean(state.preferences?.autoFailoverEnabled),
           language: nextLanguage,
           reloadActiveTabOnToggle: Boolean(state.preferences?.reloadActiveTabOnToggle),
-          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount)
+          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount),
+          showFailoverNotifications: Boolean(state.preferences?.showFailoverNotifications)
         }
       });
       const explicitLanguageName =
@@ -588,6 +645,7 @@ export function useProxyApp() {
     autoFailoverEnabled: state.preferences?.autoFailoverEnabled,
     reloadActiveTabOnToggle: state.preferences?.reloadActiveTabOnToggle,
     syncServersWithAccount: state.preferences?.syncServersWithAccount,
+    showFailoverNotifications: state.preferences?.showFailoverNotifications,
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,
@@ -608,6 +666,7 @@ export function useProxyApp() {
     handleAutoFailoverChange,
     handleReloadActiveTabChange,
     handleSyncServersWithAccountChange,
+    handleShowFailoverNotificationsChange,
     handleLanguageChange
   };
 }

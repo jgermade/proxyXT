@@ -4,7 +4,7 @@
   "version": "1.0.2",
   "description": "Cliente proxy para Chrome y Firefox con multiples servidores y cambio rapido.",
   "permissions": ["storage", "proxy", "webRequest"],
-  "optional_permissions": ["tabs"],
+  "optional_permissions": ["tabs", "notifications"],
   "host_permissions": ["<all_urls>"],
   "icons": {
     "16": "icons/proxyxt-16.png",

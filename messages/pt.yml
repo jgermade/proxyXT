@@ -45,6 +45,7 @@ labels:
   autoFailover: Failover automatico (round-robin)
   reloadActiveTabOnToggle: Recarregar aba ativa ao ativar/desativar um servidor
   syncServersWithAccount: Sincronizar servidores com a conta do navegador
+  showFailoverNotifications: Mostrar notificacoes quando houver mudanca de servidor por failover
   language: Idioma
 
 language:
@@ -81,6 +82,9 @@ messages:
   syncServersEnabled: Sincronizacao de servidores ativada
   syncServersDisabled: Sincronizacao de servidores desativada
   tabsPermissionDenied: A permissao de abas e necessaria para recarregar a aba ativa
+  notificationsPermissionDenied: A permissao de notificacoes e necessaria para avisar mudancas por failover
+  failoverNotificationsEnabled: Notificacoes de failover ativadas
+  failoverNotificationsDisabled: Notificacoes de failover desativadas
   languageChanged: "Idioma: {{language}}"
   languageChangedAuto: "Idioma: Auto ({{language}})"
   logsLoadError: "Nao foi possivel carregar logs: {{error}}"
@@ -95,3 +99,4 @@ preferences:
   help: Se o proxy ativo falhar, a extensao trocara automaticamente para o proximo servidor salvo.
   reloadHelp: Recarrega a aba atual sempre que o proxy ativo for ativado ou desativado.
   syncHelp: Salva seus servidores na conta do navegador para mantelos disponiveis nos outros navegadores conectados.
+  failoverNotificationsHelp: Mostra uma notificacao quando a extensao trocar automaticamente para o proximo servidor por failover.

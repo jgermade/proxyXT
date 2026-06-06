@@ -45,6 +45,7 @@ labels:
   autoFailover: Failover automatico (round-robin)
   reloadActiveTabOnToggle: Ricarica la scheda attiva quando attivi/disattivi un server
   syncServersWithAccount: Sincronizza i server con l'account del browser
+  showFailoverNotifications: Mostra notifiche quando il server cambia per failover
   language: Lingua
 
 language:
@@ -81,6 +82,9 @@ messages:
   syncServersEnabled: Sincronizzazione server attivata
   syncServersDisabled: Sincronizzazione server disattivata
   tabsPermissionDenied: Il permesso tabs e necessario per ricaricare la scheda attiva
+  notificationsPermissionDenied: Il permesso notifications e necessario per avvisare i cambi server per failover
+  failoverNotificationsEnabled: Notifiche di failover attivate
+  failoverNotificationsDisabled: Notifiche di failover disattivate
   languageChanged: "Lingua: {{language}}"
   languageChangedAuto: "Lingua: Auto ({{language}})"
   logsLoadError: "Impossibile caricare i log: {{error}}"
@@ -95,3 +99,4 @@ preferences:
   help: Se il proxy attivo fallisce, l'estensione passera automaticamente al server salvato successivo.
   reloadHelp: Ricarica la scheda corrente ogni volta che il proxy attivo viene attivato o disattivato.
   syncHelp: Salva i server nel tuo account browser per mantenerli disponibili sugli altri browser con accesso effettuato.
+  failoverNotificationsHelp: Mostra una notifica quando l'estensione passa automaticamente al server successivo per failover.
