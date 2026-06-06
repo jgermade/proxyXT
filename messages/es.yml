@@ -67,6 +67,8 @@ language:
   de: Aleman
 
 placeholders:
+  host: 192.168.1.10
+  port: '1234'
   bypassList: localhost, *.internal.local
 
 messages:

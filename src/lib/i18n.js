@@ -43,23 +43,8 @@ export function resolveLanguage(preference, browserLanguage) {
   }
 
   const browser = String(browserLanguage || "").toLowerCase();
-  if (browser.startsWith("pt")) {
-    return "pt";
-  }
-  if (browser.startsWith("it")) {
-    return "it";
-  }
-  if (browser.startsWith("de")) {
-    return "de";
-  }
-  if (browser.startsWith("fr")) {
-    return "fr";
-  }
-  if (browser.startsWith("es")) {
-    return "es";
-  }
-
-  return "en";
+  const baseLanguage = browser.split(/[-_]/)[0];
+  return supportedLanguages.includes(baseLanguage) ? baseLanguage : "en";
 }
 
 export function createTranslator(language) {

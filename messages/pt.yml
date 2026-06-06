@@ -12,10 +12,10 @@ footer:
   proxyLabel: "Proxy:"
 
 buttons:
+  dismiss: Descartar
   preferences:
     show: Mostrar preferencias
     hide: Ocultar preferencias
-    dismiss: Descarta
   logs:
     show: Mostrar logs de backend
     hide: Ocultar logs de backend
@@ -46,6 +46,15 @@ labels:
   reloadActiveTabOnToggle: Recarregar aba ativa ao ativar/desativar um servidor
   syncServersWithAccount: Sincronizar servidores com a conta do navegador
   showFailoverNotifications: Mostrar notificacoes da extensao
+  syncData: Sincronizar dados
+  autoFailoverSimple: Failover automatico
+  autoReloadTab: Recarregar aba automaticamente
+  showNotifications: Mostrar notificacoes
+  betaBadge: Beta
+  permissionBadge: Requer permissao
+  betaBadgeFailoverTitle: Funcao beta. O failover automatico ainda esta em validacao.
+  permissionBadgeTabsTitle: Requer a permissao de abas para recarregar automaticamente a aba ativa.
+  permissionBadgeNotificationsTitle: Requer a permissao de notificacoes para mostrar avisos da extensao.
   language: Idioma
 
 language:
@@ -58,6 +67,8 @@ language:
   de: Alemao
 
 placeholders:
+  host: 192.168.1.10
+  port: '1234'
   bypassList: localhost, *.internal.local
 
 messages:

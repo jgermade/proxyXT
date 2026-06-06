@@ -46,6 +46,15 @@ labels:
   reloadActiveTabOnToggle: Recharger l'onglet actif lors de l'activation/desactivation d'un serveur
   syncServersWithAccount: Synchroniser les serveurs avec le compte du navigateur
   showFailoverNotifications: Afficher les notifications de l'extension
+  syncData: Synchroniser les donnees
+  autoFailoverSimple: Basculement automatique
+  autoReloadTab: Rechargement auto de l'onglet
+  showNotifications: Afficher les notifications
+  betaBadge: Beta
+  permissionBadge: Autorisation requise
+  betaBadgeFailoverTitle: Fonction beta. Le basculement automatique est encore en validation.
+  permissionBadgeTabsTitle: Requiert l'autorisation des onglets pour recharger automatiquement l'onglet actif.
+  permissionBadgeNotificationsTitle: Requiert l'autorisation des notifications pour afficher les alertes de l'extension.
   language: Langue
 
 language:
@@ -58,6 +67,8 @@ language:
   de: Allemand
 
 placeholders:
+  host: 192.168.1.10
+  port: '1234'
   bypassList: localhost, *.internal.local
 
 messages:

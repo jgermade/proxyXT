@@ -343,6 +343,7 @@ export function FormView({
                 inputRef={portInputRef}
                 type="number"
                 value={formData.port}
+                placeholder={t("placeholders.port")}
                 min={1}
                 max={65535}
                 required={true}
@@ -357,6 +358,7 @@ export function FormView({
           id="host"
           type="text"
           value={formData.host}
+          placeholder={t("placeholders.host")}
           required={true}
           onInput={(value) => setFormData((current) => ({ ...current, host: value }))}
         />
