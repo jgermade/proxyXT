@@ -20,6 +20,7 @@ import {
   FormRow,
   HiddenColorInput,
   HostColorRow,
+  NativeColorPickerOverlay,
   ProxyForm,
   UserColorBanIcon,
   UserColorButton,
@@ -58,9 +59,11 @@ export function FormView({
 }) {
   const [showColorPresets, setShowColorPresets] = useState(false);
   const [isDeleteModeEnabled, setIsDeleteModeEnabled] = useState(false);
+  const [isNativeColorPickerOpen, setIsNativeColorPickerOpen] = useState(false);
   const hostColorRowRef = useRef(null);
   const customColorInputRefs = useRef([]);
   const addCustomColorInputRef = useRef(null);
+  const activeNativeColorInputRef = useRef(null);
   const customColors = Array.isArray(userColorPresets) ? userColorPresets : [];
   const displayedCustomColors = customColors.slice(0, MAX_USER_COLORS);
 
@@ -89,6 +92,8 @@ export function FormView({
     if (view !== "form") {
       setShowColorPresets(false);
       setIsDeleteModeEnabled(false);
+      setIsNativeColorPickerOpen(false);
+      activeNativeColorInputRef.current = null;
     }
   }, [view]);
 
@@ -107,8 +112,18 @@ export function FormView({
     setShowColorPresets(false);
   }
 
+  function openNativeColorPicker(inputElement) {
+    if (!inputElement) {
+      return;
+    }
+
+    activeNativeColorInputRef.current = inputElement;
+    setIsNativeColorPickerOpen(true);
+    inputElement.click();
+  }
+
   function handleOpenUserColorPicker(index) {
-    customColorInputRefs.current[index]?.click();
+    openNativeColorPicker(customColorInputRefs.current[index]);
   }
 
   function handleCustomColorInput(index, color) {
@@ -134,10 +149,13 @@ export function FormView({
     onUpdateUserColorPresets?.(nextColors);
   }
 
-  function closeNativeColorPicker(inputElement) {
+  function closeNativeColorPicker(inputElement = activeNativeColorInputRef.current) {
     if (inputElement && typeof inputElement.blur === "function") {
       inputElement.blur();
     }
+
+    setIsNativeColorPickerOpen(false);
+    activeNativeColorInputRef.current = null;
   }
 
   function handleToggleDeleteMode() {
@@ -145,11 +163,26 @@ export function FormView({
   }
 
   function handleOpenAddColorPicker() {
-    addCustomColorInputRef.current?.click();
+    openNativeColorPicker(addCustomColorInputRef.current);
   }
 
   return (
     <FormPanel $isVisible={view === "form"}>
+      {isNativeColorPickerOpen ? (
+        <NativeColorPickerOverlay
+          onMouseDown={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            closeNativeColorPicker();
+          }}
+          onTouchStart={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            closeNativeColorPicker();
+          }}
+        />
+      ) : null}
+
       <ProxyForm onSubmit={onSubmit}>
         <FormRow>
           <SelectField
@@ -232,9 +265,11 @@ export function FormView({
                             }}
                             type="color"
                             value={customColor}
+                            onBlur={() => {
+                              closeNativeColorPicker();
+                            }}
                             onChange={(event) => {
                               handleCustomColorInput(index, event.currentTarget.value);
-                              closeNativeColorPicker(event.currentTarget);
                             }}
                           />
                         </UserColorButton>
@@ -257,9 +292,11 @@ export function FormView({
                         ref={addCustomColorInputRef}
                         type="color"
                         value={formData.selectionColor}
+                        onBlur={() => {
+                          closeNativeColorPicker();
+                        }}
                         onChange={(event) => {
                           handleCustomColorInput(-1, event.currentTarget.value);
-                          closeNativeColorPicker(event.currentTarget);
                         }}
                       />
                     </UserColorButton>

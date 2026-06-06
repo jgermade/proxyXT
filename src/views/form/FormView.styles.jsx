@@ -47,6 +47,13 @@ export const HostColorRow = styled.div`
   align-items: end;
 `;
 
+export const NativeColorPickerOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: transparent;
+`;
+
 export const ColorPresetPanel = styled.div`
   display: grid;
   grid-template-rows: repeat(2, 18px);
@@ -132,17 +139,30 @@ export const ColorPresetButton = styled.button`
 `;
 
 export const UserColorButton = styled(ColorPresetButton)`
-  background: #d9e5f6;
+  /* background: #d9e5f6; */
+  background: transparent;
   box-shadow: inset 0 0 0 1px #b6c8e2;
   position: relative;
   overflow: hidden;
+  outline: none;
 
   ${({ $deleteMode, $isDeleteToggle }) =>
     $deleteMode &&
     !$isDeleteToggle &&
     css`
-      animation: ${userColorShake} 360ms ease-in-out infinite;
+      animation: ${userColorShake} 1s ease-in-out infinite;
     `}
+
+  &:hover {
+    background: #d2def2;
+    filter: none;
+    outline-color: rgba(79, 121, 182, 0.7);
+    animation: none;
+  }
+
+  &:active {
+    background: #becee8;
+  }
 
   ${({ $isDeleteToggle, $deleteMode }) =>
     $isDeleteToggle &&
@@ -158,17 +178,6 @@ export const UserColorButton = styled(ColorPresetButton)`
         background: ${$deleteMode ? "#ffb892" : "transparent"};
       }
     `}
-
-  &:hover {
-    background: #d2def2;
-    filter: none;
-    outline-color: rgba(79, 121, 182, 0.7);
-    animation: none;
-  }
-
-  &:active {
-    background: #becee8;
-  }
 `;
 
 export const ColorPresetSwatch = styled.span`
