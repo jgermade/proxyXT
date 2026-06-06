@@ -88,8 +88,8 @@ messages:
   roundRobinDisabled: Round Robin desactivado
   reloadOnToggleEnabled: Recarga de pestana activa activada
   reloadOnToggleDisabled: Recarga de pestana activa desactivada
-  syncServersEnabled: Sincronizacion de servidores activada
-  syncServersDisabled: Sincronizacion de servidores desactivada
+  syncServersEnabled: Sincronización activada
+  syncServersDisabled: Sincronización desactivada
   tabsPermissionDenied: El permiso de pestanas es necesario para recargar la pestana activa
   notificationsPermissionDenied: El permiso de notificaciones es necesario para mostrar avisos de la extension
   failoverNotificationsEnabled: Notificaciones activadas

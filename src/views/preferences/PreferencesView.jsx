@@ -4,7 +4,7 @@ import { PreferencesSvg } from "../../components/icons/PreferencesSvg.jsx";
 import { SelectField } from "../../components/form/SelectField.jsx";
 import {
   PreferenceToggle,
-  PreferencesCard,
+  PreferencesForm,
   PreferencesGroup,
   PreferencesHintBox,
   PreferencesHintPlaceholder,
@@ -58,7 +58,7 @@ export function PreferencesView({
 
   return (
     <PreferencesPanel $isVisible={view === "preferences"}>
-      <PreferencesCard>
+      <PreferencesForm>
         <PreferencesGroup>
           <SelectField
             id="language"
@@ -132,7 +132,7 @@ export function PreferencesView({
             <PreferencesHintText>{activeHint || " "}</PreferencesHintText>
           </PreferencesHintBox>
         </PreferencesGroup>
-      </PreferencesCard>
+      </PreferencesForm>
     </PreferencesPanel>
   );
 }

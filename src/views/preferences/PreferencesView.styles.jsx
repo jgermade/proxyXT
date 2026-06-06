@@ -6,10 +6,11 @@ export const PreferencesPanel = styled.section`
   display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
 `;
 
-export const PreferencesCard = styled.div`
+export const PreferencesForm = styled.form`
   display: grid;
   gap: 8px;
   padding: 16px;
+  background: #f4f8ff;
 `;
 
 export const PreferencesGroup = styled.div`
