@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { ColorField } from "../../components/form/ColorField.jsx";
 import { BanSymbolSvg } from "../../components/icons/BanSymbolSvg.jsx";
 import { ColorPickerSvg } from "../../components/icons/ColorPickerSvg.jsx";
+import { OkCheckSvg } from "../../components/icons/OkCheckSvg.jsx";
 import { InputField } from "../../components/form/InputField.jsx";
 import { SelectField } from "../../components/form/SelectField.jsx";
 import { getContrastingTextColor } from "../../lib/colors.js";
@@ -170,6 +171,7 @@ export function FormView({
   const hostColorRowRef = useRef(null);
   const customColorPickerPanelRef = useRef(null);
   const customColorSpectrumRef = useRef(null);
+  const initialPickerColorRef = useRef(formData.selectionColor);
   const hostInputRef = useRef(null);
   const nameInputRef = useRef(null);
   const bypassListInputRef = useRef(null);
@@ -311,6 +313,7 @@ export function FormView({
     setIsCustomColorPickerOpen((current) => {
       const next = !current;
       if (next) {
+        initialPickerColorRef.current = formData.selectionColor;
         setShowColorPresets(true);
         setIsDeleteModeEnabled(false);
       }
@@ -366,9 +369,17 @@ export function FormView({
     applyPickerColor(hsv.h, hsv.s, hsv.v);
   }
 
-  function handleCloseCustomColorPicker() {
+  function handleConfirmCustomColorPicker() {
     const currentHex = rgbToHex(...Object.values(hsvToRgb(pickerHue, pickerSaturation, pickerValue)));
     handleCustomColorInput(-1, currentHex);
+    setIsCustomColorPickerOpen(false);
+  }
+
+  function handleDismissCustomColorPicker() {
+    const initialColor = initialPickerColorRef.current;
+    if (initialColor) {
+      setFormData((current) => ({ ...current, selectionColor: initialColor }));
+    }
     setIsCustomColorPickerOpen(false);
   }
 
@@ -539,10 +550,19 @@ export function FormView({
                   type="button"
                   aria-label={t("buttons.dismiss")}
                   title={t("buttons.dismiss")}
-                  onClick={handleCloseCustomColorPicker}
+                  onClick={handleDismissCustomColorPicker}
                 >
                   <BanSymbolSvg size={12} color="currentColor" />
                 </CustomColorPickerCloseButton>
+
+                <CustomColorPickerActionButton
+                  type="button"
+                  aria-label={t("buttons.server.save")}
+                  title={t("buttons.server.save")}
+                  onClick={handleConfirmCustomColorPicker}
+                >
+                  <OkCheckSvg size={11} color="currentColor" />
+                </CustomColorPickerActionButton>
               </CustomColorPickerActions>
             </CustomColorPickerHeader>
 
