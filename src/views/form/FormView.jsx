@@ -15,6 +15,8 @@ import {
   CustomColorInputGroup,
   CustomColorInput,
   CustomColorInputs,
+  CustomColorPickerActionButton,
+  CustomColorPickerActions,
   CustomColorPickerMain,
   CustomColorPickerPanel,
   CustomColorPickerPreview,
@@ -174,6 +176,8 @@ export function FormView({
   const portInputRef = useRef(null);
   const customColors = Array.isArray(userColorPresets) ? userColorPresets : [];
   const displayedCustomColors = customColors.slice(0, MAX_USER_COLORS);
+  const isScreenColorPickSupported =
+    typeof globalThis !== "undefined" && typeof globalThis.EyeDropper === "function";
 
   useEffect(() => {
     if (!showColorPresets) {
@@ -368,6 +372,27 @@ export function FormView({
     setIsCustomColorPickerOpen(false);
   }
 
+  async function handlePickColorFromScreen() {
+    if (!isScreenColorPickSupported) {
+      return;
+    }
+
+    try {
+      const eyeDropper = new globalThis.EyeDropper();
+      const result = await eyeDropper.open();
+      const parsed = parseHexColor(result?.sRGBHex);
+      if (!parsed) {
+        return;
+      }
+      const hsv = rgbToHsv(parsed.r, parsed.g, parsed.b);
+      applyPickerColor(hsv.h, hsv.s, hsv.v);
+    } catch (error) {
+      if (error?.name === "AbortError") {
+        return;
+      }
+    }
+  }
+
   return (
     <FormPanel $isVisible={view === "form"}>
       <ProxyForm onSubmit={onSubmit}>
@@ -498,14 +523,27 @@ export function FormView({
                 <span>{String(formData.selectionColor || "").toUpperCase()}</span>
               </CustomColorPickerPreview>
 
-              <CustomColorPickerCloseButton
-                type="button"
-                aria-label={t("buttons.dismiss")}
-                title={t("buttons.dismiss")}
-                onClick={handleCloseCustomColorPicker}
-              >
-                <BanSymbolSvg size={12} color="currentColor" />
-              </CustomColorPickerCloseButton>
+              <CustomColorPickerActions>
+                {isScreenColorPickSupported ? (
+                  <CustomColorPickerActionButton
+                    type="button"
+                    aria-label="Pick color from screen"
+                    title="Pick color from screen"
+                    onClick={handlePickColorFromScreen}
+                  >
+                    <ColorPickerSvg size={12} color="currentColor" />
+                  </CustomColorPickerActionButton>
+                ) : null}
+
+                <CustomColorPickerCloseButton
+                  type="button"
+                  aria-label={t("buttons.dismiss")}
+                  title={t("buttons.dismiss")}
+                  onClick={handleCloseCustomColorPicker}
+                >
+                  <BanSymbolSvg size={12} color="currentColor" />
+                </CustomColorPickerCloseButton>
+              </CustomColorPickerActions>
             </CustomColorPickerHeader>
 
             <CustomColorPickerMain>

@@ -80,6 +80,12 @@ export const CustomColorPickerHeader = styled.div`
   gap: 8px;
 `;
 
+export const CustomColorPickerActions = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+`;
+
 export const CustomColorPickerMain = styled.div`
   min-height: 0;
   display: grid;
@@ -241,6 +247,10 @@ export const CustomColorPickerCloseButton = styled.button`
     background: #ffffff;
     box-shadow: inset 0 0 0 1px #4f79b6, 0 0 0 2px rgba(0, 83, 255, 0.15);
   }
+`;
+
+export const CustomColorPickerActionButton = styled(CustomColorPickerCloseButton)`
+  border-radius: 6px;
 `;
 
 export const ColorPresetRow = styled.div`
