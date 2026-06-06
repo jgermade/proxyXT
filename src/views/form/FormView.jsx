@@ -19,6 +19,7 @@ import {
   CustomColorPickerPanel,
   CustomColorPickerPreview,
   CustomColorPickerPreviewSwatch,
+  CustomColorHueScale,
   CustomColorHueSlider,
   CustomColorSpectrum,
   CustomColorSpectrumThumb,
@@ -538,6 +539,8 @@ export function FormView({
                   applyPickerColor(nextHue, pickerSaturation, pickerValue);
                 }}
               />
+
+              <CustomColorHueScale aria-hidden="true" />
             </CustomColorPickerMain>
 
             <CustomColorInputs>

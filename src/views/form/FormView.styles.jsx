@@ -83,7 +83,7 @@ export const CustomColorPickerHeader = styled.div`
 export const CustomColorPickerMain = styled.div`
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 16px;
+  grid-template-columns: minmax(0, 1fr) 16px 6px;
   gap: 8px;
 `;
 
@@ -122,6 +122,23 @@ export const CustomColorHueSlider = styled.input`
   cursor: ns-resize;
 `;
 
+export const CustomColorHueScale = styled.span`
+  width: 6px;
+  min-height: 0;
+  border-radius: 999px;
+  background: linear-gradient(
+    to top,
+    #ff0000 0%,
+    #ff00ff 16.6%,
+    #0000ff 33.3%,
+    #00ffff 50%,
+    #00ff00 66.6%,
+    #ffff00 83.3%,
+    #ff0000 100%
+  );
+  box-shadow: inset 0 0 0 1px rgba(57, 81, 112, 0.25);
+`;
+
 export const CustomColorInputs = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 1fr) 38px 38px 38px;
@@ -158,6 +175,17 @@ export const CustomColorInput = styled.input`
     outline: none;
     background: #ffffff;
     box-shadow: inset 0 0 0 1px #4f79b6, 0 0 0 2px rgba(0, 83, 255, 0.12);
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  &[type="number"]::-webkit-outer-spin-button,
+  &[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 `;
 
