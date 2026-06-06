@@ -64,6 +64,9 @@ export function FormView({
   const customColorInputRefs = useRef([]);
   const addCustomColorInputRef = useRef(null);
   const activeNativeColorInputRef = useRef(null);
+  const hostInputRef = useRef(null);
+  const nameInputRef = useRef(null);
+  const bypassListInputRef = useRef(null);
   const portInputRef = useRef(null);
   const customColors = Array.isArray(userColorPresets) ? userColorPresets : [];
   const displayedCustomColors = customColors.slice(0, MAX_USER_COLORS);
@@ -104,17 +107,28 @@ export function FormView({
     }
 
     const focusTimer = globalThis.setTimeout(() => {
-      if (!portInputRef.current) {
+      const preferredInput =
+        formMode === "edit"
+          ? [
+              { ref: portInputRef, value: formData.port },
+              { ref: hostInputRef, value: formData.host },
+              { ref: nameInputRef, value: formData.name },
+              { ref: bypassListInputRef, value: formData.bypassList }
+            ].find((field) => !String(field.value || "").trim())?.ref
+          : null;
+      const inputToFocus = preferredInput?.current || portInputRef.current;
+
+      if (!inputToFocus) {
         return;
       }
-      portInputRef.current.focus();
-      portInputRef.current.select?.();
+      inputToFocus.focus();
+      inputToFocus.select?.();
     }, 0);
 
     return () => {
       globalThis.clearTimeout(focusTimer);
     };
-  }, [view, showColorPresets, formMode]);
+  }, [view, showColorPresets, formMode, formData.port, formData.host, formData.name, formData.bypassList]);
 
   function handleToggleColorPresets() {
     setShowColorPresets((current) => {
@@ -356,6 +370,7 @@ export function FormView({
         <InputField
           label={t("labels.host")}
           id="host"
+          inputRef={hostInputRef}
           type="text"
           value={formData.host}
           placeholder={t("placeholders.host")}
@@ -366,6 +381,7 @@ export function FormView({
         <InputField
           label={t("labels.alias")}
           id="name"
+          inputRef={nameInputRef}
           type="text"
           value={formData.name}
           maxLength={80}
@@ -375,6 +391,7 @@ export function FormView({
         <InputField
           label={t("labels.bypassList")}
           id="bypassList"
+          inputRef={bypassListInputRef}
           type="text"
           value={formData.bypassList}
           placeholder={t("placeholders.bypassList")}
