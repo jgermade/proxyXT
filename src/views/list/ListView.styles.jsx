@@ -106,6 +106,8 @@ export const ServerListItem = styled.div`
   animation: ${cardEnter} 220ms ease both;
   cursor: ${({ $isDragging }) => ($isDragging ? "grabbing" : "grab")};
   user-select: none;
+  background: ${({ $isActive, $rowColor }) => ($isActive ? $rowColor || "var(--brand-orange)" : "transparent")};
+  transition: background 120ms ease;
 
   &::before {
     content: "";
@@ -142,7 +144,7 @@ export const ServerDragPlaceholder = styled.div`
 export const ServerMainButton = styled.button`
   flex: 1;
   border: none;
-  background: ${({ $isActive, $activeColor }) => ($isActive ? $activeColor : "var(--surface)")};
+  background: ${({ $isActive }) => ($isActive ? "transparent" : "var(--surface)")};
   color: ${({ $isActive, $activeTextColor }) => ($isActive ? $activeTextColor : "#1a2530")};
   padding: 8px 16px;
   display: flex;
@@ -158,11 +160,11 @@ export const ServerMainButton = styled.button`
   z-index: 2;
 
   &:hover {
-    background: ${({ $isActive, $activeColor }) => ($isActive ? $activeColor : "#f4f8ff")};
+    background: ${({ $isActive }) => ($isActive ? "transparent" : "#f4f8ff")};
   }
 
   &:active {
-    background: ${({ $isActive, $activeColor }) => ($isActive ? $activeColor : "#eaf1fb")};
+    background: ${({ $isActive }) => ($isActive ? "transparent" : "#eaf1fb")};
   }
 `;
 
@@ -184,7 +186,7 @@ export const ServerMeta = styled.span`
 export const ServerEditButton = styled.button`
   min-width: 35px;
   border: none;
-  background: ${({ $isActive, $activeColor }) => ($isActive ? $activeColor : "var(--surface)")};
+  background: ${({ $isActive }) => ($isActive ? "transparent" : "var(--surface)")};
   color: ${({ $isActive, $activeTextColor }) => ($isActive ? $activeTextColor : "#1a2530")};
   font-size: 1rem;
   line-height: 1;
@@ -195,18 +197,37 @@ export const ServerEditButton = styled.button`
   cursor: pointer;
   position: relative;
   z-index: 2;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: ${({ $activeHoverOverlay }) => $activeHoverOverlay || "rgba(255, 255, 255, 0.22)"};
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 120ms ease, background 120ms ease;
+    z-index: -1;
+  }
 
   &:hover {
-    background: ${({ $isActive, $activeHoverOverlay }) =>
-      $isActive ? $activeHoverOverlay || "rgba(255, 255, 255, 0.22)" : "#ffd9c4"};
+    background: ${({ $isActive }) => ($isActive ? "transparent" : "#ffd9c4")};
     color: ${({ $isActive, $activeTextColor }) => ($isActive ? $activeTextColor : "#8d2f00")};
     filter: none;
   }
 
+  &:hover::before {
+    opacity: ${({ $isActive }) => ($isActive ? 1 : 0)};
+  }
+
   &:active {
-    background: ${({ $isActive, $activeHoverOverlayStrong }) =>
-      $isActive ? $activeHoverOverlayStrong || "rgba(255, 255, 255, 0.3)" : "#ffc9ab"};
+    background: ${({ $isActive }) => ($isActive ? "transparent" : "#ffc9ab")};
     color: ${({ $isActive, $activeTextColor }) => ($isActive ? $activeTextColor : "#7d2a00")};
+  }
+
+  &:active::before {
+    background: ${({ $activeHoverOverlayStrong }) => $activeHoverOverlayStrong || "rgba(255, 255, 255, 0.3)"};
+    opacity: ${({ $isActive }) => ($isActive ? 1 : 0)};
   }
 `;
 
