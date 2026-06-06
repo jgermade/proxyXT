@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "pre-build": "node scripts/check-message-keys.mjs",
+    "prebuild": "node scripts/check-message-keys.mjs",
     "build": "node scripts/build.mjs"
   },
   "devDependencies": {

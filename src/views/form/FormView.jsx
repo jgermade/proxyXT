@@ -172,6 +172,7 @@ export function FormView({
   const customColorPickerPanelRef = useRef(null);
   const customColorSpectrumRef = useRef(null);
   const initialPickerColorRef = useRef(formData.selectionColor);
+  const wasFormVisibleRef = useRef(view === "form");
   const hostInputRef = useRef(null);
   const nameInputRef = useRef(null);
   const bypassListInputRef = useRef(null);
@@ -213,6 +214,12 @@ export function FormView({
   }, [view]);
 
   useEffect(() => {
+    if (!showColorPresets) {
+      setIsCustomColorPickerOpen(false);
+    }
+  }, [showColorPresets]);
+
+  useEffect(() => {
     if (!isCustomColorPickerOpen) {
       return;
     }
@@ -230,7 +237,11 @@ export function FormView({
   }, [isCustomColorPickerOpen, formData.selectionColor]);
 
   useEffect(() => {
-    if (view !== "form" || showColorPresets || isCustomColorPickerOpen) {
+    const isFormVisible = view === "form";
+    const didJustOpenForm = isFormVisible && !wasFormVisibleRef.current;
+    wasFormVisibleRef.current = isFormVisible;
+
+    if (!didJustOpenForm || showColorPresets || isCustomColorPickerOpen) {
       return undefined;
     }
 
@@ -260,11 +271,7 @@ export function FormView({
     view,
     showColorPresets,
     isCustomColorPickerOpen,
-    formMode,
-    formData.port,
-    formData.host,
-    formData.name,
-    formData.bypassList
+    formMode
   ]);
 
   function handleToggleColorPresets() {
@@ -687,7 +694,7 @@ export function FormView({
         )}
 
         <Actions>
-          <SubmitButton type="submit">{formMode === "edit" ? t("buttons.server.saveChanges") : t("buttons.server.save")}</SubmitButton>
+          <SubmitButton type="submit">{formMode === "edit" ? t("buttons.server.save") : t("buttons.server.add")}</SubmitButton>
           <DeleteButton
             type="button"
             $isVisible={Boolean(formData.id)}

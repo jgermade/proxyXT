@@ -2,8 +2,8 @@ app:
   title: ProxyXT
   subtitle:
     selectServer: Selecciona un servidor
-    addProxy: Anadir servidor proxy
-    editProxy: Editar servidor proxy
+    addProxy: Anadir servidor
+    editProxy: Editar servidor
     preferences: Ajustes de comportamiento
 
 footer:
@@ -31,7 +31,7 @@ buttons:
     save: Guardar servidor
     saveChanges: Guardar cambios
     delete: Eliminar
-    add: Agregar servidor
+    add: Anadir servidor
     backToList: Volver al listado
     edit: Editar servidor
 

@@ -2,8 +2,8 @@ app:
   title: ProxyXT
   subtitle:
     selectServer: Selecione um servidor
-    addProxy: Adicionar servidor proxy
-    editProxy: Editar servidor proxy
+    addProxy: Adicionar servidor
+    editProxy: Editar servidor
     preferences: Configuracoes de comportamento
 
 footer:
