@@ -61,37 +61,41 @@ export const ColorPresetPanel = styled.div`
 `;
 
 export const ColorPresetRow = styled.div`
-  display: grid;
+  display: ${({ $isUserRow }) => ($isUserRow ? "block" : "grid")};
   grid-auto-flow: column;
   grid-auto-columns: 18px;
   gap: 4px;
   min-height: 18px;
   align-items: center;
+  justify-content: start;
   overflow: hidden;
 `;
 
 export const UserColorRow = styled.div`
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
+  /* grid-template-columns: auto auto; */
   gap: 4px;
+  /* width: max-content; */
   min-height: 18px;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const UserColorActions = styled.div`
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  min-height: 18px;
+`;
+
+export const UserColorList = styled.div`
   display: inline-grid;
   grid-auto-flow: column;
   grid-auto-columns: 18px;
   gap: 4px;
-  min-height: 18px;
-  align-items: center;
-`;
-
-export const UserColorList = styled.div`
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 18px;
-  gap: 4px;
+  width: max-content;
   min-height: 18px;
   align-items: center;
   overflow: hidden;

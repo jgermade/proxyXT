@@ -13,7 +13,7 @@ const FieldFrame = styled.span`
 
 const LabelText = styled.span`
   position: absolute;
-  top: 8px;
+  top: 5px;
   left: 8px;
   font-size: 0.72rem;
   font-weight: 600;

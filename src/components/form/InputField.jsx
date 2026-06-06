@@ -13,7 +13,7 @@ const FieldFrame = styled.span`
 
 const LabelText = styled.span`
   position: absolute;
-  top: 8px;
+  top: 5px;
   left: 8px;
   font-size: 0.72rem;
   font-weight: 600;
@@ -23,15 +23,12 @@ const LabelText = styled.span`
 `;
 
 const Control = styled.input`
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
   width: 100%;
   height: 48px;
   box-sizing: border-box;
   border: none;
   border-radius: 8px;
-  padding: 18px 8px 6px;
+  padding: 22px 8px 6px;
   font-size: 0.9rem;
   font-weight: 500;
   color: #1f3046;

@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { Fragment, h } from "preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { SquaredButton } from "../../components/SquaredButton.jsx";
 import { LanguageBadge } from "../../components/LanguageBadge.jsx";

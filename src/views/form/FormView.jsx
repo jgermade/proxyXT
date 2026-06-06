@@ -200,7 +200,7 @@ export function FormView({
                 ))}
               </ColorPresetRow>
 
-              <ColorPresetRow>
+              <ColorPresetRow $isUserRow>
                 <UserColorRow>
                   <UserColorList>
                     {displayedCustomColors.map((customColor, index) => {
