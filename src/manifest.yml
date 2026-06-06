@@ -5,12 +5,9 @@ description: Cliente proxy para Chrome y Firefox con multiples servidores y camb
 permissions:
   - storage
   - proxy
-  - webRequest
 optional_permissions:
   - tabs
   - notifications
-host_permissions:
-  - <all_urls>
 icons:
   "16": icons/proxyxt-16.png
   "32": icons/proxyxt-32.png

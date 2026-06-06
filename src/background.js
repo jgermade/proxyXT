@@ -706,6 +706,7 @@ async function notifyTabsPermissionEnabled(state) {
   }
 }
 
+
 function getCanvasContext(size) {
   if (typeof OffscreenCanvas !== "undefined") {
     const canvas = new OffscreenCanvas(size, size);
@@ -1526,42 +1527,6 @@ if (proxyErrorEvent?.addListener) {
   });
 } else {
   addLog("error", "proxy.onProxyError no esta disponible en este entorno", null).catch(() => {
-    // Ignore logging failures during startup.
-  });
-}
-
-const webRequestErrorEvent = api.webRequest?.onErrorOccurred;
-if (webRequestErrorEvent?.addListener) {
-  webRequestErrorEvent.addListener(
-    (details) => {
-      if (!isProxyRelatedRequestError(details)) {
-        return;
-      }
-
-      addLog("error", "Evento webRequest.onErrorOccurred detectado", {
-        error: details?.error || null,
-        url: details?.url || null,
-        type: details?.type || null,
-        tabId: typeof details?.tabId === "number" ? details.tabId : null
-      }).catch(() => {
-        // Ignore logging failures in event callback.
-      });
-
-      maybeFailoverOnProxyError({
-        error: details?.error || null,
-        fatal: false,
-        details: {
-          source: "webRequest.onErrorOccurred",
-          url: details?.url || null,
-          type: details?.type || null,
-          tabId: typeof details?.tabId === "number" ? details.tabId : null
-        }
-      });
-    },
-    { urls: ["<all_urls>"] }
-  );
-} else {
-  addLog("warning", "webRequest.onErrorOccurred no disponible en este entorno", null).catch(() => {
     // Ignore logging failures during startup.
   });
 }

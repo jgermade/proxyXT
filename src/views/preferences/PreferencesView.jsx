@@ -89,15 +89,6 @@ export function PreferencesView({
             />
           </div>
 
-          <div {...preferenceHoverHandlers("autoFailoverEnabled")}>
-            <PreferenceToggle
-              id="autoFailoverEnabled"
-              checked={Boolean(autoFailoverEnabled)}
-              onChange={onAutoFailoverChange}
-              label={t("labels.autoFailoverSimple")}
-            />
-          </div>
-
           <div {...preferenceHoverHandlers("showFailoverNotifications")}>
             <PreferenceToggle
               id="showFailoverNotifications"
@@ -106,6 +97,15 @@ export function PreferencesView({
               label={t("labels.showNotifications")}
               badge={t("labels.permissionBadge")}
               badgeTitle={t("labels.permissionBadgeNotificationsTitle")}
+            />
+          </div>
+
+          <div {...preferenceHoverHandlers("autoFailoverEnabled")}>
+            <PreferenceToggle
+              id="autoFailoverEnabled"
+              checked={Boolean(autoFailoverEnabled)}
+              onChange={onAutoFailoverChange}
+              label={t("labels.autoFailoverSimple")}
             />
           </div>
 

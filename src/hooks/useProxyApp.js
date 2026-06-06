@@ -1,5 +1,9 @@
 import { useMemo, useState, useEffect } from "preact/hooks";
-import { containsPermissions, requestPermissions, sendMessage } from "../lib/runtime.js";
+import {
+  containsPermissions,
+  requestPermissions,
+  sendMessage
+} from "../lib/runtime.js";
 import {
   defaultState,
   initialFormState,
@@ -392,6 +396,7 @@ export function useProxyApp() {
 
   async function handleAutoFailoverChange(enabled) {
     const previous = Boolean(state.preferences?.autoFailoverEnabled);
+
     setState((current) => ({
       ...current,
       preferences: {

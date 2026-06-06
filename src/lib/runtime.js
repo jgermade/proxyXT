@@ -1,5 +1,26 @@
 const api = globalThis.browser ?? globalThis.chrome;
 
+function callPermissionsApi(methodName, details) {
+  const method = api.permissions?.[methodName];
+  if (!method) {
+    return Promise.resolve(false);
+  }
+
+  if (method.length <= 1) {
+    return method(details);
+  }
+
+  return new Promise((resolve, reject) => {
+    method(details, (result) => {
+      if (api.runtime.lastError) {
+        reject(new Error(api.runtime.lastError.message));
+        return;
+      }
+      resolve(Boolean(result));
+    });
+  });
+}
+
 export function sendMessage(message) {
   if (api.runtime.sendMessage.length <= 1) {
     return api.runtime.sendMessage(message);
@@ -17,43 +38,25 @@ export function sendMessage(message) {
 }
 
 export function containsPermissions(permissions) {
-  if (!api.permissions?.contains) {
-    return Promise.resolve(false);
-  }
-
-  const payload = { permissions };
-  if (api.permissions.contains.length <= 1) {
-    return api.permissions.contains(payload);
-  }
-
-  return new Promise((resolve, reject) => {
-    api.permissions.contains(payload, (result) => {
-      if (api.runtime.lastError) {
-        reject(new Error(api.runtime.lastError.message));
-        return;
-      }
-      resolve(Boolean(result));
-    });
-  });
+  return containsPermissionDetails({ permissions });
 }
 
 export function requestPermissions(permissions) {
-  if (!api.permissions?.request) {
-    return Promise.resolve(false);
-  }
+  return requestPermissionDetails({ permissions });
+}
 
-  const payload = { permissions };
-  if (api.permissions.request.length <= 1) {
-    return api.permissions.request(payload);
-  }
+export function removePermissions(permissions) {
+  return removePermissionDetails({ permissions });
+}
 
-  return new Promise((resolve, reject) => {
-    api.permissions.request(payload, (result) => {
-      if (api.runtime.lastError) {
-        reject(new Error(api.runtime.lastError.message));
-        return;
-      }
-      resolve(Boolean(result));
-    });
-  });
+export function containsPermissionDetails(details) {
+  return callPermissionsApi("contains", details);
+}
+
+export function requestPermissionDetails(details) {
+  return callPermissionsApi("request", details);
+}
+
+export function removePermissionDetails(details) {
+  return callPermissionsApi("remove", details);
 }
