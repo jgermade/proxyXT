@@ -45,7 +45,7 @@ labels:
   autoFailover: Basculement automatique (round-robin)
   reloadActiveTabOnToggle: Recharger l'onglet actif lors de l'activation/desactivation d'un serveur
   syncServersWithAccount: Synchroniser les serveurs avec le compte du navigateur
-  showFailoverNotifications: Afficher des notifications lors d'un changement de serveur par failover
+  showFailoverNotifications: Afficher les notifications de l'extension
   language: Langue
 
 language:
@@ -82,9 +82,9 @@ messages:
   syncServersEnabled: Synchronisation des serveurs activee
   syncServersDisabled: Synchronisation des serveurs desactivee
   tabsPermissionDenied: L'autorisation tabs est necessaire pour recharger l'onglet actif
-  notificationsPermissionDenied: L'autorisation notifications est necessaire pour avertir des changements par failover
-  failoverNotificationsEnabled: Notifications de failover activees
-  failoverNotificationsDisabled: Notifications de failover desactivees
+  notificationsPermissionDenied: L'autorisation notifications est necessaire pour afficher les alertes de l'extension
+  failoverNotificationsEnabled: Notifications activees
+  failoverNotificationsDisabled: Notifications desactivees
   languageChanged: "Langue: {{language}}"
   languageChangedAuto: "Langue: Auto ({{language}})"
   logsLoadError: "Impossible de charger les logs: {{error}}"
@@ -99,4 +99,4 @@ preferences:
   help: Si le proxy actif echoue, l'extension passera automatiquement au serveur suivant enregistre.
   reloadHelp: Recharge l'onglet actuel chaque fois que le proxy actif est active ou desactive.
   syncHelp: Enregistre vos serveurs dans le compte du navigateur pour les retrouver sur vos autres navigateurs connectes.
-  failoverNotificationsHelp: Affiche une notification lorsque l'extension bascule automatiquement vers le serveur suivant apres un failover.
+  failoverNotificationsHelp: Active les alertes de l'extension pour les evenements importants comme les changements automatiques de serveur.

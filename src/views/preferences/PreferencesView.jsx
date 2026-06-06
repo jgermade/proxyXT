@@ -98,17 +98,6 @@ export function PreferencesView({
             />
           </div>
 
-          <div {...preferenceHoverHandlers("reloadActiveTabOnToggle")}>
-            <PreferenceToggle
-              id="reloadActiveTabOnToggle"
-              checked={Boolean(reloadActiveTabOnToggle)}
-              onChange={onReloadActiveTabChange}
-              label={t("labels.autoReloadTab")}
-              badge={t("labels.permissionBadge")}
-              badgeTitle={t("labels.permissionBadgeTabsTitle")}
-            />
-          </div>
-
           <div {...preferenceHoverHandlers("showFailoverNotifications")}>
             <PreferenceToggle
               id="showFailoverNotifications"
@@ -117,6 +106,17 @@ export function PreferencesView({
               label={t("labels.showNotifications")}
               badge={t("labels.permissionBadge")}
               badgeTitle={t("labels.permissionBadgeNotificationsTitle")}
+            />
+          </div>
+
+          <div {...preferenceHoverHandlers("reloadActiveTabOnToggle")}>
+            <PreferenceToggle
+              id="reloadActiveTabOnToggle"
+              checked={Boolean(reloadActiveTabOnToggle)}
+              onChange={onReloadActiveTabChange}
+              label={t("labels.autoReloadTab")}
+              badge={t("labels.permissionBadge")}
+              badgeTitle={t("labels.permissionBadgeTabsTitle")}
             />
           </div>
 

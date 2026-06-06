@@ -3,6 +3,8 @@ const api = globalThis.browser ?? globalThis.chrome;
 const STORAGE_KEY = "proxyxt-state";
 const SYNC_SERVERS_KEY = "proxyxt-sync-servers";
 const LOGS_KEY = "proxyxt-logs";
+const NOTIFICATIONS_ENABLE_PENDING_KEY = "proxyxt-notifications-enable-pending";
+const TABS_PERMISSION_NOTIFY_PENDING_KEY = "proxyxt-tabs-permission-notify-pending";
 const MAX_LOGS = 200;
 const FAILOVER_COOLDOWN_MS = 5000;
 const FAILOVER_ERRORS_BEFORE_SWITCH = 3;
@@ -25,6 +27,39 @@ const INACTIVE_ICON_PATHS = {
   128: "icons/proxyxt-128-bw.png"
 };
 const ICON_SIZES = [16, 32, 48, 128];
+const SUPPORTED_LANGUAGES = ["en", "es", "fr", "pt", "it", "de"];
+const NOTIFICATION_MESSAGES = {
+  en: {
+    failoverEnabled: "Notifications enabled. This is a test notification.",
+    failoverSwitch: "Automatic server switch: {from} -> {to}",
+    tabsPermissionEnabled: "Tabs permission granted. Auto reload is now ready."
+  },
+  es: {
+    failoverEnabled: "Notificaciones activadas. Esta es una notificacion de prueba.",
+    failoverSwitch: "Cambio automatico de servidor: {from} -> {to}",
+    tabsPermissionEnabled: "Permiso de pestanas concedido. La recarga automatica ya esta lista."
+  },
+  fr: {
+    failoverEnabled: "Notifications activees. Ceci est une notification de test.",
+    failoverSwitch: "Changement automatique de serveur: {from} -> {to}",
+    tabsPermissionEnabled: "Autorisation des onglets accordee. Le rechargement automatique est pret."
+  },
+  pt: {
+    failoverEnabled: "Notificacoes ativadas. Esta e uma notificacao de teste.",
+    failoverSwitch: "Mudanca automatica de servidor: {from} -> {to}",
+    tabsPermissionEnabled: "Permissao de abas concedida. A recarga automatica ja esta pronta."
+  },
+  it: {
+    failoverEnabled: "Notifiche attivate. Questa e una notifica di prova.",
+    failoverSwitch: "Cambio automatico server: {from} -> {to}",
+    tabsPermissionEnabled: "Permesso schede concesso. La ricarica automatica e pronta."
+  },
+  de: {
+    failoverEnabled: "Benachrichtigungen aktiviert. Dies ist eine Testbenachrichtigung.",
+    failoverSwitch: "Automatischer Serverwechsel: {from} -> {to}",
+    tabsPermissionEnabled: "Tab-Berechtigung erteilt. Das automatische Neuladen ist bereit."
+  }
+};
 
 const logoBitmapCache = new Map();
 const dynamicIconCache = new Map();
@@ -259,6 +294,24 @@ async function loadLogs() {
   return Array.isArray(logs) ? logs : [];
 }
 
+async function setNotificationsEnablePending(pending) {
+  await storageSet({ [NOTIFICATIONS_ENABLE_PENDING_KEY]: Boolean(pending) });
+}
+
+async function getNotificationsEnablePending() {
+  const result = await storageGet(NOTIFICATIONS_ENABLE_PENDING_KEY);
+  return Boolean(result?.[NOTIFICATIONS_ENABLE_PENDING_KEY]);
+}
+
+async function setTabsPermissionNotifyPending(pending) {
+  await storageSet({ [TABS_PERMISSION_NOTIFY_PENDING_KEY]: Boolean(pending) });
+}
+
+async function getTabsPermissionNotifyPending() {
+  const result = await storageGet(TABS_PERMISSION_NOTIFY_PENDING_KEY);
+  return Boolean(result?.[TABS_PERMISSION_NOTIFY_PENDING_KEY]);
+}
+
 async function saveLogs(logs) {
   await storageSet({ [LOGS_KEY]: logs.slice(-MAX_LOGS) });
 }
@@ -329,6 +382,25 @@ function summarizeProxyValue(value) {
 function sanitizeColorHex(color) {
   const normalized = String(color || "").trim().toUpperCase();
   return /^#([0-9A-F]{3}|[0-9A-F]{6})$/.test(normalized) ? normalized : null;
+}
+
+function resolveNotificationLanguage(state) {
+  const preferred = String(state?.preferences?.language || "auto").toLowerCase();
+  if (SUPPORTED_LANGUAGES.includes(preferred)) {
+    return preferred;
+  }
+
+  const uiLanguage = String(api.i18n?.getUILanguage?.() || "en").toLowerCase();
+  const baseLanguage = uiLanguage.split(/[-_]/)[0];
+  return SUPPORTED_LANGUAGES.includes(baseLanguage) ? baseLanguage : "en";
+}
+
+function getNotificationMessage(state, key, replacements = {}) {
+  const language = resolveNotificationLanguage(state);
+  const template = NOTIFICATION_MESSAGES[language]?.[key] || NOTIFICATION_MESSAGES.en[key] || "";
+  return template.replace(/\{(\w+)\}/g, (_match, token) => {
+    return replacements[token] == null ? "" : String(replacements[token]);
+  });
 }
 
 function getContrastingTextColor(hexColor) {
@@ -513,17 +585,32 @@ function notificationsCreate(notificationId, options) {
   }
 
   if (api.notifications.create.length <= 2) {
-    return api.notifications.create(notificationId, options);
+    return Promise.resolve()
+      .then(() => api.notifications.create(notificationId, options))
+      .catch(() => api.notifications.create(options));
   }
 
   return new Promise((resolve, reject) => {
     api.notifications.create(notificationId, options, (createdId) => {
-      if (api.runtime.lastError) {
-        reject(new Error(api.runtime.lastError.message));
+      if (!api.runtime.lastError) {
+        resolve(createdId || null);
         return;
       }
-      resolve(createdId || null);
+
+      api.notifications.create(options, (fallbackCreatedId) => {
+        if (api.runtime.lastError) {
+          reject(new Error(api.runtime.lastError.message));
+          return;
+        }
+        resolve(fallbackCreatedId || null);
+      });
     });
+  });
+}
+
+function wait(ms) {
+  return new Promise((resolve) => {
+    globalThis.setTimeout(resolve, ms);
   });
 }
 
@@ -541,14 +628,79 @@ async function maybeNotifyFailoverSwitch(state, previousServer, nextServer) {
     const previousLabel = previousServer?.name || (previousServer ? `${previousServer.host}:${previousServer.port}` : "Sistema");
     const nextLabel = nextServer?.name || (nextServer ? `${nextServer.host}:${nextServer.port}` : "Sistema");
     const notificationId = `proxyxt-failover-${Date.now()}`;
+    const iconUrl = api.runtime?.getURL
+      ? api.runtime.getURL(ACTIVE_ICON_PATHS[128])
+      : ACTIVE_ICON_PATHS[128];
+    const message = getNotificationMessage(state, "failoverSwitch", {
+      from: previousLabel,
+      to: nextLabel
+    });
     await notificationsCreate(notificationId, {
       type: "basic",
-      iconUrl: ACTIVE_ICON_PATHS[128],
+      iconUrl,
       title: "ProxyXT",
-      message: `Failover automático: ${previousLabel} -> ${nextLabel}`
+      message
     });
   } catch (error) {
     await addLog("warn", "No se pudo mostrar notificacion de failover", {
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
+}
+
+async function notifyFailoverNotificationsEnabled(state) {
+  const iconUrl = api.runtime?.getURL
+    ? api.runtime.getURL(ACTIVE_ICON_PATHS[128])
+    : ACTIVE_ICON_PATHS[128];
+  const message = getNotificationMessage(state, "failoverEnabled");
+
+  let lastError = null;
+  for (const delayMs of [0, 180, 420]) {
+    try {
+      if (delayMs > 0) {
+        await wait(delayMs);
+      }
+
+      const notificationId = `proxyxt-failover-enabled-${Date.now()}`;
+      await notificationsCreate(notificationId, {
+        type: "basic",
+        iconUrl,
+        title: "ProxyXT",
+        message
+      });
+      return;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  if (lastError) {
+    await addLog("warn", "No se pudo mostrar notificacion de confirmacion", {
+      error: lastError instanceof Error ? lastError.message : String(lastError)
+    });
+  }
+}
+
+async function notifyTabsPermissionEnabled(state) {
+  try {
+    const hasPermission = await permissionsContains({ permissions: ["notifications"] });
+    if (!hasPermission) {
+      return;
+    }
+
+    const notificationId = `proxyxt-tabs-permission-${Date.now()}`;
+    const iconUrl = api.runtime?.getURL
+      ? api.runtime.getURL(ACTIVE_ICON_PATHS[128])
+      : ACTIVE_ICON_PATHS[128];
+    const message = getNotificationMessage(state, "tabsPermissionEnabled");
+    await notificationsCreate(notificationId, {
+      type: "basic",
+      iconUrl,
+      title: "ProxyXT",
+      message
+    });
+  } catch (error) {
+    await addLog("warn", "No se pudo mostrar notificacion de permiso de pestanas", {
       error: error instanceof Error ? error.message : String(error)
     });
   }
@@ -864,6 +1016,32 @@ async function pushServersToSyncIfEnabled(state) {
   });
 }
 
+function hasSyncData(state) {
+  return (
+    (Array.isArray(state?.servers) && state.servers.length > 0)
+    || (Array.isArray(state?.userColorPresets) && state.userColorPresets.length > 0)
+  );
+}
+
+async function pullServersFromSyncWithRetry(state, options = {}) {
+  const attempts = Math.max(1, Number(options.attempts || 1));
+  const delayMs = Math.max(0, Number(options.delayMs || 0));
+  let currentState = state;
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    currentState = await pullServersFromSyncIfEnabled(currentState);
+    if (hasSyncData(currentState)) {
+      return currentState;
+    }
+
+    if (attempt < attempts && delayMs > 0) {
+      await wait(delayMs * attempt);
+    }
+  }
+
+  return currentState;
+}
+
 async function handleGetState() {
   const state = await loadState();
   const syncedState = await pullServersFromSyncIfEnabled(state);
@@ -1004,6 +1182,7 @@ async function handleActivateServer(payload) {
 
 async function handleUpdatePreferences(payload) {
   const state = await loadState();
+  const wasSyncEnabled = Boolean(state.preferences?.syncServersWithAccount);
   const incoming = payload?.preferences || {};
   const currentLanguage = String(state.preferences?.language || "auto").toLowerCase();
   const incomingLanguage = String(incoming.language || currentLanguage).toLowerCase();
@@ -1034,8 +1213,28 @@ async function handleUpdatePreferences(payload) {
 
   await saveState(state);
   if (state.preferences.syncServersWithAccount) {
-    const syncedState = await pullServersFromSyncIfEnabled(state);
-    await pushServersToSyncIfEnabled(syncedState);
+    const isEnablingSync = !wasSyncEnabled;
+    const localHadDataBeforeSync = hasSyncData(state);
+    if (isEnablingSync && !localHadDataBeforeSync) {
+      await addLog("debug", "Sincronizacion activada tras reinstalacion: esperando datos remotos con reintentos", {
+        attempts: 6,
+        baseDelayMs: 350
+      });
+    }
+
+    const syncedState = isEnablingSync && !localHadDataBeforeSync
+      ? await pullServersFromSyncWithRetry(state, { attempts: 6, delayMs: 350 })
+      : await pullServersFromSyncIfEnabled(state);
+    const hasAnyDataToSync =
+      Array.isArray(syncedState.servers) && syncedState.servers.length > 0
+      || Array.isArray(syncedState.userColorPresets) && syncedState.userColorPresets.length > 0;
+
+    if (!isEnablingSync || hasAnyDataToSync) {
+      await pushServersToSyncIfEnabled(syncedState);
+    } else {
+      await addLog("debug", "Sincronizacion habilitada sin datos locales: se omite push inicial para evitar sobrescritura vacia", null);
+    }
+
     await applyActiveProxy(syncedState);
     await addLog("info", "Preferencias actualizadas", {
       preferences: syncedState.preferences
@@ -1045,6 +1244,45 @@ async function handleUpdatePreferences(payload) {
   await addLog("info", "Preferencias actualizadas", {
     preferences: state.preferences
   });
+  return state;
+}
+
+async function handleEnableFailoverNotifications() {
+  const currentState = await loadState();
+  const alreadyEnabled = Boolean(currentState.preferences?.showFailoverNotifications);
+  if (alreadyEnabled) {
+    await setNotificationsEnablePending(false);
+    return currentState;
+  }
+
+  const state = await handleUpdatePreferences({
+    preferences: {
+      showFailoverNotifications: true
+    }
+  });
+
+  await setNotificationsEnablePending(false);
+  await notifyFailoverNotificationsEnabled(state);
+  await addLog("info", "Notificaciones de failover activadas por el usuario", null);
+  return state;
+}
+
+async function handleSetNotificationsEnablePending(payload) {
+  await setNotificationsEnablePending(Boolean(payload?.pending));
+  const state = await loadState();
+  return state;
+}
+
+async function handleSetTabsPermissionNotifyPending(payload) {
+  await setTabsPermissionNotifyPending(Boolean(payload?.pending));
+  const state = await loadState();
+  return state;
+}
+
+async function handleNotifyTabsPermissionEnabled() {
+  const state = await loadState();
+  await notifyTabsPermissionEnabled(state);
+  await setTabsPermissionNotifyPending(false);
   return state;
 }
 
@@ -1328,6 +1566,44 @@ if (webRequestErrorEvent?.addListener) {
   });
 }
 
+if (api.permissions?.onAdded?.addListener) {
+  api.permissions.onAdded.addListener((details) => {
+    const permissions = Array.isArray(details?.permissions) ? details.permissions : [];
+
+    (async () => {
+      if (permissions.includes("notifications")) {
+        const notificationsPending = await getNotificationsEnablePending();
+        if (notificationsPending) {
+          await addLog("debug", "Permiso de notificaciones concedido: completando activacion pendiente", {
+            permissions
+          });
+          await handleEnableFailoverNotifications();
+          const state = await loadState();
+          await broadcastStateUpdate(state);
+        }
+      }
+
+      if (permissions.includes("tabs")) {
+        const tabsNotifyPending = await getTabsPermissionNotifyPending();
+        if (!tabsNotifyPending) {
+          return;
+        }
+
+        await addLog("debug", "Permiso de pestanas concedido: enviando notificacion de confirmacion", {
+          permissions
+        });
+        await handleNotifyTabsPermissionEnabled();
+      }
+    })().catch((error) => {
+      addLog("warn", "No se pudo completar el flujo pendiente de permisos", {
+        error: error instanceof Error ? error.message : String(error)
+      }).catch(() => {
+        // Ignore logging failures in permissions listener.
+      });
+    });
+  });
+}
+
 api.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   const actionType = message?.type;
 
@@ -1382,6 +1658,26 @@ api.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
     if (actionType === "proxyxt/updatePreferences") {
       const state = await handleUpdatePreferences(message.payload || {});
+      return { state };
+    }
+
+    if (actionType === "proxyxt/enableFailoverNotifications") {
+      const state = await handleEnableFailoverNotifications();
+      return { state };
+    }
+
+    if (actionType === "proxyxt/setNotificationsEnablePending") {
+      const state = await handleSetNotificationsEnablePending(message.payload || {});
+      return { state };
+    }
+
+    if (actionType === "proxyxt/setTabsPermissionNotifyPending") {
+      const state = await handleSetTabsPermissionNotifyPending(message.payload || {});
+      return { state };
+    }
+
+    if (actionType === "proxyxt/notifyTabsPermissionEnabled") {
+      const state = await handleNotifyTabsPermissionEnabled();
       return { state };
     }
 

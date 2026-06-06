@@ -45,14 +45,14 @@ labels:
   autoFailover: Failover automatico (round-robin)
   reloadActiveTabOnToggle: Recargar pestana activa al activar/desactivar un servidor
   syncServersWithAccount: Sincronizar servidores con la cuenta del navegador
-  showFailoverNotifications: Mostrar notificaciones al cambiar de servidor por failover
+  showFailoverNotifications: Mostrar notificaciones de la extension
   syncData: Sincronizar datos
   autoFailoverSimple: Failover automatico
   autoReloadTab: Auto recargar pestana
   showNotifications: Mostrar notificaciones
   permissionBadge: Requiere permiso
   permissionBadgeTabsTitle: Requiere el permiso de pestanas para poder recargar automaticamente la pestana activa.
-  permissionBadgeNotificationsTitle: Requiere el permiso de notificaciones para avisar cuando hay cambio de servidor por failover.
+  permissionBadgeNotificationsTitle: Requiere el permiso de notificaciones para mostrar avisos de la extension.
   language: Idioma
 
 language:
@@ -89,9 +89,9 @@ messages:
   syncServersEnabled: Sincronizacion de servidores activada
   syncServersDisabled: Sincronizacion de servidores desactivada
   tabsPermissionDenied: El permiso de pestanas es necesario para recargar la pestana activa
-  notificationsPermissionDenied: El permiso de notificaciones es necesario para avisar cambios por failover
-  failoverNotificationsEnabled: Notificaciones de failover activadas
-  failoverNotificationsDisabled: Notificaciones de failover desactivadas
+  notificationsPermissionDenied: El permiso de notificaciones es necesario para mostrar avisos de la extension
+  failoverNotificationsEnabled: Notificaciones activadas
+  failoverNotificationsDisabled: Notificaciones desactivadas
   languageChanged: "Idioma: {{language}}"
   languageChangedAuto: "Idioma: Auto ({{language}})"
   logsLoadError: "No se pudieron cargar logs: {{error}}"
@@ -106,4 +106,4 @@ preferences:
   help: Si el proxy activo falla, la extension cambiara automaticamente al siguiente servidor guardado.
   reloadHelp: Recarga la pestana actual cada vez que se activa o desactiva el proxy.
   syncHelp: Guarda tus servidores en la cuenta del navegador para mantenerlos disponibles en otros navegadores con sesion iniciada.
-  failoverNotificationsHelp: Muestra una notificacion cuando la extension cambia automaticamente al siguiente servidor por failover.
+  failoverNotificationsHelp: Activa avisos de la extension para eventos importantes como cambios automaticos de servidor.

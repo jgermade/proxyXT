@@ -64,6 +64,7 @@ export function FormView({
   const customColorInputRefs = useRef([]);
   const addCustomColorInputRef = useRef(null);
   const activeNativeColorInputRef = useRef(null);
+  const portInputRef = useRef(null);
   const customColors = Array.isArray(userColorPresets) ? userColorPresets : [];
   const displayedCustomColors = customColors.slice(0, MAX_USER_COLORS);
 
@@ -96,6 +97,24 @@ export function FormView({
       activeNativeColorInputRef.current = null;
     }
   }, [view]);
+
+  useEffect(() => {
+    if (view !== "form" || showColorPresets) {
+      return undefined;
+    }
+
+    const focusTimer = globalThis.setTimeout(() => {
+      if (!portInputRef.current) {
+        return;
+      }
+      portInputRef.current.focus();
+      portInputRef.current.select?.();
+    }, 0);
+
+    return () => {
+      globalThis.clearTimeout(focusTimer);
+    };
+  }, [view, showColorPresets, formMode]);
 
   function handleToggleColorPresets() {
     setShowColorPresets((current) => {
@@ -321,6 +340,7 @@ export function FormView({
               <InputField
                 label={t("labels.port")}
                 id="port"
+                inputRef={portInputRef}
                 type="number"
                 value={formData.port}
                 min={1}

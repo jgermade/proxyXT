@@ -428,20 +428,47 @@ export function useProxyApp() {
 
   async function handleReloadActiveTabChange(enabled) {
     const previous = Boolean(state.preferences?.reloadActiveTabOnToggle);
+    let shouldNotifyTabsPermissionGranted = false;
 
     if (enabled) {
       try {
         const hasTabsPermission = await containsPermissions(["tabs"]);
         if (!hasTabsPermission) {
+          const hasNotificationsPermission = await containsPermissions(["notifications"]);
+          shouldNotifyTabsPermissionGranted = hasNotificationsPermission;
+          if (shouldNotifyTabsPermissionGranted) {
+            await callBackground("proxyxt/setTabsPermissionNotifyPending", { pending: true });
+          }
+
           const granted = await requestPermissions(["tabs"]);
           if (!granted) {
+            if (shouldNotifyTabsPermissionGranted) {
+              try {
+                await callBackground("proxyxt/setTabsPermissionNotifyPending", { pending: false });
+              } catch (_error) {
+                // Ignore pending cleanup failures on tabs denial.
+              }
+            }
             setFeedback({ message: t("messages.tabsPermissionDenied"), isError: true });
             return;
           }
         }
       } catch (error) {
+        if (shouldNotifyTabsPermissionGranted) {
+          try {
+            await callBackground("proxyxt/setTabsPermissionNotifyPending", { pending: false });
+          } catch (_cleanupError) {
+            // Ignore pending cleanup failures on tabs request errors.
+          }
+        }
         setFeedback({ message: error.message || t("messages.tabsPermissionDenied"), isError: true });
         return;
+      }
+    } else {
+      try {
+        await callBackground("proxyxt/setTabsPermissionNotifyPending", { pending: false });
+      } catch (_error) {
+        // Ignore pending cleanup failures on disable.
       }
     }
 
@@ -463,6 +490,7 @@ export function useProxyApp() {
           showFailoverNotifications: Boolean(state.preferences?.showFailoverNotifications)
         }
       });
+
       setFeedback({
         message: enabled ? t("messages.reloadOnToggleEnabled") : t("messages.reloadOnToggleDisabled"),
         isError: false
@@ -517,43 +545,61 @@ export function useProxyApp() {
 
   async function handleShowFailoverNotificationsChange(enabled) {
     const previous = Boolean(state.preferences?.showFailoverNotifications);
+    const shouldEnable = Boolean(enabled);
 
-    if (enabled) {
+    if (shouldEnable) {
       try {
         const hasNotificationsPermission = await containsPermissions(["notifications"]);
         if (!hasNotificationsPermission) {
+          await callBackground("proxyxt/setNotificationsEnablePending", { pending: true });
           const granted = await requestPermissions(["notifications"]);
           if (!granted) {
+            try {
+              await callBackground("proxyxt/setNotificationsEnablePending", { pending: false });
+            } catch (_error) {
+              // Ignore cleanup failures when permission is denied.
+            }
             setFeedback({ message: t("messages.notificationsPermissionDenied"), isError: true });
             return;
           }
         }
       } catch (error) {
+        try {
+          await callBackground("proxyxt/setNotificationsEnablePending", { pending: false });
+        } catch (_cleanupError) {
+          // Ignore cleanup failures when request flow throws.
+        }
         setFeedback({ message: error.message || t("messages.notificationsPermissionDenied"), isError: true });
         return;
       }
     }
 
-    setState((current) => ({
-      ...current,
-      preferences: {
-        ...current.preferences,
-        showFailoverNotifications: enabled
-      }
-    }));
-
     try {
-      await callBackground("proxyxt/updatePreferences", {
+      setState((current) => ({
+        ...current,
         preferences: {
-          autoFailoverEnabled: Boolean(state.preferences?.autoFailoverEnabled),
-          language: state.preferences?.language || "auto",
-          reloadActiveTabOnToggle: Boolean(state.preferences?.reloadActiveTabOnToggle),
-          syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount),
-          showFailoverNotifications: enabled
+          ...current.preferences,
+          showFailoverNotifications: shouldEnable
         }
-      });
+      }));
+
+      if (shouldEnable) {
+        await callBackground("proxyxt/enableFailoverNotifications");
+      } else {
+        await callBackground("proxyxt/setNotificationsEnablePending", { pending: false });
+        await callBackground("proxyxt/updatePreferences", {
+          preferences: {
+            autoFailoverEnabled: Boolean(state.preferences?.autoFailoverEnabled),
+            language: state.preferences?.language || "auto",
+            reloadActiveTabOnToggle: Boolean(state.preferences?.reloadActiveTabOnToggle),
+            syncServersWithAccount: Boolean(state.preferences?.syncServersWithAccount),
+            showFailoverNotifications: false
+          }
+        });
+      }
+
       setFeedback({
-        message: enabled ? t("messages.failoverNotificationsEnabled") : t("messages.failoverNotificationsDisabled"),
+        message: shouldEnable ? t("messages.failoverNotificationsEnabled") : t("messages.failoverNotificationsDisabled"),
         isError: false
       });
     } catch (error) {

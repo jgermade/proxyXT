@@ -1,13 +1,21 @@
 import { build } from "esbuild";
-import { cp, mkdir, rm } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import yaml from "js-yaml";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const root = path.resolve(__dirname, "..");
 const srcDir = path.join(root, "src");
 const distDir = path.join(root, "dist");
+
+const packageJson = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+const manifestTemplate = yaml.load(await readFile(path.join(srcDir, "manifest.yml"), "utf8"));
+const manifest = {
+  ...manifestTemplate,
+  version: packageJson.version
+};
 
 await rm(distDir, { recursive: true, force: true });
 await mkdir(distDir, { recursive: true });
@@ -43,7 +51,6 @@ const staticFiles = [
   "logs.html",
   "logs.css",
   "background.js",
-  "manifest.json",
   "proxyxt.png",
   "proxyxt-off.png"
 ];
@@ -51,5 +58,7 @@ const staticFiles = [
 for (const fileName of staticFiles) {
   await cp(path.join(srcDir, fileName), path.join(distDir, fileName));
 }
+
+await writeFile(path.join(distDir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
 
 await cp(path.join(srcDir, "icons"), path.join(distDir, "icons"), { recursive: true });

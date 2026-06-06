@@ -48,12 +48,13 @@ const Control = styled.input`
   }
 `;
 
-export function InputField({ label, id, value, onInput, type = "text", ...rest }) {
+export function InputField({ label, id, value, onInput, type = "text", inputRef, ...rest }) {
   return (
     <Label>
       <FieldFrame>
         <LabelText>{label}</LabelText>
         <Control
+          ref={inputRef}
           id={id}
           type={type}
           value={value}
