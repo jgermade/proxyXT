@@ -50,7 +50,9 @@ labels:
   autoFailoverSimple: Failover automatico
   autoReloadTab: Auto recargar pestana
   showNotifications: Mostrar notificaciones
+  betaBadge: Beta
   permissionBadge: Requiere permiso
+  betaBadgeFailoverTitle: Funcion beta. El failover automatico sigue en validacion.
   permissionBadgeTabsTitle: Requiere el permiso de pestanas para poder recargar automaticamente la pestana activa.
   permissionBadgeNotificationsTitle: Requiere el permiso de notificaciones para mostrar avisos de la extension.
   language: Idioma

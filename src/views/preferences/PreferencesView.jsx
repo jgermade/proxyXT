@@ -95,6 +95,9 @@ export function PreferencesView({
               checked={Boolean(autoFailoverEnabled)}
               onChange={onAutoFailoverChange}
               label={t("labels.autoFailoverSimple")}
+              badge={t("labels.betaBadge")}
+              badgeTitle={t("labels.betaBadgeFailoverTitle")}
+              badgeTone="beta"
             />
           </div>
 
@@ -106,6 +109,7 @@ export function PreferencesView({
               label={t("labels.showNotifications")}
               badge={t("labels.permissionBadge")}
               badgeTitle={t("labels.permissionBadgeNotificationsTitle")}
+              badgeTone="permission"
             />
           </div>
 
@@ -117,6 +121,7 @@ export function PreferencesView({
               label={t("labels.autoReloadTab")}
               badge={t("labels.permissionBadge")}
               badgeTitle={t("labels.permissionBadgeTabsTitle")}
+              badgeTone="permission"
             />
           </div>
 

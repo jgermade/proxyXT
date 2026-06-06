@@ -41,12 +41,24 @@ const LabelBadge = styled.span`
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.01em;
-  color: #415a78;
-  background: #dde9f9;
-  box-shadow: inset 0 0 0 1px #b5c8e4;
+  color: ${({ $badgeTone }) => {
+    if ($badgeTone === "beta") return "#0b5cab";
+    if ($badgeTone === "permission") return "#7b6d5c";
+    return "#415a78";
+  }};
+  background: ${({ $badgeTone }) => {
+    if ($badgeTone === "beta") return "#d8f0ff";
+    if ($badgeTone === "permission") return "#ece4d8";
+    return "#dde9f9";
+  }};
+  box-shadow: inset 0 0 0 1px ${({ $badgeTone }) => {
+    if ($badgeTone === "beta") return "#98d9ff";
+    if ($badgeTone === "permission") return "#d7cab9";
+    return "#b5c8e4";
+  }};
 `;
 
-export function CheckboxField({ id, checked, onChange, label, badge, badgeTitle, className }) {
+export function CheckboxField({ id, checked, onChange, label, badge, badgeTitle, badgeTone, className }) {
   return (
     <Wrapper className={className}>
       <Control
@@ -56,7 +68,7 @@ export function CheckboxField({ id, checked, onChange, label, badge, badgeTitle,
         onChange={(event) => onChange(event.currentTarget.checked)}
       />
       <LabelText>{label}</LabelText>
-      {badge ? <LabelBadge title={badgeTitle || badge}>{badge}</LabelBadge> : null}
+      {badge ? <LabelBadge $badgeTone={badgeTone} title={badgeTitle || badge}>{badge}</LabelBadge> : null}
     </Wrapper>
   );
 }

@@ -50,7 +50,9 @@ labels:
   autoFailoverSimple: Automatic failover
   autoReloadTab: Auto reload tab
   showNotifications: Show notifications
+  betaBadge: Beta
   permissionBadge: Requires permission
+  betaBadgeFailoverTitle: Beta feature. Automatic failover is still under validation.
   permissionBadgeTabsTitle: Requires tabs permission to automatically reload the active tab.
   permissionBadgeNotificationsTitle: Requires notifications permission to show extension alerts.
   language: Language
