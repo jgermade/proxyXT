@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { Fragment, h } from "preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { ColorField } from "../../components/form/ColorField.jsx";
 import { BanSymbolSvg } from "../../components/icons/BanSymbolSvg.jsx";
@@ -20,7 +20,6 @@ import {
   FormPanel,
   FormRow,
   HiddenColorInput,
-  HostColorRow,
   NativeColorPickerOverlay,
   ProxyForm,
   UserColorBanIcon,
@@ -185,32 +184,7 @@ export function FormView({
       ) : null}
 
       <ProxyForm onSubmit={onSubmit}>
-        <FormRow>
-          <SelectField
-            label={t("labels.scheme")}
-            id="scheme"
-            value={formData.scheme}
-            onChange={(value) => setFormData((current) => ({ ...current, scheme: value }))}
-            options={[
-              { value: "http", label: "http" },
-              { value: "https", label: "https" },
-              { value: "socks4", label: "socks4" },
-              { value: "socks5", label: "socks5" }
-            ]}
-          />
-          <InputField
-            label={t("labels.port")}
-            id="port"
-            type="number"
-            value={formData.port}
-            min={1}
-            max={65535}
-            required={true}
-            onInput={(value) => setFormData((current) => ({ ...current, port: value }))}
-          />
-        </FormRow>
-
-        <HostColorRow ref={hostColorRowRef}>
+        <FormRow ref={hostColorRowRef}>
           <ColorField
             label={t("labels.selectionColor")}
             id="selectionColor"
@@ -219,7 +193,7 @@ export function FormView({
           />
 
           {showColorPresets ? (
-            <ColorPresetPanel>
+            <ColorPresetPanel style={{ gridColumn: "2 / span 2" }}>
               <ColorPresetRow>
                 {COLOR_PRESETS.map((color) => (
                   <ColorPresetButton
@@ -331,16 +305,41 @@ export function FormView({
               </ColorPresetRow>
             </ColorPresetPanel>
           ) : (
-            <InputField
-              label={t("labels.host")}
-              id="host"
-              type="text"
-              value={formData.host}
-              required={true}
-              onInput={(value) => setFormData((current) => ({ ...current, host: value }))}
-            />
+            <>
+              <SelectField
+                label={t("labels.scheme")}
+                id="scheme"
+                value={formData.scheme}
+                onChange={(value) => setFormData((current) => ({ ...current, scheme: value }))}
+                options={[
+                  { value: "http", label: "http" },
+                  { value: "https", label: "https" },
+                  { value: "socks4", label: "socks4" },
+                  { value: "socks5", label: "socks5" }
+                ]}
+              />
+              <InputField
+                label={t("labels.port")}
+                id="port"
+                type="number"
+                value={formData.port}
+                min={1}
+                max={65535}
+                required={true}
+                onInput={(value) => setFormData((current) => ({ ...current, port: value }))}
+              />
+            </>
           )}
-        </HostColorRow>
+        </FormRow>
+
+        <InputField
+          label={t("labels.host")}
+          id="host"
+          type="text"
+          value={formData.host}
+          required={true}
+          onInput={(value) => setFormData((current) => ({ ...current, host: value }))}
+        />
 
         <InputField
           label={t("labels.alias")}

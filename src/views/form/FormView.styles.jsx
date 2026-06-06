@@ -37,13 +37,7 @@ export const ProxyForm = styled.form`
 export const FormRow = styled.div`
   display: grid;
   gap: 8px;
-  grid-template-columns: 1fr 1fr;
-`;
-
-export const HostColorRow = styled.div`
-  display: grid;
-  gap: 8px;
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
   align-items: end;
 `;
 

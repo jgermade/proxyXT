@@ -24,6 +24,10 @@ const INACTIVE_ICON_PATHS = {
   48: "icons/proxyxt-48-bw.png",
   128: "icons/proxyxt-128-bw.png"
 };
+const ICON_SIZES = [16, 32, 48, 128];
+
+const logoBitmapCache = new Map();
+const dynamicIconCache = new Map();
 
 const defaultState = {
   activeServerId: null,
@@ -326,6 +330,23 @@ function sanitizeColorHex(color) {
   return /^#([0-9A-F]{3}|[0-9A-F]{6})$/.test(normalized) ? normalized : null;
 }
 
+function getContrastingTextColor(hexColor) {
+  const value = String(hexColor || "").trim().replace("#", "");
+  const expanded = value.length === 3
+    ? value.split("").map((part) => `${part}${part}`).join("")
+    : value;
+
+  if (!/^[0-9A-Fa-f]{6}$/.test(expanded)) {
+    return "#1a2530";
+  }
+
+  const red = Number.parseInt(expanded.slice(0, 2), 16);
+  const green = Number.parseInt(expanded.slice(2, 4), 16);
+  const blue = Number.parseInt(expanded.slice(4, 6), 16);
+  const luminance = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
+  return luminance > 0.62 ? "#1a2530" : "#ffffff";
+}
+
 function sanitizeUserColorPresets(rawColors) {
   if (!Array.isArray(rawColors)) {
     return [];
@@ -431,29 +452,165 @@ async function updateActionIcon(isProxyActive) {
     return;
   }
 
-  const path = isProxyActive ? ACTIVE_ICON_PATHS : INACTIVE_ICON_PATHS;
+  const path = ACTIVE_ICON_PATHS;
 
   try {
-    if (actionApi.setIcon.length <= 1) {
-      await actionApi.setIcon({ path });
-      return;
-    }
-
-    await new Promise((resolve, reject) => {
-      actionApi.setIcon({ path }, () => {
-        if (api.runtime.lastError) {
-          reject(new Error(api.runtime.lastError.message));
-          return;
-        }
-        resolve();
-      });
-    });
+    await setActionIcon({ path });
   } catch (error) {
     await addLog("warn", "No se pudo actualizar icono de la extension", {
       isProxyActive,
       error: error instanceof Error ? error.message : String(error)
     });
   }
+}
+
+async function setActionIcon(details) {
+  const actionApi = api.action ?? api.browserAction;
+  if (!actionApi?.setIcon) {
+    return;
+  }
+
+  if (actionApi.setIcon.length <= 1) {
+    await actionApi.setIcon(details);
+    return;
+  }
+
+  await new Promise((resolve, reject) => {
+    actionApi.setIcon(details, () => {
+      if (api.runtime.lastError) {
+        reject(new Error(api.runtime.lastError.message));
+        return;
+      }
+      resolve();
+    });
+  });
+}
+
+function getCanvasContext(size) {
+  if (typeof OffscreenCanvas !== "undefined") {
+    const canvas = new OffscreenCanvas(size, size);
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    return ctx ? { canvas, ctx } : null;
+  }
+
+  if (typeof document !== "undefined" && typeof document.createElement === "function") {
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    return ctx ? { canvas, ctx } : null;
+  }
+
+  return null;
+}
+
+function drawRoundedRect(ctx, size, color) {
+  const radius = Math.max(2, Math.round(size * 0.18));
+  const max = size;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(radius, 0);
+  ctx.lineTo(max - radius, 0);
+  ctx.quadraticCurveTo(max, 0, max, radius);
+  ctx.lineTo(max, max - radius);
+  ctx.quadraticCurveTo(max, max, max - radius, max);
+  ctx.lineTo(radius, max);
+  ctx.quadraticCurveTo(0, max, 0, max - radius);
+  ctx.lineTo(0, radius);
+  ctx.quadraticCurveTo(0, 0, radius, 0);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.restore();
+}
+
+async function loadLogoBitmap(size) {
+  const cacheKey = String(size);
+  if (logoBitmapCache.has(cacheKey)) {
+    return logoBitmapCache.get(cacheKey);
+  }
+
+  if (typeof createImageBitmap !== "function" || !api.runtime?.getURL) {
+    return null;
+  }
+
+  const logoPath = INACTIVE_ICON_PATHS[size] || INACTIVE_ICON_PATHS[16];
+  if (!logoPath) {
+    return null;
+  }
+
+  const response = await fetch(api.runtime.getURL(logoPath));
+  const blob = await response.blob();
+  const bitmap = await createImageBitmap(blob);
+  logoBitmapCache.set(cacheKey, bitmap);
+  return bitmap;
+}
+
+async function createDynamicIconSet(activeColor) {
+  const normalized = sanitizeColorHex(activeColor) || DEFAULT_SELECTION_COLOR;
+  const logoColor = getContrastingTextColor(normalized) === "#ffffff" ? "#ffffff" : "#000000";
+  const cacheKey = `${normalized}|${logoColor}`;
+
+  if (dynamicIconCache.has(cacheKey)) {
+    return dynamicIconCache.get(cacheKey);
+  }
+
+  const imageDataBySize = {};
+  for (const size of ICON_SIZES) {
+    const baseContext = getCanvasContext(size);
+    if (!baseContext) {
+      return null;
+    }
+
+    const { ctx: baseCtx } = baseContext;
+    drawRoundedRect(baseCtx, size, normalized);
+
+    const logoBitmap = await loadLogoBitmap(size);
+    if (!logoBitmap) {
+      return null;
+    }
+
+    const logoContext = getCanvasContext(size);
+    if (!logoContext) {
+      return null;
+    }
+
+    const { ctx: logoCtx } = logoContext;
+    const logoInset = Math.max(1, Math.round(size * 0.12));
+    const logoSize = Math.max(1, size - (logoInset * 2));
+    logoCtx.imageSmoothingEnabled = true;
+    logoCtx.drawImage(logoBitmap, logoInset, logoInset, logoSize, logoSize);
+    logoCtx.globalCompositeOperation = "source-in";
+    logoCtx.fillStyle = logoColor;
+    logoCtx.fillRect(0, 0, size, size);
+    logoCtx.globalCompositeOperation = "source-over";
+
+    baseCtx.drawImage(logoContext.canvas, 0, 0);
+    imageDataBySize[size] = baseCtx.getImageData(0, 0, size, size);
+  }
+
+  dynamicIconCache.set(cacheKey, imageDataBySize);
+  return imageDataBySize;
+}
+
+async function updateActionIconForActiveServer(server) {
+  const activeColor = sanitizeColorHex(server?.selectionColor) || DEFAULT_SELECTION_COLOR;
+
+  try {
+    const imageData = await createDynamicIconSet(activeColor);
+    if (imageData) {
+      await setActionIcon({ imageData });
+      return;
+    }
+  } catch (error) {
+    await addLog("warn", "No se pudo generar icono dinamico de la extension", {
+      activeColor,
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
+
+  await updateActionIcon(true);
 }
 
 function mapServerToProxyRules(server) {
@@ -510,7 +667,7 @@ async function applyActiveProxy(state) {
     effectiveProxy: summarizeProxyValue(current?.value || null),
     levelOfControl: current?.levelOfControl || null
   });
-  await updateActionIcon(true);
+  await updateActionIconForActiveServer(activeServer);
 }
 
 function sanitizeServer(rawServer) {
