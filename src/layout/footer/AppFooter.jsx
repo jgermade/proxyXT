@@ -38,6 +38,7 @@ export function AppFooter({
 }) {
   const [feedbackState, setFeedbackState] = useState(null);
   const animationTimerRef = useRef(null);
+  const feedbackSequenceRef = useRef(0);
   const connectionNoticeTimerRef = useRef(null);
   const [footerNow, setFooterNow] = useState(() => Date.now());
   const [connectionNoticeState, setConnectionNoticeState] = useState("badge");
@@ -49,7 +50,9 @@ export function AppFooter({
     }
 
     if (footerFeedbackMessage) {
+      feedbackSequenceRef.current += 1;
       setFeedbackState({
+        id: feedbackSequenceRef.current,
         message: footerFeedbackMessage,
         isError: Boolean(isFooterFeedbackError),
         phase: "enter"

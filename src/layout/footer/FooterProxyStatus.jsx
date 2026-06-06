@@ -23,6 +23,7 @@ export function FooterProxyStatus({
       <div data-visible={hasFeedback ? "true" : "false"} aria-hidden={!hasFeedback}>
         {feedbackState ? (
           <ActiveFooter
+            key={feedbackState.id}
             $isFeedback
             $isError={feedbackState.isError}
             $feedbackPhase={feedbackState.phase}
