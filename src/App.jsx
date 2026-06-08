@@ -32,6 +32,8 @@ export function App() {
     reloadActiveTabOnToggle,
     syncServersWithAccount,
     showFailoverNotifications,
+    hasNotificationsPermission,
+    hasTabsPermission,
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,
@@ -98,6 +100,8 @@ export function App() {
           reloadActiveTabOnToggle={reloadActiveTabOnToggle}
           syncServersWithAccount={syncServersWithAccount}
           showFailoverNotifications={showFailoverNotifications}
+          hasNotificationsPermission={hasNotificationsPermission}
+          hasTabsPermission={hasTabsPermission}
           languagePreference={languagePreference}
           handleAutoFailoverChange={handleAutoFailoverChange}
           handleReloadActiveTabChange={handleReloadActiveTabChange}

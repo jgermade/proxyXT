@@ -31,6 +31,8 @@ export function PreferencesView({
   reloadActiveTabOnToggle,
   syncServersWithAccount,
   showFailoverNotifications,
+  hasNotificationsPermission,
+  hasTabsPermission,
   language,
   onAutoFailoverChange,
   onReloadActiveTabChange,
@@ -117,26 +119,14 @@ export function PreferencesView({
             />
           </div>
 
-          <div {...preferenceHoverHandlers("autoFailoverEnabled")}>
-            <PreferenceToggle
-              id="autoFailoverEnabled"
-              checked={Boolean(autoFailoverEnabled)}
-              onChange={onAutoFailoverChange}
-              label={t("labels.autoFailoverSimple")}
-              badge={t("labels.betaBadge")}
-              badgeTitle={t("labels.betaBadgeFailoverTitle")}
-              badgeTone="beta"
-            />
-          </div>
-
           <div {...preferenceHoverHandlers("showFailoverNotifications")}>
             <PreferenceToggle
               id="showFailoverNotifications"
               checked={Boolean(showFailoverNotifications)}
               onChange={onShowFailoverNotificationsChange}
               label={t("labels.showNotifications")}
-              badge={t("labels.permissionBadge")}
-              badgeTitle={t("labels.permissionBadgeNotificationsTitle")}
+              badge={!hasNotificationsPermission ? t("labels.permissionBadge") : undefined}
+              badgeTitle={!hasNotificationsPermission ? t("labels.permissionBadgeNotificationsTitle") : undefined}
               badgeTone="permission"
             />
           </div>
@@ -147,9 +137,21 @@ export function PreferencesView({
               checked={Boolean(reloadActiveTabOnToggle)}
               onChange={onReloadActiveTabChange}
               label={t("labels.autoReloadTab")}
-              badge={t("labels.permissionBadge")}
-              badgeTitle={t("labels.permissionBadgeTabsTitle")}
+              badge={!hasTabsPermission ? t("labels.permissionBadge") : undefined}
+              badgeTitle={!hasTabsPermission ? t("labels.permissionBadgeTabsTitle") : undefined}
               badgeTone="permission"
+            />
+          </div>
+
+          <div {...preferenceHoverHandlers("autoFailoverEnabled")}>
+            <PreferenceToggle
+              id="autoFailoverEnabled"
+              checked={Boolean(autoFailoverEnabled)}
+              onChange={onAutoFailoverChange}
+              label={t("labels.autoFailoverSimple")}
+              badge={t("labels.betaBadge")}
+              badgeTitle={t("labels.betaBadgeFailoverTitle")}
+              badgeTone="beta"
             />
           </div>
 

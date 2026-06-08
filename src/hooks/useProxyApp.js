@@ -24,6 +24,8 @@ export function useProxyApp() {
   const [logs, setLogs] = useState([]);
   const [hasErrorLogs, setHasErrorLogs] = useState(false);
   const [isInitialStateLoading, setIsInitialStateLoading] = useState(true);
+  const [hasNotificationsPermission, setHasNotificationsPermission] = useState(false);
+  const [hasTabsPermission, setHasTabsPermission] = useState(false);
 
   const languagePreference = state.preferences?.language || "auto";
   const effectiveLanguage = resolveLanguage(languagePreference, globalThis.navigator?.language);
@@ -101,6 +103,14 @@ export function useProxyApp() {
         }
         if (isMounted) {
           await refreshLogs();
+        }
+        if (isMounted) {
+          const [notifGranted, tabsGranted] = await Promise.all([
+            containsPermissions(["notifications"]).catch(() => false),
+            containsPermissions(["activeTab"]).catch(() => false)
+          ]);
+          setHasNotificationsPermission(notifGranted);
+          setHasTabsPermission(tabsGranted);
         }
       } catch (error) {
         if (isMounted) {
@@ -457,6 +467,7 @@ export function useProxyApp() {
             setFeedback({ message: t("messages.tabsPermissionDenied"), isError: true });
             return;
           }
+          setHasTabsPermission(true);
         }
       } catch (error) {
         if (shouldNotifyTabsPermissionGranted) {
@@ -567,6 +578,7 @@ export function useProxyApp() {
             setFeedback({ message: t("messages.notificationsPermissionDenied"), isError: true });
             return;
           }
+          setHasNotificationsPermission(true);
         }
       } catch (error) {
         try {
@@ -697,6 +709,8 @@ export function useProxyApp() {
     reloadActiveTabOnToggle: state.preferences?.reloadActiveTabOnToggle,
     syncServersWithAccount: state.preferences?.syncServersWithAccount,
     showFailoverNotifications: state.preferences?.showFailoverNotifications,
+    hasNotificationsPermission,
+    hasTabsPermission,
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,
