@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { ColorField } from "../../components/form/ColorField.jsx";
 import { BanSymbolSvg } from "../../components/icons/BanSymbolSvg.jsx";
 import { ColorPickerSvg } from "../../components/icons/ColorPickerSvg.jsx";
+import { OkCheckSvg } from "../../components/icons/OkCheckSvg.jsx";
 import { InputField } from "../../components/form/InputField.jsx";
 import { SelectField } from "../../components/form/SelectField.jsx";
 import { getContrastingTextColor } from "../../lib/colors.js";
@@ -10,6 +11,21 @@ import {
   Actions,
   DeleteButton,
   ColorPresetRow,
+  CustomColorPickerCloseButton,
+  CustomColorPickerHeader,
+  CustomColorInputGroup,
+  CustomColorInput,
+  CustomColorInputs,
+  CustomColorPickerActionButton,
+  CustomColorPickerActions,
+  CustomColorPickerMain,
+  CustomColorPickerPanel,
+  CustomColorPickerPreview,
+  CustomColorPickerPreviewSwatch,
+  CustomColorHueScale,
+  CustomColorHueSlider,
+  CustomColorSpectrum,
+  CustomColorSpectrumThumb,
   UserColorActions,
   UserColorAddIcon,
   UserColorList,
@@ -19,13 +35,10 @@ import {
   ColorPresetSwatch,
   FormPanel,
   FormRow,
-  HiddenColorInput,
-  NativeColorPickerOverlay,
   ProxyForm,
   UserColorBanIcon,
   UserColorButton,
   UserColorDeleteToggleIcon,
-  UserColorPickerIcon,
   SubmitButton
 } from "./FormView.styles.jsx";
 
@@ -46,6 +59,97 @@ const COLOR_PRESETS = [
 
 const MAX_USER_COLORS = Math.max(1, COLOR_PRESETS.length - 1);
 
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function componentToHex(value) {
+  return clamp(Math.round(value), 0, 255).toString(16).padStart(2, "0").toUpperCase();
+}
+
+function rgbToHex(red, green, blue) {
+  return `#${componentToHex(red)}${componentToHex(green)}${componentToHex(blue)}`;
+}
+
+function parseHexColor(hex) {
+  const normalized = String(hex || "").trim().replace(/^#/, "");
+  if (!/^[0-9A-Fa-f]{6}$/.test(normalized)) {
+    return null;
+  }
+
+  return {
+    r: Number.parseInt(normalized.slice(0, 2), 16),
+    g: Number.parseInt(normalized.slice(2, 4), 16),
+    b: Number.parseInt(normalized.slice(4, 6), 16)
+  };
+}
+
+function rgbToHsv(red, green, blue) {
+  const r = clamp(red, 0, 255) / 255;
+  const g = clamp(green, 0, 255) / 255;
+  const b = clamp(blue, 0, 255) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+
+  let hue = 0;
+  if (delta !== 0) {
+    if (max === r) {
+      hue = 60 * (((g - b) / delta) % 6);
+    } else if (max === g) {
+      hue = 60 * ((b - r) / delta + 2);
+    } else {
+      hue = 60 * ((r - g) / delta + 4);
+    }
+  }
+
+  return {
+    h: hue < 0 ? hue + 360 : hue,
+    s: max === 0 ? 0 : (delta / max) * 100,
+    v: max * 100
+  };
+}
+
+function hsvToRgb(hue, saturation, value) {
+  const h = ((hue % 360) + 360) % 360;
+  const s = clamp(saturation, 0, 100) / 100;
+  const v = clamp(value, 0, 100) / 100;
+
+  const c = v * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = v - c;
+
+  let rPrime = 0;
+  let gPrime = 0;
+  let bPrime = 0;
+
+  if (h < 60) {
+    rPrime = c;
+    gPrime = x;
+  } else if (h < 120) {
+    rPrime = x;
+    gPrime = c;
+  } else if (h < 180) {
+    gPrime = c;
+    bPrime = x;
+  } else if (h < 240) {
+    gPrime = x;
+    bPrime = c;
+  } else if (h < 300) {
+    rPrime = x;
+    bPrime = c;
+  } else {
+    rPrime = c;
+    bPrime = x;
+  }
+
+  return {
+    r: Math.round((rPrime + m) * 255),
+    g: Math.round((gPrime + m) * 255),
+    b: Math.round((bPrime + m) * 255)
+  };
+}
+
 export function FormView({
   t,
   view,
@@ -59,14 +163,24 @@ export function FormView({
 }) {
   const [showColorPresets, setShowColorPresets] = useState(false);
   const [isDeleteModeEnabled, setIsDeleteModeEnabled] = useState(false);
-  const [isNativeColorPickerOpen, setIsNativeColorPickerOpen] = useState(false);
+  const [isCustomColorPickerOpen, setIsCustomColorPickerOpen] = useState(false);
+  const [pickerHue, setPickerHue] = useState(210);
+  const [pickerSaturation, setPickerSaturation] = useState(100);
+  const [pickerValue, setPickerValue] = useState(100);
+  const [pickerHexInput, setPickerHexInput] = useState("");
   const hostColorRowRef = useRef(null);
-  const customColorInputRefs = useRef([]);
-  const addCustomColorInputRef = useRef(null);
-  const activeNativeColorInputRef = useRef(null);
+  const customColorPickerPanelRef = useRef(null);
+  const customColorSpectrumRef = useRef(null);
+  const initialPickerColorRef = useRef(formData.selectionColor);
+  const wasFormVisibleRef = useRef(view === "form");
+  const hostInputRef = useRef(null);
+  const nameInputRef = useRef(null);
+  const bypassListInputRef = useRef(null);
   const portInputRef = useRef(null);
   const customColors = Array.isArray(userColorPresets) ? userColorPresets : [];
   const displayedCustomColors = customColors.slice(0, MAX_USER_COLORS);
+  const isScreenColorPickSupported =
+    typeof globalThis !== "undefined" && typeof globalThis.EyeDropper === "function";
 
   useEffect(() => {
     if (!showColorPresets) {
@@ -74,7 +188,9 @@ export function FormView({
     }
 
     function handlePointerDown(event) {
-      if (!hostColorRowRef.current?.contains(event.target)) {
+      const clickedInsideHostColorRow = hostColorRowRef.current?.contains(event.target);
+      const clickedInsideCustomPicker = customColorPickerPanelRef.current?.contains(event.target);
+      if (!clickedInsideHostColorRow && !clickedInsideCustomPicker) {
         setShowColorPresets(false);
         setIsDeleteModeEnabled(false);
       }
@@ -93,28 +209,70 @@ export function FormView({
     if (view !== "form") {
       setShowColorPresets(false);
       setIsDeleteModeEnabled(false);
-      setIsNativeColorPickerOpen(false);
-      activeNativeColorInputRef.current = null;
+      setIsCustomColorPickerOpen(false);
     }
   }, [view]);
 
   useEffect(() => {
-    if (view !== "form" || showColorPresets) {
+    if (!showColorPresets) {
+      setIsCustomColorPickerOpen(false);
+    }
+  }, [showColorPresets]);
+
+  useEffect(() => {
+    if (!isCustomColorPickerOpen) {
+      return;
+    }
+
+    const parsed = parseHexColor(formData.selectionColor);
+    if (!parsed) {
+      return;
+    }
+
+    const hsv = rgbToHsv(parsed.r, parsed.g, parsed.b);
+    setPickerHue(hsv.h);
+    setPickerSaturation(hsv.s);
+    setPickerValue(hsv.v);
+    setPickerHexInput(rgbToHex(parsed.r, parsed.g, parsed.b));
+  }, [isCustomColorPickerOpen, formData.selectionColor]);
+
+  useEffect(() => {
+    const isFormVisible = view === "form";
+    const didJustOpenForm = isFormVisible && !wasFormVisibleRef.current;
+    wasFormVisibleRef.current = isFormVisible;
+
+    if (!didJustOpenForm || showColorPresets || isCustomColorPickerOpen) {
       return undefined;
     }
 
     const focusTimer = globalThis.setTimeout(() => {
-      if (!portInputRef.current) {
+      const preferredInput =
+        formMode === "edit"
+          ? [
+              { ref: portInputRef, value: formData.port },
+              { ref: hostInputRef, value: formData.host },
+              { ref: nameInputRef, value: formData.name },
+              { ref: bypassListInputRef, value: formData.bypassList }
+            ].find((field) => !String(field.value || "").trim())?.ref
+          : null;
+      const inputToFocus = preferredInput?.current || portInputRef.current;
+
+      if (!inputToFocus) {
         return;
       }
-      portInputRef.current.focus();
-      portInputRef.current.select?.();
+      inputToFocus.focus();
+      inputToFocus.select?.();
     }, 0);
 
     return () => {
       globalThis.clearTimeout(focusTimer);
     };
-  }, [view, showColorPresets, formMode]);
+  }, [
+    view,
+    showColorPresets,
+    isCustomColorPickerOpen,
+    formMode
+  ]);
 
   function handleToggleColorPresets() {
     setShowColorPresets((current) => {
@@ -129,20 +287,6 @@ export function FormView({
   function handleSelectColor(color) {
     setFormData((current) => ({ ...current, selectionColor: color }));
     setShowColorPresets(false);
-  }
-
-  function openNativeColorPicker(inputElement) {
-    if (!inputElement) {
-      return;
-    }
-
-    activeNativeColorInputRef.current = inputElement;
-    setIsNativeColorPickerOpen(true);
-    inputElement.click();
-  }
-
-  function handleOpenUserColorPicker(index) {
-    openNativeColorPicker(customColorInputRefs.current[index]);
   }
 
   function handleCustomColorInput(index, color) {
@@ -168,40 +312,107 @@ export function FormView({
     onUpdateUserColorPresets?.(nextColors);
   }
 
-  function closeNativeColorPicker(inputElement = activeNativeColorInputRef.current) {
-    if (inputElement && typeof inputElement.blur === "function") {
-      inputElement.blur();
-    }
-
-    setIsNativeColorPickerOpen(false);
-    activeNativeColorInputRef.current = null;
-  }
-
   function handleToggleDeleteMode() {
     setIsDeleteModeEnabled((current) => !current);
   }
 
   function handleOpenAddColorPicker() {
-    openNativeColorPicker(addCustomColorInputRef.current);
+    setIsCustomColorPickerOpen((current) => {
+      const next = !current;
+      if (next) {
+        initialPickerColorRef.current = formData.selectionColor;
+        setShowColorPresets(true);
+        setIsDeleteModeEnabled(false);
+      }
+      return next;
+    });
+  }
+
+  function applyPickerColor(nextHue, nextSaturation, nextValue) {
+    const rgb = hsvToRgb(nextHue, nextSaturation, nextValue);
+    const nextHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+    setPickerHue(nextHue);
+    setPickerSaturation(nextSaturation);
+    setPickerValue(nextValue);
+    setPickerHexInput(nextHex);
+    setFormData((current) => ({ ...current, selectionColor: nextHex }));
+  }
+
+  function handleSpectrumPointer(event) {
+    const spectrum = customColorSpectrumRef.current;
+    if (!spectrum) {
+      return;
+    }
+
+    const rect = spectrum.getBoundingClientRect();
+    const x = clamp(event.clientX - rect.left, 0, rect.width);
+    const y = clamp(event.clientY - rect.top, 0, rect.height);
+    const nextSaturation = rect.width ? (x / rect.width) * 100 : 0;
+    const nextValue = rect.height ? 100 - (y / rect.height) * 100 : 0;
+    applyPickerColor(pickerHue, nextSaturation, nextValue);
+  }
+
+  function handleHexInputBlur() {
+    const parsed = parseHexColor(pickerHexInput);
+    if (!parsed) {
+      const rgb = hsvToRgb(pickerHue, pickerSaturation, pickerValue);
+      setPickerHexInput(rgbToHex(rgb.r, rgb.g, rgb.b));
+      return;
+    }
+
+    const hsv = rgbToHsv(parsed.r, parsed.g, parsed.b);
+    applyPickerColor(hsv.h, hsv.s, hsv.v);
+  }
+
+  function handleRgbInputChange(channel, value) {
+    const parsedValue = Number.parseInt(String(value || "").trim(), 10);
+    const clamped = Number.isNaN(parsedValue) ? 0 : clamp(parsedValue, 0, 255);
+    const currentRgb = hsvToRgb(pickerHue, pickerSaturation, pickerValue);
+    const nextRgb = {
+      ...currentRgb,
+      [channel]: clamped
+    };
+    const hsv = rgbToHsv(nextRgb.r, nextRgb.g, nextRgb.b);
+    applyPickerColor(hsv.h, hsv.s, hsv.v);
+  }
+
+  function handleConfirmCustomColorPicker() {
+    const currentHex = rgbToHex(...Object.values(hsvToRgb(pickerHue, pickerSaturation, pickerValue)));
+    handleCustomColorInput(-1, currentHex);
+    setIsCustomColorPickerOpen(false);
+  }
+
+  function handleDismissCustomColorPicker() {
+    const initialColor = initialPickerColorRef.current;
+    if (initialColor) {
+      setFormData((current) => ({ ...current, selectionColor: initialColor }));
+    }
+    setIsCustomColorPickerOpen(false);
+  }
+
+  async function handlePickColorFromScreen() {
+    if (!isScreenColorPickSupported) {
+      return;
+    }
+
+    try {
+      const eyeDropper = new globalThis.EyeDropper();
+      const result = await eyeDropper.open();
+      const parsed = parseHexColor(result?.sRGBHex);
+      if (!parsed) {
+        return;
+      }
+      const hsv = rgbToHsv(parsed.r, parsed.g, parsed.b);
+      applyPickerColor(hsv.h, hsv.s, hsv.v);
+    } catch (error) {
+      if (error?.name === "AbortError") {
+        return;
+      }
+    }
   }
 
   return (
     <FormPanel $isVisible={view === "form"}>
-      {isNativeColorPickerOpen ? (
-        <NativeColorPickerOverlay
-          onMouseDown={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            closeNativeColorPicker();
-          }}
-          onTouchStart={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            closeNativeColorPicker();
-          }}
-        />
-      ) : null}
-
       <ProxyForm onSubmit={onSubmit}>
         <FormRow ref={hostColorRowRef}>
           <ColorField
@@ -245,36 +456,16 @@ export function FormView({
                               handleDeleteCustomColor(index);
                               return;
                             }
-                            // handleOpenUserColorPicker(index);
-                            handleSelectColor(customColor)
+                            handleSelectColor(customColor);
                           }}
                         >
                           <ColorPresetSwatch $value={customColor} aria-hidden="true" />
-                          {/* <UserColorPickerIcon
-                            $iconColor={iconContrastColor}
-                            style={{ opacity: isDeleteModeEnabled ? 0 : undefined }}
-                          >
-                            <ColorPickerSvg size={11} color="currentColor" />
-                          </UserColorPickerIcon> */}
                           <UserColorBanIcon
                             $iconColor={iconContrastColor}
                             style={{ opacity: isDeleteModeEnabled ? undefined : 0 }}
                           >
                             <BanSymbolSvg size={10} color="currentColor" />
                           </UserColorBanIcon>
-                          <HiddenColorInput
-                            ref={(element) => {
-                              customColorInputRefs.current[index] = element;
-                            }}
-                            type="color"
-                            value={customColor}
-                            onBlur={() => {
-                              closeNativeColorPicker();
-                            }}
-                            onChange={(event) => {
-                              handleCustomColorInput(index, event.currentTarget.value);
-                            }}
-                          />
                         </UserColorButton>
                       );
                     })}
@@ -291,17 +482,6 @@ export function FormView({
                       <UserColorAddIcon>
                         <ColorPickerSvg size={11} color="currentColor" />
                       </UserColorAddIcon>
-                      <HiddenColorInput
-                        ref={addCustomColorInputRef}
-                        type="color"
-                        value={formData.selectionColor}
-                        onBlur={() => {
-                          closeNativeColorPicker();
-                        }}
-                        onChange={(event) => {
-                          handleCustomColorInput(-1, event.currentTarget.value);
-                        }}
-                      />
                     </UserColorButton>
 
                     {displayedCustomColors.length > 0 ? (
@@ -343,6 +523,7 @@ export function FormView({
                 inputRef={portInputRef}
                 type="number"
                 value={formData.port}
+                placeholder={t("placeholders.port")}
                 min={1}
                 max={65535}
                 required={true}
@@ -352,35 +533,168 @@ export function FormView({
           )}
         </FormRow>
 
-        <InputField
-          label={t("labels.host")}
-          id="host"
-          type="text"
-          value={formData.host}
-          required={true}
-          onInput={(value) => setFormData((current) => ({ ...current, host: value }))}
-        />
+        {isCustomColorPickerOpen ? (
+          <CustomColorPickerPanel ref={customColorPickerPanelRef}>
+            <CustomColorPickerHeader>
+              <CustomColorPickerPreview>
+                <CustomColorPickerPreviewSwatch $value={formData.selectionColor} aria-hidden="true" />
+                <span>{String(formData.selectionColor || "").toUpperCase()}</span>
+              </CustomColorPickerPreview>
 
-        <InputField
-          label={t("labels.alias")}
-          id="name"
-          type="text"
-          value={formData.name}
-          maxLength={80}
-          onInput={(value) => setFormData((current) => ({ ...current, name: value }))}
-        />
+              <CustomColorPickerActions>
+                {isScreenColorPickSupported ? (
+                  <CustomColorPickerActionButton
+                    type="button"
+                    aria-label="Pick color from screen"
+                    title="Pick color from screen"
+                    onClick={handlePickColorFromScreen}
+                  >
+                    <ColorPickerSvg size={12} color="currentColor" />
+                  </CustomColorPickerActionButton>
+                ) : null}
 
-        <InputField
-          label={t("labels.bypassList")}
-          id="bypassList"
-          type="text"
-          value={formData.bypassList}
-          placeholder={t("placeholders.bypassList")}
-          onInput={(value) => setFormData((current) => ({ ...current, bypassList: value }))}
-        />
+                <CustomColorPickerCloseButton
+                  type="button"
+                  aria-label={t("buttons.dismiss")}
+                  title={t("buttons.dismiss")}
+                  onClick={handleDismissCustomColorPicker}
+                >
+                  <BanSymbolSvg size={12} color="currentColor" />
+                </CustomColorPickerCloseButton>
+
+                <CustomColorPickerActionButton
+                  type="button"
+                  aria-label={t("buttons.server.save")}
+                  title={t("buttons.server.save")}
+                  onClick={handleConfirmCustomColorPicker}
+                >
+                  <OkCheckSvg size={11} color="currentColor" />
+                </CustomColorPickerActionButton>
+              </CustomColorPickerActions>
+            </CustomColorPickerHeader>
+
+            <CustomColorPickerMain>
+              <CustomColorSpectrum
+                ref={customColorSpectrumRef}
+                $hue={pickerHue}
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  handleSpectrumPointer(event);
+                }}
+                onPointerMove={(event) => {
+                  if (event.buttons !== 1) {
+                    return;
+                  }
+                  handleSpectrumPointer(event);
+                }}
+              >
+                <CustomColorSpectrumThumb
+                  $saturation={pickerSaturation}
+                  $value={pickerValue}
+                />
+              </CustomColorSpectrum>
+
+              <CustomColorHueSlider
+                type="range"
+                min={0}
+                max={360}
+                value={Math.round(pickerHue)}
+                onInput={(event) => {
+                  const nextHue = Number.parseInt(event.currentTarget.value, 10) || 0;
+                  applyPickerColor(nextHue, pickerSaturation, pickerValue);
+                }}
+              />
+
+              <CustomColorHueScale aria-hidden="true" />
+            </CustomColorPickerMain>
+
+            <CustomColorInputs>
+              <CustomColorInputGroup>
+                <span>HEX</span>
+                <CustomColorInput
+                  type="text"
+                  value={pickerHexInput}
+                  maxLength={7}
+                  onInput={(event) => {
+                    const rawValue = String(event.currentTarget.value || "").toUpperCase();
+                    const normalized = rawValue.startsWith("#") ? rawValue : `#${rawValue.replace(/^#+/, "")}`;
+                    setPickerHexInput(normalized.slice(0, 7));
+                  }}
+                  onBlur={handleHexInputBlur}
+                />
+              </CustomColorInputGroup>
+
+              <CustomColorInputGroup>
+                <span>R</span>
+                <CustomColorInput
+                  type="number"
+                  min={0}
+                  max={255}
+                  value={hsvToRgb(pickerHue, pickerSaturation, pickerValue).r}
+                  onInput={(event) => handleRgbInputChange("r", event.currentTarget.value)}
+                />
+              </CustomColorInputGroup>
+
+              <CustomColorInputGroup>
+                <span>G</span>
+                <CustomColorInput
+                  type="number"
+                  min={0}
+                  max={255}
+                  value={hsvToRgb(pickerHue, pickerSaturation, pickerValue).g}
+                  onInput={(event) => handleRgbInputChange("g", event.currentTarget.value)}
+                />
+              </CustomColorInputGroup>
+
+              <CustomColorInputGroup>
+                <span>B</span>
+                <CustomColorInput
+                  type="number"
+                  min={0}
+                  max={255}
+                  value={hsvToRgb(pickerHue, pickerSaturation, pickerValue).b}
+                  onInput={(event) => handleRgbInputChange("b", event.currentTarget.value)}
+                />
+              </CustomColorInputGroup>
+            </CustomColorInputs>
+          </CustomColorPickerPanel>
+        ) : (
+          <>
+            <InputField
+              label={t("labels.host")}
+              id="host"
+              inputRef={hostInputRef}
+              type="text"
+              value={formData.host}
+              placeholder={t("placeholders.host")}
+              required={true}
+              onInput={(value) => setFormData((current) => ({ ...current, host: value }))}
+            />
+
+            <InputField
+              label={t("labels.alias")}
+              id="name"
+              inputRef={nameInputRef}
+              type="text"
+              value={formData.name}
+              maxLength={80}
+              onInput={(value) => setFormData((current) => ({ ...current, name: value }))}
+            />
+
+            <InputField
+              label={t("labels.bypassList")}
+              id="bypassList"
+              inputRef={bypassListInputRef}
+              type="text"
+              value={formData.bypassList}
+              placeholder={t("placeholders.bypassList")}
+              onInput={(value) => setFormData((current) => ({ ...current, bypassList: value }))}
+            />
+          </>
+        )}
 
         <Actions>
-          <SubmitButton type="submit">{formMode === "edit" ? t("buttons.server.saveChanges") : t("buttons.server.save")}</SubmitButton>
+          <SubmitButton type="submit">{formMode === "edit" ? t("buttons.server.save") : t("buttons.server.add")}</SubmitButton>
           <DeleteButton
             type="button"
             $isVisible={Boolean(formData.id)}

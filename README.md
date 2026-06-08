@@ -13,6 +13,24 @@ Extension WebExtension para gestionar varios servidores proxy desde un popup lig
 - Interfaz multilenguaje con soporte para en, es, fr, pt, it y de.
 - Deteccion automatica de idioma del navegador.
 
+## Capturas
+
+### Vista principal
+
+![Vista principal del popup](static/home.png)
+
+### Servidor activo
+
+![Popup con un servidor activo seleccionado](static/home-server-selected.png)
+
+### Alta de servidor
+
+![Formulario para anadir un servidor proxy](static/server-add.png)
+
+### Preferencias
+
+![Vista de preferencias de la extension](static/preferences.png)
+
 ## Stack
 
 - Preact

@@ -39,6 +39,29 @@ export const StyledLogsBadgeAnchor = styled.div`
   justify-content: center;
 `;
 
+export const StyledFooterIconLink = styled.a`
+  display: inline-grid;
+  place-items: center;
+  padding: 2px 4px;
+  border-radius: 8px;
+  color: #4f6785;
+  opacity: 0.85;
+  text-decoration: none;
+  transition: background 120ms ease, color 120ms ease, opacity 120ms ease;
+
+  &:hover {
+    opacity: 1;
+    background: rgba(216, 230, 255, 0.45);
+  }
+
+  &:focus-visible {
+    outline: none;
+    opacity: 1;
+    background: rgba(216, 230, 255, 0.55);
+    box-shadow: 0 0 0 2px rgba(47, 79, 125, 0.15);
+  }
+`;
+
 export const StyledFooterConnectionBadge = styled.button`
   position: absolute;
   right: calc(100% + 6px);

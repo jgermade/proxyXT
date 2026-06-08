@@ -2,8 +2,8 @@ app:
   title: ProxyXT
   subtitle:
     selectServer: Seleziona un server
-    addProxy: Aggiungi server proxy
-    editProxy: Modifica server proxy
+    addProxy: Aggiungi server
+    editProxy: Modifica server
     preferences: Impostazioni di comportamento
 
 footer:
@@ -46,6 +46,15 @@ labels:
   reloadActiveTabOnToggle: Ricarica la scheda attiva quando attivi/disattivi un server
   syncServersWithAccount: Sincronizza i server con l'account del browser
   showFailoverNotifications: Mostra notifiche dell'estensione
+  syncData: Sincronizza dati
+  autoFailoverSimple: Failover automatico
+  autoReloadTab: Ricarica automatica scheda
+  showNotifications: Mostra notifiche
+  betaBadge: Beta
+  permissionBadge: Richiede permesso
+  betaBadgeFailoverTitle: Funzione beta. Il failover automatico e ancora in validazione.
+  permissionBadgeTabsTitle: Richiede il permesso delle schede per ricaricare automaticamente la scheda attiva.
+  permissionBadgeNotificationsTitle: Richiede il permesso delle notifiche per mostrare gli avvisi dell'estensione.
   language: Lingua
 
 language:
@@ -58,6 +67,8 @@ language:
   de: Tedesco
 
 placeholders:
+  host: 192.168.1.10
+  port: '1234'
   bypassList: localhost, *.internal.local
 
 messages:

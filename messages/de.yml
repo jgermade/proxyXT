@@ -2,8 +2,8 @@ app:
   title: ProxyXT
   subtitle:
     selectServer: Waehle einen Server
-    addProxy: Proxy-Server hinzufuegen
-    editProxy: Proxy-Server bearbeiten
+    addProxy: Server hinzufuegen
+    editProxy: Server bearbeiten
     preferences: Verhaltenseinstellungen
 
 footer:
@@ -46,6 +46,15 @@ labels:
   reloadActiveTabOnToggle: Aktiven Tab beim Aktivieren/Deaktivieren eines Servers neu laden
   syncServersWithAccount: Server mit dem Browserkonto synchronisieren
   showFailoverNotifications: Erweiterungsbenachrichtigungen anzeigen
+  syncData: Daten synchronisieren
+  autoFailoverSimple: Automatischer Failover
+  autoReloadTab: Tab automatisch neu laden
+  showNotifications: Benachrichtigungen anzeigen
+  betaBadge: Beta
+  permissionBadge: Erfordert Berechtigung
+  betaBadgeFailoverTitle: Beta-Funktion. Der automatische Failover wird noch validiert.
+  permissionBadgeTabsTitle: Erfordert die Berechtigung fuer Tabs, um den aktiven Tab automatisch neu zu laden.
+  permissionBadgeNotificationsTitle: Erfordert die Berechtigung fuer Benachrichtigungen, um Hinweise der Erweiterung anzuzeigen.
   language: Sprache
 
 language:
@@ -58,6 +67,8 @@ language:
   de: Deutsch
 
 placeholders:
+  host: 192.168.1.10
+  port: '1234'
   bypassList: localhost, *.internal.local
 
 messages:

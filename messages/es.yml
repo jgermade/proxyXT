@@ -2,8 +2,8 @@ app:
   title: ProxyXT
   subtitle:
     selectServer: Selecciona un servidor
-    addProxy: Anadir servidor proxy
-    editProxy: Editar servidor proxy
+    addProxy: Anadir servidor
+    editProxy: Editar servidor
     preferences: Ajustes de comportamiento
 
 footer:
@@ -31,7 +31,7 @@ buttons:
     save: Guardar servidor
     saveChanges: Guardar cambios
     delete: Eliminar
-    add: Agregar servidor
+    add: Anadir servidor
     backToList: Volver al listado
     edit: Editar servidor
 
@@ -67,6 +67,8 @@ language:
   de: Aleman
 
 placeholders:
+  host: 192.168.1.10
+  port: '1234'
   bypassList: localhost, *.internal.local
 
 messages:
@@ -88,8 +90,8 @@ messages:
   roundRobinDisabled: Round Robin desactivado
   reloadOnToggleEnabled: Recarga de pestana activa activada
   reloadOnToggleDisabled: Recarga de pestana activa desactivada
-  syncServersEnabled: Sincronizacion de servidores activada
-  syncServersDisabled: Sincronizacion de servidores desactivada
+  syncServersEnabled: Sincronización activada
+  syncServersDisabled: Sincronización desactivada
   tabsPermissionDenied: El permiso activeTab es necesario para recargar la pestana activa
   notificationsPermissionDenied: El permiso de notificaciones es necesario para mostrar avisos de la extension
   failoverNotificationsEnabled: Notificaciones activadas

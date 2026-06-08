@@ -2,8 +2,8 @@ app:
   title: ProxyXT
   subtitle:
     selectServer: Select a server
-    addProxy: Add proxy server
-    editProxy: Edit proxy server
+    addProxy: Add server
+    editProxy: Edit server
     preferences: Behavior settings
 
 footer:
@@ -67,6 +67,8 @@ language:
   de: German
 
 placeholders:
+  host: 192.168.1.10
+  port: '1234'
   bypassList: localhost, *.internal.local
 
 messages:

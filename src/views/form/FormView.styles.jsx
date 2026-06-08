@@ -61,6 +61,198 @@ export const ColorPresetPanel = styled.div`
   box-shadow: inset 0 0 0 1px #8ba4c6;
 `;
 
+export const CustomColorPickerPanel = styled.div`
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 6px;
+  padding: 10px;
+  height: 160px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: #e6edf7;
+  box-shadow: inset 0 0 0 1px #8ba4c6;
+`;
+
+export const CustomColorPickerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+`;
+
+export const CustomColorPickerActions = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+export const CustomColorPickerMain = styled.div`
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16px 6px;
+  gap: 8px;
+`;
+
+export const CustomColorSpectrum = styled.div`
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 6px;
+  background-image:
+    linear-gradient(to top, #000, transparent),
+    linear-gradient(to right, #fff, hsl(${({ $hue }) => $hue}, 100%, 50%));
+  box-shadow: inset 0 0 0 1px rgba(57, 81, 112, 0.22);
+  cursor: crosshair;
+  touch-action: none;
+`;
+
+export const CustomColorSpectrumThumb = styled.span`
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px rgba(26, 37, 48, 0.45);
+  left: ${({ $saturation }) => `${$saturation}%`};
+  top: ${({ $value }) => `${100 - $value}%`};
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+`;
+
+export const CustomColorHueSlider = styled.input`
+  width: 16px;
+  min-height: 0;
+  margin: 0;
+  appearance: slider-vertical;
+  accent-color: #3b82f6;
+  cursor: ns-resize;
+`;
+
+export const CustomColorHueScale = styled.span`
+  width: 6px;
+  min-height: 0;
+  border-radius: 999px;
+  background: linear-gradient(
+    to top,
+    #ff0000 0%,
+    #ff00ff 16.6%,
+    #0000ff 33.3%,
+    #00ffff 50%,
+    #00ff00 66.6%,
+    #ffff00 83.3%,
+    #ff0000 100%
+  );
+  box-shadow: inset 0 0 0 1px rgba(57, 81, 112, 0.25);
+`;
+
+export const CustomColorInputs = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 38px 38px 38px;
+  gap: 6px;
+  align-items: end;
+`;
+
+export const CustomColorInputGroup = styled.label`
+  display: grid;
+  gap: 2px;
+
+  > span {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #4a617d;
+  }
+`;
+
+export const CustomColorInput = styled.input`
+  width: 100%;
+  height: 26px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #1f3046;
+  background: #f7fbff;
+  box-shadow: inset 0 0 0 1px #a8bdd8;
+
+  &:focus {
+    outline: none;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px #4f79b6, 0 0 0 2px rgba(0, 83, 255, 0.12);
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  &[type="number"]::-webkit-outer-spin-button,
+  &[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
+
+export const CustomColorPickerPreview = styled.div`
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #395170;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  > span:last-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
+
+export const CustomColorPickerPreviewSwatch = styled.span`
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  border-radius: 6px;
+  background: ${({ $value }) => $value || "transparent"};
+  box-shadow: inset 0 0 0 1px rgba(57, 81, 112, 0.18);
+`;
+
+export const CustomColorPickerCloseButton = styled.button`
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 999px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #395170;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+
+  &:hover {
+    background: #d2def2;
+    color: #24384f;
+  }
+
+  &:focus-visible {
+    outline: none;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px #4f79b6, 0 0 0 2px rgba(0, 83, 255, 0.15);
+  }
+`;
+
+export const CustomColorPickerActionButton = styled(CustomColorPickerCloseButton)`
+  border-radius: 6px;
+`;
+
 export const ColorPresetRow = styled.div`
   display: ${({ $isUserRow }) => ($isUserRow ? "block" : "grid")};
   grid-auto-flow: column;
@@ -218,10 +410,6 @@ export const UserColorAddIcon = styled(UserColorPickerIcon)`
   ${UserColorButton}:hover & {
     opacity: 1;
   }
-`;
-
-export const HiddenColorInput = styled.input`
-  display: none;
 `;
 
 export const Actions = styled.div`

@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { SquaredButton } from "../../components/SquaredButton.jsx";
 import { LanguageBadge } from "../../components/LanguageBadge.jsx";
 import { CrossSymbolSvg } from "../../components/icons/CrossSymbolSvg.jsx";
+import { GithubLogoSvg } from "../../components/icons/GithubLogoSvg.jsx";
 import { LogsSvg } from "../../components/icons/LogsSvg.jsx";
 import { FooterActions } from "./FooterActions.jsx";
 import {
   StyledFooterConnectionBadge,
   StyledFooterConnectionNotice,
+  StyledFooterIconLink,
   StyledLogsBadgeAnchor
 } from "./FooterActions.styles.jsx";
 import { FooterProxyStatus } from "./FooterProxyStatus.jsx";
@@ -36,6 +38,7 @@ export function AppFooter({
 }) {
   const [feedbackState, setFeedbackState] = useState(null);
   const animationTimerRef = useRef(null);
+  const feedbackSequenceRef = useRef(0);
   const connectionNoticeTimerRef = useRef(null);
   const [footerNow, setFooterNow] = useState(() => Date.now());
   const [connectionNoticeState, setConnectionNoticeState] = useState("badge");
@@ -47,7 +50,9 @@ export function AppFooter({
     }
 
     if (footerFeedbackMessage) {
+      feedbackSequenceRef.current += 1;
       setFeedbackState({
+        id: feedbackSequenceRef.current,
         message: footerFeedbackMessage,
         isError: Boolean(isFooterFeedbackError),
         phase: "enter"
@@ -214,6 +219,16 @@ export function AppFooter({
             <LogsSvg />
           </SquaredButton>
         </StyledLogsBadgeAnchor>
+
+        <StyledFooterIconLink
+          href="https://github.com/jgermade/proxyXT"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="GitHub"
+          title="GitHub"
+        >
+          <GithubLogoSvg size={17} />
+        </StyledFooterIconLink>
         
         <LanguageBadge
           preference={languagePreference}

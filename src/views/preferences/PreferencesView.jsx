@@ -1,10 +1,10 @@
 import { h } from "preact";
-import { useMemo, useState } from "preact/hooks";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { PreferencesSvg } from "../../components/icons/PreferencesSvg.jsx";
 import { SelectField } from "../../components/form/SelectField.jsx";
 import {
   PreferenceToggle,
-  PreferencesCard,
+  PreferencesForm,
   PreferencesGroup,
   PreferencesHintBox,
   PreferencesHintPlaceholder,
@@ -39,6 +39,8 @@ export function PreferencesView({
   onLanguageChange
 }) {
   const [hoveredPreferenceId, setHoveredPreferenceId] = useState(null);
+  const [isHintGearBoosted, setIsHintGearBoosted] = useState(false);
+  const hintBoostTimerRef = useRef(null);
   const preferenceHintById = useMemo(() => ({
     syncServersWithAccount: t("preferences.syncHelp"),
     autoFailoverEnabled: t("preferences.help"),
@@ -46,6 +48,15 @@ export function PreferencesView({
     showFailoverNotifications: t("preferences.failoverNotificationsHelp")
   }), [t]);
   const activeHint = hoveredPreferenceId ? preferenceHintById[hoveredPreferenceId] : "";
+
+  useEffect(() => {
+    return () => {
+      if (hintBoostTimerRef.current) {
+        globalThis.clearTimeout(hintBoostTimerRef.current);
+        hintBoostTimerRef.current = null;
+      }
+    };
+  }, []);
 
   function preferenceHoverHandlers(id) {
     return {
@@ -56,9 +67,26 @@ export function PreferencesView({
     };
   }
 
+  function handleHintBoxClick() {
+    setIsHintGearBoosted(false);
+
+    if (hintBoostTimerRef.current) {
+      globalThis.clearTimeout(hintBoostTimerRef.current);
+      hintBoostTimerRef.current = null;
+    }
+
+    globalThis.requestAnimationFrame(() => {
+      setIsHintGearBoosted(true);
+      hintBoostTimerRef.current = globalThis.setTimeout(() => {
+        setIsHintGearBoosted(false);
+        hintBoostTimerRef.current = null;
+      }, 3000);
+    });
+  }
+
   return (
     <PreferencesPanel $isVisible={view === "preferences"}>
-      <PreferencesCard>
+      <PreferencesForm>
         <PreferencesGroup>
           <SelectField
             id="language"
@@ -125,14 +153,18 @@ export function PreferencesView({
             />
           </div>
 
-          <PreferencesHintBox aria-live="polite">
-            <PreferencesHintPlaceholder aria-hidden="true" $isHintActive={Boolean(activeHint)}>
+          <PreferencesHintBox aria-live="polite" onClick={handleHintBoxClick}>
+            <PreferencesHintPlaceholder
+              aria-hidden="true"
+              $isHintActive={Boolean(activeHint)}
+              $isBoosted={isHintGearBoosted}
+            >
               <PreferencesSvg size={48} />
             </PreferencesHintPlaceholder>
             <PreferencesHintText>{activeHint || " "}</PreferencesHintText>
           </PreferencesHintBox>
         </PreferencesGroup>
-      </PreferencesCard>
+      </PreferencesForm>
     </PreferencesPanel>
   );
 }
