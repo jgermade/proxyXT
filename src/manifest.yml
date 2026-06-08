@@ -6,7 +6,7 @@ permissions:
   - storage
   - proxy
 optional_permissions:
-  - activeTab
+  - tabs
   - notifications
 icons:
   "16": icons/proxyxt-16.png

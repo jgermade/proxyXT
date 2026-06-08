@@ -107,7 +107,7 @@ export function useProxyApp() {
         if (isMounted) {
           const [notifGranted, tabsGranted] = await Promise.all([
             containsPermissions(["notifications"]).catch(() => false),
-            containsPermissions(["activeTab"]).catch(() => false)
+            containsPermissions(["tabs"]).catch(() => false)
           ]);
           setHasNotificationsPermission(notifGranted);
           setHasTabsPermission(tabsGranted);
@@ -447,15 +447,15 @@ export function useProxyApp() {
 
     if (enabled) {
       try {
-        const hasActiveTabPermission = await containsPermissions(["activeTab"]);
-        if (!hasActiveTabPermission) {
+        const hasTabsPermissionNow = await containsPermissions(["tabs"]);
+        if (!hasTabsPermissionNow) {
           const hasNotificationsPermission = await containsPermissions(["notifications"]);
           shouldNotifyTabsPermissionGranted = hasNotificationsPermission;
           if (shouldNotifyTabsPermissionGranted) {
             await callBackground("proxyxt/setTabsPermissionNotifyPending", { pending: true });
           }
 
-          const granted = await requestPermissions(["activeTab"]);
+          const granted = await requestPermissions(["tabs"]);
           if (!granted) {
             if (shouldNotifyTabsPermissionGranted) {
               try {
@@ -467,7 +467,7 @@ export function useProxyApp() {
             setFeedback({ message: t("messages.tabsPermissionDenied"), isError: true });
             return;
           }
-          setHasTabsPermission(true);
+          setHasTabsPermission(true); // tabs granted
         }
       } catch (error) {
         if (shouldNotifyTabsPermissionGranted) {

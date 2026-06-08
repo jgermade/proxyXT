@@ -53,7 +53,7 @@ labels:
   betaBadge: Beta
   permissionBadge: Requires permission
   betaBadgeFailoverTitle: Beta feature. Automatic failover is still under validation.
-  permissionBadgeTabsTitle: Requires activeTab permission to automatically reload the active tab.
+  permissionBadgeTabsTitle: Requires tabs permission to automatically reload the active tab.
   permissionBadgeNotificationsTitle: Requires notifications permission to show extension alerts.
   language: Language
 
@@ -92,7 +92,7 @@ messages:
   reloadOnToggleDisabled: Active tab reload disabled
   syncServersEnabled: Server sync enabled
   syncServersDisabled: Server sync disabled
-  tabsPermissionDenied: activeTab permission is required to reload the active tab
+  tabsPermissionDenied: Tabs permission is required to reload the active tab
   notificationsPermissionDenied: Notifications permission is required to show extension alerts
   failoverNotificationsEnabled: Notifications enabled
   failoverNotificationsDisabled: Notifications disabled

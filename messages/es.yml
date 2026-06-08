@@ -53,7 +53,7 @@ labels:
   betaBadge: Beta
   permissionBadge: Requiere permiso
   betaBadgeFailoverTitle: Funcion beta. El failover automatico sigue en validacion.
-  permissionBadgeTabsTitle: Requiere el permiso activeTab para poder recargar automaticamente la pestana activa.
+  permissionBadgeTabsTitle: Requiere el permiso de pestanas para poder recargar automaticamente la pestana activa.
   permissionBadgeNotificationsTitle: Requiere el permiso de notificaciones para mostrar avisos de la extension.
   language: Idioma
 
@@ -92,7 +92,7 @@ messages:
   reloadOnToggleDisabled: Recarga de pestana activa desactivada
   syncServersEnabled: Sincronización activada
   syncServersDisabled: Sincronización desactivada
-  tabsPermissionDenied: El permiso activeTab es necesario para recargar la pestana activa
+  tabsPermissionDenied: El permiso de pestanas es necesario para recargar la pestana activa
   notificationsPermissionDenied: El permiso de notificaciones es necesario para mostrar avisos de la extension
   failoverNotificationsEnabled: Notificaciones activadas
   failoverNotificationsDisabled: Notificaciones desactivadas
