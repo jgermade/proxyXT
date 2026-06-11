@@ -1,9 +1,11 @@
-import { h } from "preact";
+import { Fragment, h } from "preact";
 import { useState } from "preact/hooks";
 import {
   EmptyStateActionButton,
-  EmptyStateCard,
+  EmptyStateForm,
+  EmptyStateDivider,
   EmptyStateMessage,
+  EmptyStateSecondaryButton,
   ListContainer,
   ListPanel,
   ServerActivePatternOverlay,
@@ -101,7 +103,9 @@ export function ListView({
   onEdit,
   getServerDisplayName,
   onAddServer,
-  onReorder
+  onReorder,
+  syncServersWithAccount,
+  onActivateSync
 }) {
   const isEmpty = !servers.length;
   const showEmptyState = !isInitialStateLoading && isEmpty;
@@ -251,12 +255,20 @@ export function ListView({
             />
           ))}
         </ServerList>
-        <EmptyStateCard $isVisible={showEmptyState}>
+        <EmptyStateForm $isVisible={showEmptyState} name="emptyState">
           <EmptyStateMessage>{t("messages.noServers")}</EmptyStateMessage>
-          <EmptyStateActionButton type="button" onClick={onAddServer}>
+          <EmptyStateActionButton type="button" onClick={onAddServer} name="addServer">
             {t("app.subtitle.addProxy")}
           </EmptyStateActionButton>
-        </EmptyStateCard>
+          {!syncServersWithAccount ? (
+            <>
+              <EmptyStateDivider>&mdash; o &mdash;</EmptyStateDivider>
+              <EmptyStateSecondaryButton type="button" onClick={onActivateSync} name="activateSync">
+                {t("messages.noServersSync")}
+              </EmptyStateSecondaryButton>
+            </>
+          ) : null}
+        </EmptyStateForm>
       </ListContainer>
     </ListPanel>
   );

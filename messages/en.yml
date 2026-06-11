@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: No saved proxies
+  noServersSync: Activate data synchronization
   noLogs: No logs.
   noMessage: No message
   unknownError: Unknown error
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin disabled
   reloadOnToggleEnabled: Active tab reload enabled
   reloadOnToggleDisabled: Active tab reload disabled
+  syncServersInProgress: Synchronizing...
   syncServersEnabled: Server sync enabled
   syncServersDisabled: Server sync disabled
   tabsPermissionDenied: Tabs permission is required to reload the active tab

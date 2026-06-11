@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: No hay proxies guardados
+  noServersSync: Activar sincronizacion de datos
   noLogs: Sin logs.
   noMessage: Sin mensaje
   unknownError: Error desconocido
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin desactivado
   reloadOnToggleEnabled: Recarga de pestana activa activada
   reloadOnToggleDisabled: Recarga de pestana activa desactivada
+  syncServersInProgress: Sincronizando...
   syncServersEnabled: Sincronización activada
   syncServersDisabled: Sincronización desactivada
   tabsPermissionDenied: El permiso de pestanas es necesario para recargar la pestana activa

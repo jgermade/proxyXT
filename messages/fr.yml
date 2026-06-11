@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: Aucun proxy enregistre
+  noServersSync: Activer la synchronisation des donnees
   noLogs: Aucun log.
   noMessage: Sans message
   unknownError: Erreur inconnue
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin desactive
   reloadOnToggleEnabled: Rechargement de l'onglet actif active
   reloadOnToggleDisabled: Rechargement de l'onglet actif desactive
+  syncServersInProgress: Synchronisation en cours...
   syncServersEnabled: Synchronisation des serveurs activee
   syncServersDisabled: Synchronisation des serveurs desactivee
   tabsPermissionDenied: L'autorisation tabs est necessaire pour recharger l'onglet actif

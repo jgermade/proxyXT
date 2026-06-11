@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: Keine gespeicherten Proxys
+  noServersSync: Datensynchronisierung aktivieren
   noLogs: Keine Logs.
   noMessage: Keine Nachricht
   unknownError: Unbekannter Fehler
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin deaktiviert
   reloadOnToggleEnabled: Neuladen des aktiven Tabs aktiviert
   reloadOnToggleDisabled: Neuladen des aktiven Tabs deaktiviert
+  syncServersInProgress: Synchronisiere...
   syncServersEnabled: Serversynchronisierung aktiviert
   syncServersDisabled: Serversynchronisierung deaktiviert
   tabsPermissionDenied: Die Berechtigung tabs ist erforderlich, um den aktiven Tab neu zu laden

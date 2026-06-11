@@ -525,6 +525,11 @@ export function useProxyApp() {
 
   async function handleSyncServersWithAccountChange(enabled) {
     const previous = Boolean(state.preferences?.syncServersWithAccount);
+
+    if (enabled) {
+      setFeedback({ message: t("messages.syncServersInProgress"), isError: false, durationMs: 30000 });
+    }
+
     setState((current) => ({
       ...current,
       preferences: {

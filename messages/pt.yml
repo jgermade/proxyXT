@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: Nenhum proxy salvo
+  noServersSync: Ativar sincronizacao de dados
   noLogs: Sem logs.
   noMessage: Sem mensagem
   unknownError: Erro desconhecido
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin desativado
   reloadOnToggleEnabled: Recarga da aba ativa ativada
   reloadOnToggleDisabled: Recarga da aba ativa desativada
+  syncServersInProgress: Sincronizando...
   syncServersEnabled: Sincronizacao de servidores ativada
   syncServersDisabled: Sincronizacao de servidores desativada
   tabsPermissionDenied: A permissao de abas e necessaria para recarregar a aba ativa

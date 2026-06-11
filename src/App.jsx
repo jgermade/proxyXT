@@ -84,6 +84,7 @@ export function App() {
           handleOpenList={handleOpenList}
           handleTogglePreferences={handleTogglePreferences}
           handlePrimaryAction={handlePrimaryAction}
+          handleOpenPreferences={handleOpenPreferences}
           servers={servers}
           userColorPresets={userColorPresets}
           activeServerId={activeServerId}
