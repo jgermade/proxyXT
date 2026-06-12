@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    {"id": "concept_composition_root", "label": "Service Composition Root", "file_type": "concept", "source_file": "src/background.js", "source_location": "1-15", "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "concept_failover_system", "label": "Automatic Failover System", "file_type": "concept", "source_file": "src/services/listeners.service.js", "source_location": "336-521", "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "concept_sync_system", "label": "Browser Account Sync", "file_type": "concept", "source_file": "src/services/listeners.service.js", "source_location": "207-334", "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "concept_message_routing", "label": "Message-Based Action Routing", "file_type": "concept", "source_file": "src/services/listeners.service.js", "source_location": "916-1015", "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "concept_popup_state_management", "label": "Popup State Management", "file_type": "concept", "source_file": "src/hooks/useProxyApp.js", "source_location": "1-742", "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "concept_permission_flow", "label": "Permission Request Flow", "file_type": "concept", "source_file": "src/hooks/useProxyApp.js", "source_location": "444-489", "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "concept_ui_view_navigation", "label": "UI View Navigation System", "file_type": "concept", "source_file": "src/hooks/useProxyApp.js", "source_location": "168-203", "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "concept_i18n_system", "label": "Internationalization System", "file_type": "concept", "source_file": "src/lib/i18n.js", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "concept_notification_system", "label": "Failover Notification System", "file_type": "concept", "source_file": "src/services/notifications.service.js", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "concept_icon_management", "label": "Dynamic Icon Management", "file_type": "concept", "source_file": "src/services/icons.service.js", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "rationale_dependency_injection", "label": "Dependency Injection in Services", "file_type": "rationale", "source_file": "src/background.js", "source_location": "9-13", "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "document_readme", "label": "ProxyXT README", "file_type": "document", "source_file": "README.md", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "document_i18n_messages", "label": "i18n Message Definitions", "file_type": "document", "source_file": "messages/en.yml", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "document_manifest", "label": "Extension Manifest", "file_type": "document", "source_file": "src/manifest.yml", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null},
+    {"id": "document_privacy_policy", "label": "Privacy Policy", "file_type": "document", "source_file": "PRIVACY_POLICY.md", "source_location": null, "source_url": null, "captured_at": null, "author": null, "contributor": null}
+  ],
+  "edges": [
+    {"source": "concept_composition_root", "target": "listeners_listenersservice", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "src/background.js", "source_location": "12-14", "weight": 1.0},
+    {"source": "concept_composition_root", "target": "services_storageservice", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "src/background.js", "source_location": "9", "weight": 1.0},
+    {"source": "concept_composition_root", "target": "services_iconsservice", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "src/background.js", "source_location": "10", "weight": 1.0},
+    {"source": "concept_composition_root", "target": "services_notificationsservice", "relation": "conceptually_related_to", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "src/background.js", "source_location": "11", "weight": 1.0},
