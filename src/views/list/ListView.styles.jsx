@@ -65,7 +65,7 @@ const MOON_D    = `url("data:image/svg+xml,%3Csvg width='80' height='56' viewBox
 const MOON_SM_D = `url("data:image/svg+xml,%3Csvg width='60' height='44' viewBox='0 0 60 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' d='M30,15 A7,7,0,1,0,30,29 A7,7,0,1,0,30,15 Z M28,17.4 A4.6,4.6,0,1,0,28,26.6 A4.6,4.6,0,1,0,28,17.4 Z' fill='%231e3246' opacity='0.05'/%3E%3C/svg%3E")`;
 
 export const ListPanel = styled.section`
-  min-height: 192px;
+  min-height: 208px;
   display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
 `;
 
@@ -231,7 +231,7 @@ export const ServerEditButton = styled.button`
   }
 `;
 
-export const EmptyStateCard = styled.div`
+export const EmptyStateForm = styled.form`
   background: #f7faff;
   border: 1px dashed #c1d1e3;
   color: #425773;
@@ -267,6 +267,37 @@ export const EmptyStateActionButton = styled.button`
     outline: none;
     box-shadow: 0 0 0 2px rgba(9, 103, 212, 0.24);
   }
+`;
+
+export const EmptyStateSecondaryButton = styled.button`
+  margin-top: 10px;
+  border: 1px solid #c1d1e3;
+  border-radius: 9px;
+  padding: 8px 12px;
+  background: transparent;
+  color: #425773;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+
+  &:hover {
+    background: #eaf1fb;
+    border-color: #8fb0d9;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(9, 103, 212, 0.24);
+  }
+`;
+
+export const EmptyStateDivider = styled.div`
+  margin: 12px auto 0;
+  font-size: 0.75rem;
+  color: #b0c4db;
+  letter-spacing: 0.08em;
+  user-select: none;
 `;
 
 export const ServerActivePatternOverlay = styled.span`

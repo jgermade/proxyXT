@@ -23,7 +23,7 @@ const buttonBaseStyles = css`
 `;
 
 export const FormPanel = styled.section`
-  min-height: 192px;
+  min-height: 208px;
   display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
 `;
 

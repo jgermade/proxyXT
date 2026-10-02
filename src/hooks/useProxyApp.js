@@ -24,6 +24,8 @@ export function useProxyApp() {
   const [logs, setLogs] = useState([]);
   const [hasErrorLogs, setHasErrorLogs] = useState(false);
   const [isInitialStateLoading, setIsInitialStateLoading] = useState(true);
+  const [hasNotificationsPermission, setHasNotificationsPermission] = useState(false);
+  const [hasTabsPermission, setHasTabsPermission] = useState(false);
 
   const languagePreference = state.preferences?.language || "auto";
   const effectiveLanguage = resolveLanguage(languagePreference, globalThis.navigator?.language);
@@ -101,6 +103,14 @@ export function useProxyApp() {
         }
         if (isMounted) {
           await refreshLogs();
+        }
+        if (isMounted) {
+          const [notifGranted, tabsGranted] = await Promise.all([
+            containsPermissions(["notifications"]).catch(() => false),
+            containsPermissions(["tabs"]).catch(() => false)
+          ]);
+          setHasNotificationsPermission(notifGranted);
+          setHasTabsPermission(tabsGranted);
         }
       } catch (error) {
         if (isMounted) {
@@ -437,8 +447,8 @@ export function useProxyApp() {
 
     if (enabled) {
       try {
-        const hasTabsPermission = await containsPermissions(["tabs"]);
-        if (!hasTabsPermission) {
+        const hasTabsPermissionNow = await containsPermissions(["tabs"]);
+        if (!hasTabsPermissionNow) {
           const hasNotificationsPermission = await containsPermissions(["notifications"]);
           shouldNotifyTabsPermissionGranted = hasNotificationsPermission;
           if (shouldNotifyTabsPermissionGranted) {
@@ -457,6 +467,7 @@ export function useProxyApp() {
             setFeedback({ message: t("messages.tabsPermissionDenied"), isError: true });
             return;
           }
+          setHasTabsPermission(true); // tabs granted
         }
       } catch (error) {
         if (shouldNotifyTabsPermissionGranted) {
@@ -514,6 +525,11 @@ export function useProxyApp() {
 
   async function handleSyncServersWithAccountChange(enabled) {
     const previous = Boolean(state.preferences?.syncServersWithAccount);
+
+    if (enabled) {
+      setFeedback({ message: t("messages.syncServersInProgress"), isError: false, durationMs: 30000 });
+    }
+
     setState((current) => ({
       ...current,
       preferences: {
@@ -567,6 +583,7 @@ export function useProxyApp() {
             setFeedback({ message: t("messages.notificationsPermissionDenied"), isError: true });
             return;
           }
+          setHasNotificationsPermission(true);
         }
       } catch (error) {
         try {
@@ -697,6 +714,8 @@ export function useProxyApp() {
     reloadActiveTabOnToggle: state.preferences?.reloadActiveTabOnToggle,
     syncServersWithAccount: state.preferences?.syncServersWithAccount,
     showFailoverNotifications: state.preferences?.showFailoverNotifications,
+    hasNotificationsPermission,
+    hasTabsPermission,
     languagePreference,
     effectiveLanguage,
     handlePrimaryAction,

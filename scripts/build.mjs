@@ -23,7 +23,8 @@ await mkdir(distDir, { recursive: true });
 await build({
   entryPoints: {
     popup: path.join(srcDir, "popup.js"),
-    logs: path.join(srcDir, "logs.jsx")
+    logs: path.join(srcDir, "logs.jsx"),
+    background: path.join(srcDir, "background.js")
   },
   outdir: distDir,
   entryNames: "[name]",
@@ -50,7 +51,6 @@ const staticFiles = [
   "popup.css",
   "logs.html",
   "logs.css",
-  "background.js",
   "proxyxt.png",
   "proxyxt-off.png"
 ];

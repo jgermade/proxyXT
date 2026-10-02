@@ -1,0 +1,647 @@
+{
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/settings.json": {
+    "mtime": 1781195979.7089415,
+    "ast_hash": "bfee062c3962c14264fd704e975a6b38",
+    "semantic_hash": "bfee062c3962c14264fd704e975a6b38"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.nanocoder/tasks.json": {
+    "mtime": 1781100970.689914,
+    "ast_hash": "d751713988987e9331980363e24189ce",
+    "semantic_hash": "d751713988987e9331980363e24189ce"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/package.json": {
+    "mtime": 1780911308.7420528,
+    "ast_hash": "89bc0bf82a2032dec247a75f8efa87df",
+    "semantic_hash": "89bc0bf82a2032dec247a75f8efa87df"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/scripts/build.mjs": {
+    "mtime": 1781174310.4093463,
+    "ast_hash": "ee3d4d79f4b2b378ba2989a1f66dc5e7",
+    "semantic_hash": "ee3d4d79f4b2b378ba2989a1f66dc5e7"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/scripts/check-message-keys.mjs": {
+    "mtime": 1780911308.7425969,
+    "ast_hash": "9fb730cc37295d29fe8ea239427e4285",
+    "semantic_hash": "9fb730cc37295d29fe8ea239427e4285"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/App.jsx": {
+    "mtime": 1781175037.8261306,
+    "ast_hash": "4607767a5e4d589c970e8be31cfe9c79",
+    "semantic_hash": "4607767a5e4d589c970e8be31cfe9c79"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/background.js": {
+    "mtime": 1781174256.7934086,
+    "ast_hash": "881b6d5fcfd2a5751da56781840d6be7",
+    "semantic_hash": "881b6d5fcfd2a5751da56781840d6be7"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/LanguageBadge.jsx": {
+    "mtime": 1780671464.8164258,
+    "ast_hash": "c9459b58656bafb926dbdaa04fd7d2f5",
+    "semantic_hash": "c9459b58656bafb926dbdaa04fd7d2f5"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/LanguageBadge.styles.jsx": {
+    "mtime": 1780646465.3822467,
+    "ast_hash": "373358947593da9d2a936b671372a29a",
+    "semantic_hash": "373358947593da9d2a936b671372a29a"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/LanguageFlag.jsx": {
+    "mtime": 1780640336.5863888,
+    "ast_hash": "8e98e6e6fc8a45e99cc8cea211d56cbb",
+    "semantic_hash": "8e98e6e6fc8a45e99cc8cea211d56cbb"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/SquaredButton.jsx": {
+    "mtime": 1780674104.4985693,
+    "ast_hash": "69598effe1df28d015af334ac5966c0a",
+    "semantic_hash": "69598effe1df28d015af334ac5966c0a"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/SquaredButton.styles.jsx": {
+    "mtime": 1780674269.034395,
+    "ast_hash": "e42261962dec7b660128f1623c4492d4",
+    "semantic_hash": "e42261962dec7b660128f1623c4492d4"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/form/CheckboxField.jsx": {
+    "mtime": 1780716182.3403707,
+    "ast_hash": "f58c84fb1180727c1b6ce7d99c670a24",
+    "semantic_hash": "f58c84fb1180727c1b6ce7d99c670a24"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/form/ColorField.jsx": {
+    "mtime": 1780683839.0041113,
+    "ast_hash": "1a4018a81350ba190dd1e5d4871c2fe0",
+    "semantic_hash": "1a4018a81350ba190dd1e5d4871c2fe0"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/form/InputField.jsx": {
+    "mtime": 1780713277.4075963,
+    "ast_hash": "01b836bd7a84aa10b0ccc9bc934cb91e",
+    "semantic_hash": "01b836bd7a84aa10b0ccc9bc934cb91e"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/form/SelectField.jsx": {
+    "mtime": 1780704996.6872413,
+    "ast_hash": "109924297e4d3cc48206ed18643cf8db",
+    "semantic_hash": "109924297e4d3cc48206ed18643cf8db"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/BackSymbolSvg.jsx": {
+    "mtime": 1780672209.1288018,
+    "ast_hash": "c2b30e86a3eaee92227f78d8d19b5f84",
+    "semantic_hash": "c2b30e86a3eaee92227f78d8d19b5f84"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/BanSymbolSvg.jsx": {
+    "mtime": 1780678619.5960422,
+    "ast_hash": "8cc005e0836ff2e5c5f9e5d16b3c917d",
+    "semantic_hash": "8cc005e0836ff2e5c5f9e5d16b3c917d"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/ColorPickerSvg.jsx": {
+    "mtime": 1780684211.6619866,
+    "ast_hash": "19df8bca2dd956375e08b16662a407ab",
+    "semantic_hash": "19df8bca2dd956375e08b16662a407ab"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/CopySymbolSvg.jsx": {
+    "mtime": 1780677702.744778,
+    "ast_hash": "3ed829ee134e5719a71d8a0471f1c57e",
+    "semantic_hash": "3ed829ee134e5719a71d8a0471f1c57e"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/CrossSymbolSvg.jsx": {
+    "mtime": 1780697346.5643942,
+    "ast_hash": "1a68632fdc2627e0288df2b0ac29175f",
+    "semantic_hash": "1a68632fdc2627e0288df2b0ac29175f"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/FilterSymbolSvg.jsx": {
+    "mtime": 1780673282.2689164,
+    "ast_hash": "18bb8dc5fc6c1cf54f12939f5ab50833",
+    "semantic_hash": "18bb8dc5fc6c1cf54f12939f5ab50833"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/GithubLogoSvg.jsx": {
+    "mtime": 1780911308.7429926,
+    "ast_hash": "b67baae1163c04a50c480ae90402d9fb",
+    "semantic_hash": "b67baae1163c04a50c480ae90402d9fb"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/LogsSvg.jsx": {
+    "mtime": 1780672438.7639337,
+    "ast_hash": "9372170a2f6870cd742230edbad1e024",
+    "semantic_hash": "9372170a2f6870cd742230edbad1e024"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/NewWindowSvg.jsx": {
+    "mtime": 1780672218.3294122,
+    "ast_hash": "e6a242de378d853f391bd96ba6361b57",
+    "semantic_hash": "e6a242de378d853f391bd96ba6361b57"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/OkCheckSvg.jsx": {
+    "mtime": 1780911308.7434354,
+    "ast_hash": "a9ed6cda9360563ab7522c789659f00f",
+    "semantic_hash": "a9ed6cda9360563ab7522c789659f00f"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/PlusSymbolSvg.jsx": {
+    "mtime": 1780672232.7294412,
+    "ast_hash": "fba3b24038ce8b1ee5ab87e311bdeaf6",
+    "semantic_hash": "fba3b24038ce8b1ee5ab87e311bdeaf6"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/PreferencesSvg.jsx": {
+    "mtime": 1780672348.767383,
+    "ast_hash": "d075f68d2ee62b403ecc2a5a8ba7e94d",
+    "semantic_hash": "d075f68d2ee62b403ecc2a5a8ba7e94d"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/SadFaceSvg.jsx": {
+    "mtime": 1780682307.9857776,
+    "ast_hash": "41f866a52ff9636199a9aa90296e91aa",
+    "semantic_hash": "41f866a52ff9636199a9aa90296e91aa"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/flags/FlagSvgDE.jsx": {
+    "mtime": 1780640353.565647,
+    "ast_hash": "c15846845df5ef71ae88216769b83bca",
+    "semantic_hash": "c15846845df5ef71ae88216769b83bca"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/flags/FlagSvgES.jsx": {
+    "mtime": 1780640353.5611994,
+    "ast_hash": "c6864c80b5b947d81c9080f4e38e79d6",
+    "semantic_hash": "c6864c80b5b947d81c9080f4e38e79d6"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/flags/FlagSvgFR.jsx": {
+    "mtime": 1780640353.5612142,
+    "ast_hash": "24a4807c47dd4e0139850dc0e595e3d6",
+    "semantic_hash": "24a4807c47dd4e0139850dc0e595e3d6"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/flags/FlagSvgIT.jsx": {
+    "mtime": 1780640353.5612347,
+    "ast_hash": "41cb9d13cdebeabe5d766264eb667a54",
+    "semantic_hash": "41cb9d13cdebeabe5d766264eb667a54"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/flags/FlagSvgPT.jsx": {
+    "mtime": 1780640353.5612507,
+    "ast_hash": "93d68f1ffaa60a8001e238328b918f7d",
+    "semantic_hash": "93d68f1ffaa60a8001e238328b918f7d"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/components/icons/flags/FlagSvgUS.jsx": {
+    "mtime": 1780640353.5688388,
+    "ast_hash": "725ec824f72deb2a07df2e5d4085aa83",
+    "semantic_hash": "725ec824f72deb2a07df2e5d4085aa83"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/hooks/useProxyApp.js": {
+    "mtime": 1781177313.3839593,
+    "ast_hash": "9a6dd2d6aa482b0a5e0167abd962258d",
+    "semantic_hash": "9a6dd2d6aa482b0a5e0167abd962258d"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/ActiveFooter.jsx": {
+    "mtime": 1780698504.930232,
+    "ast_hash": "d613f56d632ffc5936ee5c1b58cb0591",
+    "semantic_hash": "d613f56d632ffc5936ee5c1b58cb0591"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/ActiveFooter.styles.jsx": {
+    "mtime": 1780699231.5762608,
+    "ast_hash": "cb3cb148aeab799437e93fc2f1d62763",
+    "semantic_hash": "cb3cb148aeab799437e93fc2f1d62763"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/AppFooter.jsx": {
+    "mtime": 1780911308.7441769,
+    "ast_hash": "a3732053d246b3447cbbd4593bb59640",
+    "semantic_hash": "a3732053d246b3447cbbd4593bb59640"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/AppFooter.styles.jsx": {
+    "mtime": 1780698002.3882537,
+    "ast_hash": "5cb2ebf5053aa2a4a8ae7db668c77fc2",
+    "semantic_hash": "5cb2ebf5053aa2a4a8ae7db668c77fc2"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/FooterActions.jsx": {
+    "mtime": 1780647594.1588492,
+    "ast_hash": "53fe26d822097bad1f4b90c8df0a6274",
+    "semantic_hash": "53fe26d822097bad1f4b90c8df0a6274"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/FooterActions.styles.jsx": {
+    "mtime": 1780911308.7446642,
+    "ast_hash": "afb7a9e0317a5410fda8d26cd874fdf9",
+    "semantic_hash": "afb7a9e0317a5410fda8d26cd874fdf9"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/FooterProxyLabel.jsx": {
+    "mtime": 1780647594.1551898,
+    "ast_hash": "3e3bc6c9a0d61de49a85b384602d772b",
+    "semantic_hash": "3e3bc6c9a0d61de49a85b384602d772b"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/FooterProxyLabel.styles.jsx": {
+    "mtime": 1780647594.158798,
+    "ast_hash": "e73a228be985a55e09000d8d1bcdf8a3",
+    "semantic_hash": "e73a228be985a55e09000d8d1bcdf8a3"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/FooterProxyStatus.jsx": {
+    "mtime": 1780911308.745276,
+    "ast_hash": "ce5976f4907ea86072d5eb8b0dacfcd5",
+    "semantic_hash": "ce5976f4907ea86072d5eb8b0dacfcd5"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/FooterProxyStatus.styles.jsx": {
+    "mtime": 1780699303.3384113,
+    "ast_hash": "b2109004ea242485c66a47503fb8e41e",
+    "semantic_hash": "b2109004ea242485c66a47503fb8e41e"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/FooterProxyValue.jsx": {
+    "mtime": 1780700232.4479668,
+    "ast_hash": "199d9793d80a40a25ef921a221a3595e",
+    "semantic_hash": "199d9793d80a40a25ef921a221a3595e"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/footer/FooterProxyValue.styles.jsx": {
+    "mtime": 1780698799.2943075,
+    "ast_hash": "9d2d31d0b64c81d4c329623011432308",
+    "semantic_hash": "9d2d31d0b64c81d4c329623011432308"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/AppHeader.jsx": {
+    "mtime": 1780671042.2284057,
+    "ast_hash": "26e020ccac65b3412a1dcdf2a44c7651",
+    "semantic_hash": "26e020ccac65b3412a1dcdf2a44c7651"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/AppHeader.styles.jsx": {
+    "mtime": 1780649511.1640902,
+    "ast_hash": "08d5c1e7b59128498fdf0886bed8b034",
+    "semantic_hash": "08d5c1e7b59128498fdf0886bed8b034"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/AppLogo.jsx": {
+    "mtime": 1780649445.7382255,
+    "ast_hash": "6edde79ee06c4facb75676c7759fde67",
+    "semantic_hash": "6edde79ee06c4facb75676c7759fde67"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/AppTitle.jsx": {
+    "mtime": 1780647594.1412609,
+    "ast_hash": "1e8359b4b5f206dddce247093b4651ba",
+    "semantic_hash": "1e8359b4b5f206dddce247093b4651ba"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/AppTitle.styles.jsx": {
+    "mtime": 1780651478.7828107,
+    "ast_hash": "f756ac4ee4f3330c8a2989e9347d42ee",
+    "semantic_hash": "f756ac4ee4f3330c8a2989e9347d42ee"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/HeaderActions.jsx": {
+    "mtime": 1780647594.1413968,
+    "ast_hash": "025353d9c790117562585390254f7350",
+    "semantic_hash": "025353d9c790117562585390254f7350"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/HeaderActions.styles.jsx": {
+    "mtime": 1780647594.141391,
+    "ast_hash": "998b12eeda78ca22796a0fa9d8606882",
+    "semantic_hash": "998b12eeda78ca22796a0fa9d8606882"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/HeaderBrand.jsx": {
+    "mtime": 1780649175.9195719,
+    "ast_hash": "c7cb7fe377802cfadad40563b8a98cd4",
+    "semantic_hash": "c7cb7fe377802cfadad40563b8a98cd4"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/HeaderBrand.styles.jsx": {
+    "mtime": 1780649175.9250255,
+    "ast_hash": "035e8ef816a977e3f8b12b1edb91b46a",
+    "semantic_hash": "035e8ef816a977e3f8b12b1edb91b46a"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/HeaderHome.jsx": {
+    "mtime": 1780647594.1399317,
+    "ast_hash": "0d722d5cecb7e415e3eeff090f627738",
+    "semantic_hash": "0d722d5cecb7e415e3eeff090f627738"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/HeaderHome.styles.jsx": {
+    "mtime": 1780649175.9249725,
+    "ast_hash": "0285dae716276120800878dd0e35fe07",
+    "semantic_hash": "0285dae716276120800878dd0e35fe07"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/HeaderSubtitle.jsx": {
+    "mtime": 1780647594.1413572,
+    "ast_hash": "f212bba6ca255688103617bc788facd3",
+    "semantic_hash": "f212bba6ca255688103617bc788facd3"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/header/HeaderSubtitle.styles.jsx": {
+    "mtime": 1780647594.141325,
+    "ast_hash": "409d97ac9afd85942043af12006bbcb9",
+    "semantic_hash": "409d97ac9afd85942043af12006bbcb9"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/main/AppMain.jsx": {
+    "mtime": 1781175720.7110226,
+    "ast_hash": "576cf521dfa72a78d6c547cc0df69ff7",
+    "semantic_hash": "576cf521dfa72a78d6c547cc0df69ff7"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/main/AppMain.styles.jsx": {
+    "mtime": 1780647594.1414082,
+    "ast_hash": "6a0d9156f120f5c200b63c2d1c9161e2",
+    "semantic_hash": "6a0d9156f120f5c200b63c2d1c9161e2"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/main/ContentStack.jsx": {
+    "mtime": 1780647594.1414092,
+    "ast_hash": "2e525c98d6c8668e3bc546cb862c1d39",
+    "semantic_hash": "2e525c98d6c8668e3bc546cb862c1d39"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/main/ContentStack.styles.jsx": {
+    "mtime": 1780647594.1508021,
+    "ast_hash": "d2bb5813b148299eb34ea555452446ba",
+    "semantic_hash": "d2bb5813b148299eb34ea555452446ba"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/main/LogsLayer.jsx": {
+    "mtime": 1780647594.1414483,
+    "ast_hash": "7be92943148cbf41af7b64c774303393",
+    "semantic_hash": "7be92943148cbf41af7b64c774303393"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/layout/main/LogsLayer.styles.jsx": {
+    "mtime": 1780649897.0547066,
+    "ast_hash": "4686094f259a536edc065f76fa438e3d",
+    "semantic_hash": "4686094f259a536edc065f76fa438e3d"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/lib/background-helpers.js": {
+    "mtime": 1781174171.1091866,
+    "ast_hash": "1668b3fcbed2e85e68ff463c7f50370a",
+    "semantic_hash": "1668b3fcbed2e85e68ff463c7f50370a"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/lib/background-i18n.js": {
+    "mtime": 1781174179.477137,
+    "ast_hash": "597f4072db3cd53bd38823863cdc22ed",
+    "semantic_hash": "597f4072db3cd53bd38823863cdc22ed"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/lib/colors.js": {
+    "mtime": 1780707512.1390169,
+    "ast_hash": "81c05f454b896750b1ce552f140379e3",
+    "semantic_hash": "81c05f454b896750b1ce552f140379e3"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/lib/constants.js": {
+    "mtime": 1781174064.5430815,
+    "ast_hash": "381b253d6e87334fab64f9eaee14f7e9",
+    "semantic_hash": "381b253d6e87334fab64f9eaee14f7e9"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/lib/i18n.js": {
+    "mtime": 1780911308.745934,
+    "ast_hash": "6e01ccc81d3654c5594faa203da71b4a",
+    "semantic_hash": "6e01ccc81d3654c5594faa203da71b4a"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/lib/runtime.js": {
+    "mtime": 1780715022.0022612,
+    "ast_hash": "a8008eb5f968978fa9dce7287f225297",
+    "semantic_hash": "a8008eb5f968978fa9dce7287f225297"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/lib/state.js": {
+    "mtime": 1780709683.3550353,
+    "ast_hash": "ac3a7cb92d29f2d741d075ed0d7eeafa",
+    "semantic_hash": "ac3a7cb92d29f2d741d075ed0d7eeafa"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/logs.jsx": {
+    "mtime": 1780710852.8047838,
+    "ast_hash": "1d16868385b7a99dc77044ffafa49612",
+    "semantic_hash": "1d16868385b7a99dc77044ffafa49612"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/popup.js": {
+    "mtime": 1780705281.6797912,
+    "ast_hash": "0d4d77b942d2b743f4bf7e7fd76b480c",
+    "semantic_hash": "0d4d77b942d2b743f4bf7e7fd76b480c"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/services/icons.service.js": {
+    "mtime": 1781174129.3713486,
+    "ast_hash": "6f7c917551e8ee8d3b07e8d1acb018f6",
+    "semantic_hash": "6f7c917551e8ee8d3b07e8d1acb018f6"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/services/listeners.service.js": {
+    "mtime": 1781174245.4276404,
+    "ast_hash": "8400ca8439a161de94bbdc74c00e81fe",
+    "semantic_hash": "8400ca8439a161de94bbdc74c00e81fe"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/services/notifications.service.js": {
+    "mtime": 1781174185.6670678,
+    "ast_hash": "55053e8df888e803964cc12fa1a5e6c1",
+    "semantic_hash": "55053e8df888e803964cc12fa1a5e6c1"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/services/storage.service.js": {
+    "mtime": 1781174054.7821133,
+    "ast_hash": "019a599d800fbec5cd7e3bf0f335f802",
+    "semantic_hash": "019a599d800fbec5cd7e3bf0f335f802"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/views/form/FormView.jsx": {
+    "mtime": 1780911308.746525,
+    "ast_hash": "147476ebd0754448dd8bbc0f589ac0d8",
+    "semantic_hash": "147476ebd0754448dd8bbc0f589ac0d8"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/views/form/FormView.styles.jsx": {
+    "mtime": 1781176126.860226,
+    "ast_hash": "742cb5bad7da71e43d020eb367c6b538",
+    "semantic_hash": "742cb5bad7da71e43d020eb367c6b538"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/views/list/ListView.jsx": {
+    "mtime": 1781175863.8673058,
+    "ast_hash": "3c9a0edfaff1912b3b5f4d9ce0f07d26",
+    "semantic_hash": "3c9a0edfaff1912b3b5f4d9ce0f07d26"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/views/list/ListView.styles.jsx": {
+    "mtime": 1781176129.653998,
+    "ast_hash": "d84dd36ca2fdd100c409655b1a4e239a",
+    "semantic_hash": "d84dd36ca2fdd100c409655b1a4e239a"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/views/logs/LogsView.jsx": {
+    "mtime": 1780711076.1136029,
+    "ast_hash": "770e03ea54dbd92f68fa90a79e5e8279",
+    "semantic_hash": "770e03ea54dbd92f68fa90a79e5e8279"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/views/logs/LogsView.styles.jsx": {
+    "mtime": 1780711266.0342157,
+    "ast_hash": "b447afa54dc8dac00340ed330e18eec8",
+    "semantic_hash": "b447afa54dc8dac00340ed330e18eec8"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/views/preferences/PreferencesView.jsx": {
+    "mtime": 1780911682.417451,
+    "ast_hash": "f1310bcfac7f1255e5b96343666f4ece",
+    "semantic_hash": "f1310bcfac7f1255e5b96343666f4ece"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/views/preferences/PreferencesView.styles.jsx": {
+    "mtime": 1781176132.1219718,
+    "ast_hash": "1536929221a15dad2d9e8fcdfb0c44fe",
+    "semantic_hash": "1536929221a15dad2d9e8fcdfb0c44fe"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/CLAUDE.md": {
+    "mtime": 1781195979.7049296,
+    "ast_hash": "db73b0edd7ffbc61ceac177130730865",
+    "semantic_hash": "db73b0edd7ffbc61ceac177130730865"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/skills/graphify/SKILL.md": {
+    "mtime": 1781195979.703997,
+    "ast_hash": "41f700d6535cc2f2b6b6d0a9eecc7525",
+    "semantic_hash": "41f700d6535cc2f2b6b6d0a9eecc7525"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/skills/graphify/references/add-watch.md": {
+    "mtime": 1780995902.3080866,
+    "ast_hash": "0df0589623217ca38a12bdcabfb42f4c",
+    "semantic_hash": "0df0589623217ca38a12bdcabfb42f4c"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/skills/graphify/references/exports.md": {
+    "mtime": 1780995902.3083532,
+    "ast_hash": "7fb1a81aca17a462db70684a324fcfb0",
+    "semantic_hash": "7fb1a81aca17a462db70684a324fcfb0"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/skills/graphify/references/extraction-spec.md": {
+    "mtime": 1780995902.3211482,
+    "ast_hash": "24808b03abfeaf5f6435bb69c0125b2c",
+    "semantic_hash": "24808b03abfeaf5f6435bb69c0125b2c"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/skills/graphify/references/github-and-merge.md": {
+    "mtime": 1780995902.3316243,
+    "ast_hash": "cde13df085e4c492aeb7ba298a996d0d",
+    "semantic_hash": "cde13df085e4c492aeb7ba298a996d0d"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/skills/graphify/references/hooks.md": {
+    "mtime": 1780995902.3343225,
+    "ast_hash": "3f545db6ce646650bb9de588f5512a27",
+    "semantic_hash": "3f545db6ce646650bb9de588f5512a27"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/skills/graphify/references/query.md": {
+    "mtime": 1780995902.3391068,
+    "ast_hash": "8b40ed8c9e9060fc215219a8fc964091",
+    "semantic_hash": "8b40ed8c9e9060fc215219a8fc964091"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/skills/graphify/references/transcribe.md": {
+    "mtime": 1780995902.3424568,
+    "ast_hash": "70f6aa30d6211f3a2c7e9fc45479f50c",
+    "semantic_hash": "70f6aa30d6211f3a2c7e9fc45479f50c"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/.claude/skills/graphify/references/update.md": {
+    "mtime": 1780995902.3430007,
+    "ast_hash": "0dad167a95bdb389f02fecffb60b1bc8",
+    "semantic_hash": "0dad167a95bdb389f02fecffb60b1bc8"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/CLAUDE.md": {
+    "mtime": 1781195979.708399,
+    "ast_hash": "82efb97a359f5c7290bf2513d14686be",
+    "semantic_hash": "82efb97a359f5c7290bf2513d14686be"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/PRIVACY_POLICY.md": {
+    "mtime": 1780590851.302349,
+    "ast_hash": "5ba453cb96f677279dfae33cbd2756a6",
+    "semantic_hash": "5ba453cb96f677279dfae33cbd2756a6"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/README.md": {
+    "mtime": 1780911308.738308,
+    "ast_hash": "2ce8d16a019e9625222e8498604329d9",
+    "semantic_hash": "2ce8d16a019e9625222e8498604329d9"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/TEST_FAILOVER_GUIDE.md": {
+    "mtime": 1780715277.7149806,
+    "ast_hash": "71ee3bf646508cbb634a627a1813408c",
+    "semantic_hash": "71ee3bf646508cbb634a627a1813408c"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/ai-plans/plan-20260610-1545.md": {
+    "mtime": 1781173902.1361628,
+    "ast_hash": "e74479933c340233fc266fd5aef8a208",
+    "semantic_hash": "e74479933c340233fc266fd5aef8a208"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/messages/de.yml": {
+    "mtime": 1781177268.8696833,
+    "ast_hash": "92bbb41d6c9e6a821dddd74872e2fa42",
+    "semantic_hash": "92bbb41d6c9e6a821dddd74872e2fa42"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/messages/en.yml": {
+    "mtime": 1781177228.1658385,
+    "ast_hash": "6c482539aa1cad4146e0abe737e0ba13",
+    "semantic_hash": "6c482539aa1cad4146e0abe737e0ba13"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/messages/es.yml": {
+    "mtime": 1781177237.3790889,
+    "ast_hash": "81ce5a588968066954052ed8d1622e81",
+    "semantic_hash": "81ce5a588968066954052ed8d1622e81"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/messages/fr.yml": {
+    "mtime": 1781177247.6468577,
+    "ast_hash": "fc67e277ca1fd81ad9d66eb3c4ddc15f",
+    "semantic_hash": "fc67e277ca1fd81ad9d66eb3c4ddc15f"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/messages/it.yml": {
+    "mtime": 1781177257.3689833,
+    "ast_hash": "e501f1b7456e72ceb91dd8da7dff4998",
+    "semantic_hash": "e501f1b7456e72ceb91dd8da7dff4998"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/messages/pt.yml": {
+    "mtime": 1781177279.3263035,
+    "ast_hash": "6d434aca463bd9e81bd3d6fa490ff641",
+    "semantic_hash": "6d434aca463bd9e81bd3d6fa490ff641"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/README.md": {
+    "mtime": 1780585897.4244955,
+    "ast_hash": "c0e028e771198402dd88f61dcb2fbdcf",
+    "semantic_hash": "c0e028e771198402dd88f61dcb2fbdcf"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/logs.html": {
+    "mtime": 1780650708.9088545,
+    "ast_hash": "a2c9ed6af1fa52c7f660f5af6da37a06",
+    "semantic_hash": "a2c9ed6af1fa52c7f660f5af6da37a06"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/manifest.yml": {
+    "mtime": 1780912890.4129498,
+    "ast_hash": "30fd8a7eb36ed9ad0542c8e8c97b623f",
+    "semantic_hash": "30fd8a7eb36ed9ad0542c8e8c97b623f"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/popup.html": {
+    "mtime": 1780601022.4256556,
+    "ast_hash": "1c258960070cfdf26759f5c494b47268",
+    "semantic_hash": "1c258960070cfdf26759f5c494b47268"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt-128-bw.png": {
+    "mtime": 1780592497.92609,
+    "ast_hash": "1a9ed84ecc620a064d745884f8326f78",
+    "semantic_hash": "1a9ed84ecc620a064d745884f8326f78"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt-128.png": {
+    "mtime": 1780592497.9206686,
+    "ast_hash": "cf236af2d3343d5f5db32a01c698f160",
+    "semantic_hash": "cf236af2d3343d5f5db32a01c698f160"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt-16-bw.png": {
+    "mtime": 1780592497.922812,
+    "ast_hash": "cede9303b72d11b4b3bc50f1b5efd957",
+    "semantic_hash": "cede9303b72d11b4b3bc50f1b5efd957"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt-16.png": {
+    "mtime": 1780592497.9124706,
+    "ast_hash": "8676b2540debdb25ecfada7c2f316f67",
+    "semantic_hash": "8676b2540debdb25ecfada7c2f316f67"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt-32-bw.png": {
+    "mtime": 1780592497.923495,
+    "ast_hash": "55c441021b24aa1d98e51841582b95f2",
+    "semantic_hash": "55c441021b24aa1d98e51841582b95f2"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt-32.png": {
+    "mtime": 1780592497.91453,
+    "ast_hash": "892b47c324e50bf749e4dd5b57b78c39",
+    "semantic_hash": "892b47c324e50bf749e4dd5b57b78c39"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt-48-bw.png": {
+    "mtime": 1780592497.925243,
+    "ast_hash": "e314bc6406d5685be8aba79b3122be3f",
+    "semantic_hash": "e314bc6406d5685be8aba79b3122be3f"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt-48.png": {
+    "mtime": 1780592497.9153614,
+    "ast_hash": "a8d525652819827c7268cef88a6994bb",
+    "semantic_hash": "a8d525652819827c7268cef88a6994bb"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt-bw.svg": {
+    "mtime": 1780592199.8466814,
+    "ast_hash": "f739fbdbb2f06f86ca0fd2139c0b975e",
+    "semantic_hash": "f739fbdbb2f06f86ca0fd2139c0b975e"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/icons/proxyxt.svg": {
+    "mtime": 1780592103.0314054,
+    "ast_hash": "265d0f6ed700485f41ae2962c3848b44",
+    "semantic_hash": "265d0f6ed700485f41ae2962c3848b44"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/proxyxt-off.png": {
+    "mtime": 1780591631.6287181,
+    "ast_hash": "37b2f403c71281d0ecf5d58a3d3a682b",
+    "semantic_hash": "37b2f403c71281d0ecf5d58a3d3a682b"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/src/proxyxt.png": {
+    "mtime": 1780591599.8492444,
+    "ast_hash": "dd71cceac4411322e3e49e0186458b28",
+    "semantic_hash": "dd71cceac4411322e3e49e0186458b28"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/static/home-server-selected.png": {
+    "mtime": 1780911308.7494326,
+    "ast_hash": "2879f765b556c7cb293b052321b9ea66",
+    "semantic_hash": "2879f765b556c7cb293b052321b9ea66"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/static/home.png": {
+    "mtime": 1780911308.7506285,
+    "ast_hash": "ab92ad14873831870efdaeed94236690",
+    "semantic_hash": "ab92ad14873831870efdaeed94236690"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/static/preferences.png": {
+    "mtime": 1780911308.751405,
+    "ast_hash": "7ddfc54b9e174b81110ef7f922e4792d",
+    "semantic_hash": "7ddfc54b9e174b81110ef7f922e4792d"
+  },
+  "/Users/JG31772/dev/joshua/proxyXT/static/server-add.png": {
+    "mtime": 1780911308.7522626,
+    "ast_hash": "562558dabbcf506549acf43444fcb6d3",
+    "semantic_hash": "562558dabbcf506549acf43444fcb6d3"
+  }
+}

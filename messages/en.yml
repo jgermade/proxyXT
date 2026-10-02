@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: No saved proxies
+  noServersSync: Activate data synchronization
   noLogs: No logs.
   noMessage: No message
   unknownError: Unknown error
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin disabled
   reloadOnToggleEnabled: Active tab reload enabled
   reloadOnToggleDisabled: Active tab reload disabled
+  syncServersInProgress: Synchronizing...
   syncServersEnabled: Server sync enabled
   syncServersDisabled: Server sync disabled
   tabsPermissionDenied: Tabs permission is required to reload the active tab
@@ -111,3 +113,13 @@ preferences:
   reloadHelp: Reloads the current tab each time the active proxy is enabled or disabled.
   syncHelp: Stores your saved servers in your browser account to keep them available on your other signed-in browsers.
   failoverNotificationsHelp: Enables extension alerts for important events such as automatic server changes.
+
+background:
+  notifications:
+    failoverEnabled: Notifications enabled. This is a test notification.
+    failoverSwitch: "Automatic server switch: {{from}} -> {{to}}"
+    tabsPermissionEnabled: Tabs permission granted. Auto reload is now ready.
+  logs:
+    notificationsPermissionGrantedPending: Notifications permission granted. Completing pending activation.
+    tabsPermissionGrantedNotify: Tabs permission granted. Sending confirmation notification.
+    permissionsPendingFlowFailed: Could not complete pending permissions flow

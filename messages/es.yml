@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: No hay proxies guardados
+  noServersSync: Activar sincronizacion de datos
   noLogs: Sin logs.
   noMessage: Sin mensaje
   unknownError: Error desconocido
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin desactivado
   reloadOnToggleEnabled: Recarga de pestana activa activada
   reloadOnToggleDisabled: Recarga de pestana activa desactivada
+  syncServersInProgress: Sincronizando...
   syncServersEnabled: Sincronización activada
   syncServersDisabled: Sincronización desactivada
   tabsPermissionDenied: El permiso de pestanas es necesario para recargar la pestana activa
@@ -111,3 +113,13 @@ preferences:
   reloadHelp: Recarga la pestana actual cada vez que se activa o desactiva el proxy.
   syncHelp: Guarda tus servidores en la cuenta del navegador para mantenerlos disponibles en otros navegadores con sesion iniciada.
   failoverNotificationsHelp: Activa avisos de la extension para eventos importantes como cambios automaticos de servidor.
+
+background:
+  notifications:
+    failoverEnabled: Notificaciones activadas. Esta es una notificacion de prueba.
+    failoverSwitch: "Cambio automatico de servidor: {{from}} -> {{to}}"
+    tabsPermissionEnabled: Permiso de pestanas concedido. La recarga automatica ya esta lista.
+  logs:
+    notificationsPermissionGrantedPending: Permiso de notificaciones concedido. Completando activacion pendiente.
+    tabsPermissionGrantedNotify: Permiso de pestanas concedido. Enviando notificacion de confirmacion.
+    permissionsPendingFlowFailed: No se pudo completar el flujo pendiente de permisos

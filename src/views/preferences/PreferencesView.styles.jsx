@@ -22,7 +22,7 @@ const gearBoostSpin = keyframes`
 `;
 
 export const PreferencesPanel = styled.section`
-  min-height: 192px;
+  min-height: 208px;
   display: ${({ $isVisible }) => ($isVisible ? "block" : "none")};
 `;
 

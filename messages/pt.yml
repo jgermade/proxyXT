@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: Nenhum proxy salvo
+  noServersSync: Ativar sincronizacao de dados
   noLogs: Sem logs.
   noMessage: Sem mensagem
   unknownError: Erro desconhecido
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin desativado
   reloadOnToggleEnabled: Recarga da aba ativa ativada
   reloadOnToggleDisabled: Recarga da aba ativa desativada
+  syncServersInProgress: Sincronizando...
   syncServersEnabled: Sincronizacao de servidores ativada
   syncServersDisabled: Sincronizacao de servidores desativada
   tabsPermissionDenied: A permissao de abas e necessaria para recarregar a aba ativa
@@ -111,3 +113,13 @@ preferences:
   reloadHelp: Recarrega a aba atual sempre que o proxy ativo for ativado ou desativado.
   syncHelp: Salva seus servidores na conta do navegador para mantelos disponiveis nos outros navegadores conectados.
   failoverNotificationsHelp: Ativa alertas da extensao para eventos importantes, como mudancas automaticas de servidor.
+
+background:
+  notifications:
+    failoverEnabled: Notificacoes ativadas. Esta e uma notificacao de teste.
+    failoverSwitch: "Mudanca automatica de servidor: {{from}} -> {{to}}"
+    tabsPermissionEnabled: Permissao de abas concedida. A recarga automatica ja esta pronta.
+  logs:
+    notificationsPermissionGrantedPending: Permissao de notificacoes concedida. Concluindo ativacao pendente.
+    tabsPermissionGrantedNotify: Permissao de abas concedida. Enviando notificacao de confirmacao.
+    permissionsPendingFlowFailed: Nao foi possivel concluir o fluxo pendente de permissoes

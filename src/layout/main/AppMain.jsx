@@ -33,12 +33,15 @@ export function AppMain({
   reloadActiveTabOnToggle,
   syncServersWithAccount,
   showFailoverNotifications,
+  hasNotificationsPermission,
+  hasTabsPermission,
   languagePreference,
   handleAutoFailoverChange,
   handleReloadActiveTabChange,
   handleSyncServersWithAccountChange,
   handleShowFailoverNotificationsChange,
-  handleLanguageChange
+  handleLanguageChange,
+  handleOpenPreferences
 }) {
   return (
     <StyledAppMain ref={mainRef} className={className} $isHidden={isHidden}>
@@ -62,6 +65,8 @@ export function AppMain({
         onEdit={openFormForEdit}
         getServerDisplayName={getServerDisplayName}
         onAddServer={handlePrimaryAction}
+        syncServersWithAccount={syncServersWithAccount}
+        onActivateSync={() => handleSyncServersWithAccountChange(true)}
       />
 
       <FormView
@@ -83,6 +88,8 @@ export function AppMain({
         reloadActiveTabOnToggle={reloadActiveTabOnToggle}
         syncServersWithAccount={syncServersWithAccount}
         showFailoverNotifications={showFailoverNotifications}
+        hasNotificationsPermission={hasNotificationsPermission}
+        hasTabsPermission={hasTabsPermission}
         language={languagePreference}
         onAutoFailoverChange={handleAutoFailoverChange}
         onReloadActiveTabChange={handleReloadActiveTabChange}

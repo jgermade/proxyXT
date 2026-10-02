@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: Aucun proxy enregistre
+  noServersSync: Activer la synchronisation des donnees
   noLogs: Aucun log.
   noMessage: Sans message
   unknownError: Erreur inconnue
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin desactive
   reloadOnToggleEnabled: Rechargement de l'onglet actif active
   reloadOnToggleDisabled: Rechargement de l'onglet actif desactive
+  syncServersInProgress: Synchronisation en cours...
   syncServersEnabled: Synchronisation des serveurs activee
   syncServersDisabled: Synchronisation des serveurs desactivee
   tabsPermissionDenied: L'autorisation tabs est necessaire pour recharger l'onglet actif
@@ -111,3 +113,13 @@ preferences:
   reloadHelp: Recharge l'onglet actuel chaque fois que le proxy actif est active ou desactive.
   syncHelp: Enregistre vos serveurs dans le compte du navigateur pour les retrouver sur vos autres navigateurs connectes.
   failoverNotificationsHelp: Active les alertes de l'extension pour les evenements importants comme les changements automatiques de serveur.
+
+background:
+  notifications:
+    failoverEnabled: Notifications activees. Ceci est une notification de test.
+    failoverSwitch: "Changement automatique de serveur: {{from}} -> {{to}}"
+    tabsPermissionEnabled: Autorisation des onglets accordee. Le rechargement automatique est pret.
+  logs:
+    notificationsPermissionGrantedPending: Autorisation des notifications accordee. Activation en attente terminee.
+    tabsPermissionGrantedNotify: Autorisation des onglets accordee. Envoi de la notification de confirmation.
+    permissionsPendingFlowFailed: Impossible de terminer le flux d'autorisations en attente

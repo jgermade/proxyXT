@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: Nessun proxy salvato
+  noServersSync: Attiva la sincronizzazione dei dati
   noLogs: Nessun log.
   noMessage: Nessun messaggio
   unknownError: Errore sconosciuto
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin disattivato
   reloadOnToggleEnabled: Ricarica della scheda attiva attivata
   reloadOnToggleDisabled: Ricarica della scheda attiva disattivata
+  syncServersInProgress: Sincronizzazione in corso...
   syncServersEnabled: Sincronizzazione server attivata
   syncServersDisabled: Sincronizzazione server disattivata
   tabsPermissionDenied: Il permesso tabs e necessario per ricaricare la scheda attiva
@@ -111,3 +113,13 @@ preferences:
   reloadHelp: Ricarica la scheda corrente ogni volta che il proxy attivo viene attivato o disattivato.
   syncHelp: Salva i server nel tuo account browser per mantenerli disponibili sugli altri browser con accesso effettuato.
   failoverNotificationsHelp: Attiva gli avvisi dell'estensione per eventi importanti, come i cambi automatici di server.
+
+background:
+  notifications:
+    failoverEnabled: Notifiche attivate. Questa e una notifica di prova.
+    failoverSwitch: "Cambio automatico server: {{from}} -> {{to}}"
+    tabsPermissionEnabled: Permesso schede concesso. La ricarica automatica e pronta.
+  logs:
+    notificationsPermissionGrantedPending: Permesso notifiche concesso. Completamento dell'attivazione in sospeso.
+    tabsPermissionGrantedNotify: Permesso schede concesso. Invio della notifica di conferma.
+    permissionsPendingFlowFailed: Impossibile completare il flusso permessi in sospeso

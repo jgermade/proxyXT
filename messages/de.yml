@@ -73,6 +73,7 @@ placeholders:
 
 messages:
   noServers: Keine gespeicherten Proxys
+  noServersSync: Datensynchronisierung aktivieren
   noLogs: Keine Logs.
   noMessage: Keine Nachricht
   unknownError: Unbekannter Fehler
@@ -90,6 +91,7 @@ messages:
   roundRobinDisabled: Round Robin deaktiviert
   reloadOnToggleEnabled: Neuladen des aktiven Tabs aktiviert
   reloadOnToggleDisabled: Neuladen des aktiven Tabs deaktiviert
+  syncServersInProgress: Synchronisiere...
   syncServersEnabled: Serversynchronisierung aktiviert
   syncServersDisabled: Serversynchronisierung deaktiviert
   tabsPermissionDenied: Die Berechtigung tabs ist erforderlich, um den aktiven Tab neu zu laden
@@ -111,3 +113,13 @@ preferences:
   reloadHelp: Laedt den aktuellen Tab neu, wenn der aktive Proxy aktiviert oder deaktiviert wird.
   syncHelp: Speichert Ihre Server im Browserkonto, damit sie auch in anderen angemeldeten Browsern verfuegbar sind.
   failoverNotificationsHelp: Aktiviert Erweiterungshinweise fuer wichtige Ereignisse wie automatische Serverwechsel.
+
+background:
+  notifications:
+    failoverEnabled: Benachrichtigungen aktiviert. Dies ist eine Testbenachrichtigung.
+    failoverSwitch: "Automatischer Serverwechsel: {{from}} -> {{to}}"
+    tabsPermissionEnabled: Tab-Berechtigung erteilt. Das automatische Neuladen ist bereit.
+  logs:
+    notificationsPermissionGrantedPending: Benachrichtigungsberechtigung erteilt. Ausstehende Aktivierung wird abgeschlossen.
+    tabsPermissionGrantedNotify: Tabs-Berechtigung erteilt. Bestaetigungsbenachrichtigung wird gesendet.
+    permissionsPendingFlowFailed: Der ausstehende Berechtigungsablauf konnte nicht abgeschlossen werden
