@@ -160,11 +160,11 @@ export const ServerMainButton = styled.button`
   z-index: 2;
 
   &:hover {
-    background: ${({ $isActive }) => ($isActive ? "transparent" : "#f4f8ff")};
+    background: ${({ $isActive }) => ($isActive ? "transparent" : "#f5f5f5")};
   }
 
   &:active {
-    background: ${({ $isActive }) => ($isActive ? "transparent" : "#eaf1fb")};
+    background: ${({ $isActive }) => ($isActive ? "transparent" : "#ececec")};
   }
 `;
 
@@ -232,8 +232,8 @@ export const ServerEditButton = styled.button`
 `;
 
 export const EmptyStateForm = styled.form`
-  background: #f7faff;
-  border: 1px dashed #c1d1e3;
+  background: #fafafa;
+  border: 1px dashed #c4c4c4;
   color: #425773;
   border-radius: 11px;
   padding: 16px 8px;
@@ -271,7 +271,7 @@ export const EmptyStateActionButton = styled.button`
 
 export const EmptyStateSecondaryButton = styled.button`
   margin-top: 10px;
-  border: 1px solid #c1d1e3;
+  border: 1px solid #d0d0d0;
   border-radius: 9px;
   padding: 8px 12px;
   background: transparent;
@@ -282,8 +282,8 @@ export const EmptyStateSecondaryButton = styled.button`
   transition: background 120ms ease, border-color 120ms ease;
 
   &:hover {
-    background: #eaf1fb;
-    border-color: #8fb0d9;
+    background: #f0f0f0;
+    border-color: #b0b0b0;
   }
 
   &:focus-visible {
@@ -295,7 +295,7 @@ export const EmptyStateSecondaryButton = styled.button`
 export const EmptyStateDivider = styled.div`
   margin: 12px auto 0;
   font-size: 0.75rem;
-  color: #b0c4db;
+  color: #b0b0b0;
   letter-spacing: 0.08em;
   user-select: none;
 `;
