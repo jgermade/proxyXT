@@ -81,6 +81,20 @@ El build de Chrome omite `browser_specific_settings` y el de Firefox usa `backgr
 npm test
 ```
 
+## Capturas del README
+
+Las capturas de `static/` se generan con Playwright cargando el build de Chrome en Chromium:
+
+```bash
+npx playwright install chromium   # solo la primera vez
+npm run screenshots
+```
+
+El script (`scripts/screenshots.mjs`) compila `build/chrome`, abre el popup a 360 px de ancho, da de alta un servidor de ejemplo y captura la vista principal, el alta de servidor, el servidor activo, las preferencias y los logs. Variables opcionales:
+
+- `CHROMIUM_PATH`: ejecutable de Chromium a usar en lugar del instalado por Playwright.
+- `SCREENSHOTS_OUT`: carpeta de salida (por defecto `static/`).
+
 ## CI y releases
 
 - `.github/workflows/build.yml`: en cada push a `main` y en cada pull request ejecuta los tests y genera los zip para Chrome y Firefox como artefactos.
@@ -112,7 +126,7 @@ npm test
 
 ```text
 messages/    Diccionarios YAML de traduccion
-scripts/     Build con esbuild y comprobacion de claves de traduccion
+scripts/     Build con esbuild, comprobacion de claves de traduccion y capturas
 src/         Popup, background, manifest y recursos fuente
 static/      Capturas usadas en este README
 dist/        Extension generada lista para cargar en el navegador
