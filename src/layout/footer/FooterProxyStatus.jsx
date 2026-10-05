@@ -5,18 +5,17 @@ import { FooterProxyValue } from "./FooterProxyValue.jsx";
 
 export function FooterProxyStatus({
   feedbackState,
-  activeError,
+  activeNotice,
   proxyDisplay,
   isProxyActive = false,
   handleOpenList,
-  handleDismissFooterError,
   handleDismissFooterFeedback,
   t,
   ...rest
 }) {
   const hasFeedback = Boolean(feedbackState);
-  const hasActiveError = Boolean(activeError);
-  const showProxy = !hasFeedback && !hasActiveError;
+  const hasActiveNotice = !hasFeedback && Boolean(activeNotice);
+  const showProxy = !hasFeedback && !hasActiveNotice;
 
   return (
     <StyledFooterProxyStatus {...rest}>
@@ -36,17 +35,24 @@ export function FooterProxyStatus({
         ) : null}
       </div>
 
-      <div data-visible={hasActiveError ? "true" : "false"} aria-hidden={!hasActiveError}>
-        {activeError ? (
+      <div
+        data-visible={hasActiveNotice ? "true" : "false"}
+        aria-hidden={!hasActiveNotice}
+        role="status"
+        aria-live="polite"
+      >
+        {activeNotice ? (
           <ActiveFooter
+            key={activeNotice.key}
             $isFeedback
             $isError
             $feedbackPhase="enter"
+            title={activeNotice.message}
             dismissable
             dismissLabel={t("buttons.dismiss")}
-            onDismiss={handleDismissFooterError}
+            onDismiss={activeNotice.onDismiss}
           >
-            {activeError.message}
+            {activeNotice.message}
           </ActiveFooter>
         ) : null}
       </div>
