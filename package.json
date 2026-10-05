@@ -6,7 +6,10 @@
   "scripts": {
     "pre-build": "node scripts/check-message-keys.mjs",
     "prebuild": "node scripts/check-message-keys.mjs",
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "build:chrome": "node scripts/check-message-keys.mjs && node scripts/build.mjs --target chrome",
+    "build:firefox": "node scripts/check-message-keys.mjs && node scripts/build.mjs --target firefox",
+    "test": "node scripts/check-message-keys.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.5"

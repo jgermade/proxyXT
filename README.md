@@ -57,6 +57,26 @@ Genera la extension empaquetada en la carpeta `dist`:
 npm run build
 ```
 
+Builds especificos por navegador (salida en `build/chrome` y `build/firefox`):
+
+```bash
+npm run build:chrome
+npm run build:firefox
+```
+
+El build de Chrome omite `browser_specific_settings` y el de Firefox usa `background.scripts` en lugar de `background.service_worker`.
+
+## Tests
+
+```bash
+npm test
+```
+
+## CI y releases
+
+- `.github/workflows/build.yml`: en cada push a `main` y en cada pull request ejecuta los tests y genera los zip para Chrome y Firefox como artefactos.
+- `.github/workflows/release.yml`: ejecucion manual desde la pestana Actions. Pide el tipo de incremento (`major`, `minor` o `patch`), sube la version en `package.json`, `package-lock.json` y `src/manifest.yml`, crea el commit y el tag `vX.Y.Z`, ejecuta el build y publica una GitHub Release con los zip de Chrome y Firefox adjuntos.
+
 ## Cargar la extension
 
 ### Chrome / Chromium
