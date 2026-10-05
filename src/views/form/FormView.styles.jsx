@@ -30,7 +30,7 @@ export const FormPanel = styled.section`
 export const ProxyForm = styled.form`
   display: grid;
   gap: 8px;
-  background: #f4f8ff;
+  background: #fafafa;
   padding: 16px;
 `;
 

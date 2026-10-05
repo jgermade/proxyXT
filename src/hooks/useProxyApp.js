@@ -84,9 +84,9 @@ export function useProxyApp() {
     }
   }
 
-  async function handleDismissFooterError() {
+  async function handleDismissFooterError(kind) {
     try {
-      await callBackground("proxyxt/dismissFooterError");
+      await callBackground("proxyxt/dismissFooterError", kind ? { kind } : {});
     } catch (error) {
       setFeedback({ message: error.message, isError: true });
     }

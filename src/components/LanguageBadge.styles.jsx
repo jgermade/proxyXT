@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 export const StyledLanguageBadge = styled.button`
   border: none;
-  background: transparent;
+  background: #ffffff;
   display: inline-flex;
   align-items: center;
   gap: 5px;

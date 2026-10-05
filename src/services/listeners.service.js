@@ -784,18 +784,21 @@ export class ListenersService {
     return state;
   }
 
-  async handleDismissFooterError() {
+  async handleDismissFooterError(payload = {}) {
     const state = await this.storageService.loadState(defaultState);
-    const hasActiveError = Boolean(state.footerStatus?.activeError);
-    const hasConnectionFailure = Boolean(state.footerStatus?.connectionFailure);
+    const kind = payload?.kind;
+    const dismissActiveError = kind !== "connectionFailure";
+    const dismissConnectionFailure = kind !== "activeError";
+    const hasActiveError = dismissActiveError && Boolean(state.footerStatus?.activeError);
+    const hasConnectionFailure = dismissConnectionFailure && Boolean(state.footerStatus?.connectionFailure);
     if (!hasActiveError && !hasConnectionFailure) {
       return state;
     }
 
     state.footerStatus = {
       ...(state.footerStatus || defaultState.footerStatus),
-      activeError: null,
-      connectionFailure: null
+      ...(hasActiveError ? { activeError: null } : {}),
+      ...(hasConnectionFailure ? { connectionFailure: null } : {})
     };
 
     await this.storageService.saveState(state, STORAGE_KEY);
@@ -992,7 +995,7 @@ export class ListenersService {
         }
 
         if (actionType === "proxyxt/dismissFooterError") {
-          const state = await this.handleDismissFooterError();
+          const state = await this.handleDismissFooterError(message.payload || {});
           return { state };
         }
 

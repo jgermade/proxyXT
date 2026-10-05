@@ -111,6 +111,7 @@ const footerSlotStyles = css`
   font-size: 0.9rem;
   padding: 2px 4px;
   border-radius: 8px;
+  background: #ffffff;
 
   ${({ $active }) =>
     $active &&
