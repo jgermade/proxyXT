@@ -1,6 +1,6 @@
 manifest_version: 3
 name: ProxyXT
-version: 1.0.2
+version: 1.0.6
 description: Cliente proxy para Chrome y Firefox con multiples servidores y cambio rapido.
 permissions:
   - storage
