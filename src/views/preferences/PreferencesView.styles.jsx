@@ -30,7 +30,7 @@ export const PreferencesForm = styled.form`
   display: grid;
   gap: 8px;
   padding: 16px;
-  background: #f4f8ff;
+  background: #fafafa;
 `;
 
 export const PreferencesGroup = styled.div`
@@ -40,7 +40,7 @@ export const PreferencesGroup = styled.div`
 
 export const PreferencesSeparator = styled.div`
   height: 1px;
-  background: #c1d1e3;
+  background: #e0e0e0;
   margin: 2px 0;
 `;
 
@@ -57,8 +57,8 @@ export const PreferencesHintBox = styled.div`
   margin-top: 2px;
   padding: 8px 10px;
   border-radius: 8px;
-  background: #edf3fc;
-  box-shadow: inset 0 0 0 1px #c5d4e9;
+  background: #f2f2f2;
+  box-shadow: inset 0 0 0 1px #e0e0e0;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;

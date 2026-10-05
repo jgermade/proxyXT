@@ -106,7 +106,8 @@ export const LogsToolbar = styled.div`
   justify-content: space-between;
   gap: 8px;
   padding: 8px;
-  background: #e5f0ff;
+  background: #fafafa;
+  box-shadow: inset 0 -1px 0 #e0e0e0;
 `;
 
 export const ToolbarTitle = styled.strong`
@@ -155,7 +156,7 @@ export const FilterMenu = styled.details`
   position: relative;
 
   &[open] > summary {
-    background: #d4e5ff;
+    background: #ececec;
     color: #203c5c;
   }
 `;
@@ -180,7 +181,7 @@ export const FilterToggleButton = styled.summary`
   }
 
   &:hover {
-    background: #d4e5ff;
+    background: #ececec;
     color: #203c5c;
   }
 
@@ -198,8 +199,8 @@ export const FilterMenuPanel = styled.div`
   width: 138px;
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #bfd7ff;
-  background: #f4f8ff;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
   box-shadow: 0 12px 24px rgba(25, 56, 95, 0.18);
   display: flex;
   flex-direction: column;
@@ -263,7 +264,7 @@ export const OpenWindowButton = styled.button`
   transition: background 120ms ease, color 120ms ease;
 
   &:hover {
-    background: #d4e5ff;
+    background: #ececec;
     color: #203c5c;
   }
 

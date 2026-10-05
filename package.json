@@ -9,10 +9,12 @@
     "build": "node scripts/build.mjs",
     "build:chrome": "node scripts/check-message-keys.mjs && node scripts/build.mjs --target chrome",
     "build:firefox": "node scripts/check-message-keys.mjs && node scripts/build.mjs --target firefox",
-    "test": "node scripts/check-message-keys.mjs"
+    "test": "node scripts/check-message-keys.mjs",
+    "screenshots": "npm run build:chrome && node scripts/screenshots.mjs"
   },
   "devDependencies": {
-    "esbuild": "^0.25.5"
+    "esbuild": "^0.25.5",
+    "playwright": "^1.63.0"
   },
   "dependencies": {
     "goober": "^2.1.19",

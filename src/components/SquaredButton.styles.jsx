@@ -57,14 +57,14 @@ const plusToggleStyles = css`
   width: 36px;
   height: 36px;
   padding: 0;
-  background: #d8e6ff;
+  background: #ffffff;
   color: #2f4f7d;
   font-size: 1.08rem;
   line-height: 1;
   border-radius: 11px;
 
   &:hover {
-    background: #cbdfff;
+    background: #f0f0f0;
     filter: none;
   }
 
@@ -87,12 +87,12 @@ const headerSlotStyles = css`
   border-radius: 11px;
   display: grid;
   place-items: center;
-  background: #d8e6ff;
+  background: #ffffff;
   color: #2f4f7d;
   opacity: 1;
 
   &:hover {
-    background: #cbdfff;
+    background: #f0f0f0;
   }
 
   ${({ $active }) =>

@@ -12,11 +12,11 @@ const Wrapper = styled.label`
   transition: background 120ms ease;
   
   &:hover {
-    background: #f4f8ff;
+    background: #f0f0f0;
   }
 
   &:active {
-    background: #eaf1fb;
+    background: #e8e8e8;
   }
 `;
 
